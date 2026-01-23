@@ -1,0 +1,112 @@
+# Sprint Status - Madinia Mobile
+# generated: 2026-01-23
+# project: Madinia Mobile
+# project_key: madiniamobileapp
+# tracking_system: file-system
+# story_location: _bmad-output/implementation-artifacts
+
+# STATUS DEFINITIONS:
+# ==================
+# Epic Status:
+#   - backlog: Epic not yet started
+#   - in-progress: Epic actively being worked on
+#   - done: All stories in epic completed
+#
+# Epic Status Transitions:
+#   - backlog → in-progress: Automatically when first story is created (via create-story)
+#   - in-progress → done: Manually when all stories reach 'done' status
+#
+# Story Status:
+#   - backlog: Story only exists in epic file
+#   - ready-for-dev: Story file created in stories folder
+#   - in-progress: Developer actively working on implementation
+#   - review: Ready for code review (via Dev's code-review workflow)
+#   - done: Story completed
+#
+# Retrospective Status:
+#   - optional: Can be completed but not required
+#   - done: Retrospective has been completed
+#
+# WORKFLOW NOTES:
+# ===============
+# - Epic transitions to 'in-progress' automatically when first story is created
+# - Stories can be worked in parallel if team capacity allows
+# - SM typically creates next story after previous one is 'done' to incorporate learnings
+# - Dev moves story to 'review', then runs code-review (fresh context, different LLM recommended)
+
+generated: 2026-01-23
+project: Madinia Mobile
+project_key: madiniamobileapp
+tracking_system: file-system
+story_location: _bmad-output/implementation-artifacts
+
+development_status:
+  # Epic 1: Foundation & Navigation
+  epic-1: in-progress
+  1-1-project-setup-base-structure: in-progress
+  1-2-tab-navigation-implementation: backlog
+  1-3-placeholder-views-for-all-tabs: backlog
+  epic-1-retrospective: optional
+
+  # Epic 2: Découverte des Formations
+  epic-2: backlog
+  2-1-api-service-formation-model: backlog
+  2-2-home-view-with-highlights: backlog
+  2-3-progress-path-component: backlog
+  2-4-formations-list-view: backlog
+  2-5-formation-card-info-badge-components: backlog
+  2-6-formation-detail-view: backlog
+  2-7-formations-by-category-objective: backlog
+  epic-2-retrospective: optional
+
+  # Epic 3: Pré-inscription
+  epic-3: backlog
+  3-1-pre-registration-sheet-ui: backlog
+  3-2-email-input-validation: backlog
+  3-3-pre-registration-api-submission: backlog
+  3-4-confirmation-success-state: backlog
+  epic-3-retrospective: optional
+
+  # Epic 4: Blog & Contenu
+  epic-4: backlog
+  4-1-api-service-for-articles: backlog
+  4-2-blog-feed-view: backlog
+  4-3-article-card-component: backlog
+  4-4-article-detail-view: backlog
+  4-5-cta-to-related-formation: backlog
+  epic-4-retrospective: optional
+
+  # Epic 5: Contact Contextuel
+  epic-5: backlog
+  5-1-navigation-context-service: backlog
+  5-2-contact-form-view: backlog
+  5-3-context-pre-fill-implementation: backlog
+  5-4-contact-api-submission: backlog
+  5-5-contact-confirmation: backlog
+  epic-5-retrospective: optional
+
+  # Epic 6: Madi Coach IA
+  epic-6: backlog
+  6-1-madi-fab-button: backlog
+  6-2-madi-chat-view: backlog
+  6-3-madi-service-ai-integration: backlog
+  6-4-formation-recommendations: backlog
+  6-5-navigate-to-recommended-formation: backlog
+  6-6-non-intrusive-madi-behavior: backlog
+  epic-6-retrospective: optional
+
+  # Epic 7: Push Notifications
+  epic-7: backlog
+  7-1-push-permission-request: backlog
+  7-2-device-token-registration: backlog
+  7-3-receive-display-notifications: backlog
+  7-4-notification-deep-link-handling: backlog
+  7-5-notification-preferences: backlog
+  epic-7-retrospective: optional
+
+  # Epic 8: Deep Links & Partage
+  epic-8: backlog
+  8-1-universal-links-configuration: backlog
+  8-2-deep-link-routing: backlog
+  8-3-share-formation: backlog
+  epic-8-retrospective: optional
