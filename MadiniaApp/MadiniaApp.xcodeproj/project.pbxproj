@@ -9,19 +9,147 @@
 /* Begin PBXBuildFile section */
 		A11111111111111111111111 /* MadiniaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A22222222222222222222222 /* MadiniaApp.swift */; };
 		A33333333333333333333333 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44444444444444444444444 /* ContentView.swift */; };
+		APIERRORBUILD0000000000 /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = APIERRORFILE00000000000 /* APIError.swift */; };
+		APISERVICEBUILD00000000 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = APISERVICEFILE000000000 /* APIService.swift */; };
+		APISERVICETESTBUILD000 /* APIServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = APISERVICETESTFILE00000 /* APIServiceTests.swift */; };
+		BLOGVIEWBUILD0000000000 /* BlogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BLOGVIEWFILE00000000000 /* BlogView.swift */; };
+		CONTVIEWBUILD0000000000 /* ContactView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CONTVIEWFILE00000000000 /* ContactView.swift */; };
+		ERRORVIEWBUILD000000000 /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ERRORVIEWFILE0000000000 /* ErrorView.swift */; };
+		FORMATIONBUILD000000000 /* Formation.swift in Sources */ = {isa = PBXBuildFile; fileRef = FORMATIONFILE0000000000 /* Formation.swift */; };
+		ARTICLEBUILD0000000000 /* Article.swift in Sources */ = {isa = PBXBuildFile; fileRef = ARTICLEFILE00000000000 /* Article.swift */; };
+		BLOGVMBUILD0000000000 /* BlogViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BLOGVMFILE0000000000 /* BlogViewModel.swift */; };
+		ARTICLECARDBUILD00000 /* ArticleCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = ARTICLECARDFILE000000 /* ArticleCard.swift */; };
+		ARTICLEDETAILBUILD000 /* ArticleDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ARTICLEDETAILFILE0000 /* ArticleDetailView.swift */; };
+		FORMATIONTESTBUILD00000 /* FormationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FORMATIONTESTFILE000000 /* FormationTests.swift */; };
+		FORMVIEWBUILD0000000000 /* FormationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FORMVIEWFILE00000000000 /* FormationsView.swift */; };
+		HIGHLIGHTCARDBUILD0000 /* HighlightCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = HIGHLIGHTCARDFILE00000 /* HighlightCard.swift */; };
+		HOMEVIEWBUILD0000000000 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = HOMEVIEWFILE00000000000 /* HomeView.swift */; };
+		HOMEVIEWMODELBUILD0000 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = HOMEVIEWMODELFILE00000 /* HomeViewModel.swift */; };
+		HOMEVMTESTBUILD0000000 /* HomeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = HOMEVMTESTFILE00000000 /* HomeViewModelTests.swift */; };
+		PROGRESSPATHTESTBUILD /* ProgressPathTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = PROGRESSPATHTESTFILE0 /* ProgressPathTests.swift */; };
+		LOADINGVIEWBUILD000000 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = LOADINGVIEWFILE0000000 /* LoadingView.swift */; };
+		LOADSTATEBUILD000000000 /* LoadingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = LOADSTATEFILE0000000000 /* LoadingState.swift */; };
+		MAINTABBUILD00000000000 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = MAINTABFILE000000000000 /* MainTabView.swift */; };
+		MAINTABTESTBUILD000000 /* MainTabViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = MAINTABTESTFILE0000000 /* MainTabViewTests.swift */; };
+		QUICKACCESSBUILD000000 /* QuickAccessSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = QUICKACCESSFILE0000000 /* QuickAccessSection.swift */; };
+		WELCOMESECTIONBUILD00 /* WelcomeSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = WELCOMESECTIONFILE000 /* WelcomeSection.swift */; };
+		PROGRESSPATHBUILD0000 /* ProgressPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = PROGRESSPATHFILE00000 /* ProgressPath.swift */; };
+		FORMVMFILEBUILD000000 /* FormationsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FORMVMFILE0000000000 /* FormationsViewModel.swift */; };
+		FORMCARDBUILD00000000 /* FormationCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = FORMCARDFILE000000000 /* FormationCard.swift */; };
+		FORMDETAILBUILD000000 /* FormationDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FORMDETAILFILE0000000 /* FormationDetailView.swift */; };
+		PREREGSHEETBUILD0000 /* PreRegistrationSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = PREREGSHEETFILE00000 /* PreRegistrationSheet.swift */; };
+		PREREGVMBUILD0000000 /* PreRegistrationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = PREREGVMFILE00000000 /* PreRegistrationViewModel.swift */; };
+		EMAILVALIDBUILD00000 /* EmailValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EMAILVALIDFILE000000 /* EmailValidator.swift */; };
+		FORMVMTESTBUILD000000 /* FormationsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FORMVMTESTFILE0000000 /* FormationsViewModelTests.swift */; };
+		COLORHEXBUILD00000000 /* Color+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = COLORHEXFILE000000000 /* Color+Hex.swift */; };
+		INFOBADGEBUILD0000000 /* InfoBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = INFOBADGEFILE00000000 /* InfoBadge.swift */; };
+		CATEGORYCHIPBUILD000 /* CategoryChip.swift in Sources */ = {isa = PBXBuildFile; fileRef = CATEGORYCHIPFILE0000 /* CategoryChip.swift */; };
+		NAVCONTEXTBUILD00000 /* NavigationContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = NAVCONTEXTFILE000000 /* NavigationContext.swift */; };
+		CONTACTVMBUILD000000 /* ContactViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CONTACTVMFILE0000000 /* ContactViewModel.swift */; };
+		MADIMSGBUILD00000000 /* MadiMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = MADIMSGFILE000000000 /* MadiMessage.swift */; };
+		MADISERVICEBUILD0000 /* MadiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = MADISERVICEFILE00000 /* MadiService.swift */; };
+		MADICHATVMBUILD00000 /* MadiChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = MADICHATVMFILE000000 /* MadiChatViewModel.swift */; };
+		MADIFABBUILD00000000 /* MadiFAB.swift in Sources */ = {isa = PBXBuildFile; fileRef = MADIFABFILE000000000 /* MadiFAB.swift */; };
+		MADICHATVIEWBUILD00 /* MadiChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = MADICHATVIEWFILE0000 /* MadiChatView.swift */; };
+		PUSHSERVICEBUILD000 /* PushNotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = PUSHSERVICEFILE0000 /* PushNotificationService.swift */; };
+		NOTIFSETTINGSBUILD0 /* NotificationSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = NOTIFSETTINGSFILE00 /* NotificationSettingsView.swift */; };
+		PERMPROMPTBUILD0000 /* PermissionPromptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = PERMPROMPTFILE00000 /* PermissionPromptView.swift */; };
+		APPDELEGATEBUILD000 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = APPDELEGATEFILE0000 /* AppDelegate.swift */; };
+		DEEPLINKSERVBUILD00 /* DeepLinkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEEPLINKSERVFILE000 /* DeepLinkService.swift */; };
+		DESIGNSYSTEMBUILD00 /* DesignSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DESIGNSYSTEMFILE000 /* DesignSystem.swift */; };
+		FORMREPOBUILD000000 /* FormationsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = FORMREPOFILE0000000 /* FormationsRepository.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		TESTCONTAINERPROXY0000 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = PROJECTROOT000000000000 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A99999999999999999999999;
+			remoteInfo = MadiniaApp;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		A22222222222222222222222 /* MadiniaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MadiniaApp.swift; sourceTree = "<group>"; };
 		A44444444444444444444444 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		A55555555555555555555555 /* MadiniaApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MadiniaApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		APIERRORFILE00000000000 /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
+		APISERVICEFILE000000000 /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
+		APISERVICETESTFILE00000 /* APIServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIServiceTests.swift; sourceTree = "<group>"; };
+		BLOGVIEWFILE00000000000 /* BlogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogView.swift; sourceTree = "<group>"; };
+		CONTVIEWFILE00000000000 /* ContactView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactView.swift; sourceTree = "<group>"; };
+		ERRORVIEWFILE0000000000 /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
+		FORMATIONFILE0000000000 /* Formation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Formation.swift; sourceTree = "<group>"; };
+		ARTICLEFILE00000000000 /* Article.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Article.swift; sourceTree = "<group>"; };
+		BLOGVMFILE0000000000 /* BlogViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogViewModel.swift; sourceTree = "<group>"; };
+		ARTICLECARDFILE000000 /* ArticleCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleCard.swift; sourceTree = "<group>"; };
+		ARTICLEDETAILFILE0000 /* ArticleDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleDetailView.swift; sourceTree = "<group>"; };
+		FORMATIONTESTFILE000000 /* FormationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormationTests.swift; sourceTree = "<group>"; };
+		FORMVIEWFILE00000000000 /* FormationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormationsView.swift; sourceTree = "<group>"; };
+		HIGHLIGHTCARDFILE00000 /* HighlightCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighlightCard.swift; sourceTree = "<group>"; };
+		HOMEVIEWFILE00000000000 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		HOMEVIEWMODELFILE00000 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
+		HOMEVMTESTFILE00000000 /* HomeViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModelTests.swift; sourceTree = "<group>"; };
+		PROGRESSPATHTESTFILE0 /* ProgressPathTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressPathTests.swift; sourceTree = "<group>"; };
+		LOADINGVIEWFILE0000000 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
+		LOADSTATEFILE0000000000 /* LoadingState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingState.swift; sourceTree = "<group>"; };
+		MAINTABFILE000000000000 /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
+		MAINTABTESTFILE0000000 /* MainTabViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabViewTests.swift; sourceTree = "<group>"; };
+		QUICKACCESSFILE0000000 /* QuickAccessSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickAccessSection.swift; sourceTree = "<group>"; };
+		TESTTARGETPRODUCT00000 /* MadiniaAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MadiniaAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		WELCOMESECTIONFILE000 /* WelcomeSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeSection.swift; sourceTree = "<group>"; };
+		PROGRESSPATHFILE00000 /* ProgressPath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressPath.swift; sourceTree = "<group>"; };
+		FORMVMFILE0000000000 /* FormationsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormationsViewModel.swift; sourceTree = "<group>"; };
+		FORMCARDFILE000000000 /* FormationCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormationCard.swift; sourceTree = "<group>"; };
+		FORMDETAILFILE0000000 /* FormationDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormationDetailView.swift; sourceTree = "<group>"; };
+		PREREGSHEETFILE00000 /* PreRegistrationSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreRegistrationSheet.swift; sourceTree = "<group>"; };
+		PREREGVMFILE00000000 /* PreRegistrationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreRegistrationViewModel.swift; sourceTree = "<group>"; };
+		EMAILVALIDFILE000000 /* EmailValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailValidator.swift; sourceTree = "<group>"; };
+		FORMVMTESTFILE0000000 /* FormationsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormationsViewModelTests.swift; sourceTree = "<group>"; };
+		COLORHEXFILE000000000 /* Color+Hex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Hex.swift"; sourceTree = "<group>"; };
+		INFOBADGEFILE00000000 /* InfoBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoBadge.swift; sourceTree = "<group>"; };
+		CATEGORYCHIPFILE0000 /* CategoryChip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryChip.swift; sourceTree = "<group>"; };
+		NAVCONTEXTFILE000000 /* NavigationContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationContext.swift; sourceTree = "<group>"; };
+		CONTACTVMFILE0000000 /* ContactViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactViewModel.swift; sourceTree = "<group>"; };
+		MADIMSGFILE000000000 /* MadiMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MadiMessage.swift; sourceTree = "<group>"; };
+		MADISERVICEFILE00000 /* MadiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MadiService.swift; sourceTree = "<group>"; };
+		MADICHATVMFILE000000 /* MadiChatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MadiChatViewModel.swift; sourceTree = "<group>"; };
+		MADIFABFILE000000000 /* MadiFAB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MadiFAB.swift; sourceTree = "<group>"; };
+		MADICHATVIEWFILE0000 /* MadiChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MadiChatView.swift; sourceTree = "<group>"; };
+		PUSHSERVICEFILE0000 /* PushNotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationService.swift; sourceTree = "<group>"; };
+		NOTIFSETTINGSFILE00 /* NotificationSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettingsView.swift; sourceTree = "<group>"; };
+		PERMPROMPTFILE00000 /* PermissionPromptView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionPromptView.swift; sourceTree = "<group>"; };
+		APPDELEGATEFILE0000 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		DEEPLINKSERVFILE000 /* DeepLinkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLinkService.swift; sourceTree = "<group>"; };
+		ENTITLEMENTSFILE000 /* MadiniaApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MadiniaApp.entitlements; sourceTree = "<group>"; };
+		DESIGNSYSTEMFILE000 /* DesignSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSystem.swift; sourceTree = "<group>"; };
+		FORMREPOFILE0000000 /* FormationsRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormationsRepository.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		FRAMEWORKS000000000000 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		TESTFRAMEWORKS0000000 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		A66666666666666666666666 = {
 			isa = PBXGroup;
 			children = (
 				A77777777777777777777777 /* MadiniaApp */,
+				TESTSGROUP0000000000000 /* MadiniaAppTests */,
 				A88888888888888888888888 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -31,131 +159,27 @@
 			children = (
 				A22222222222222222222222 /* MadiniaApp.swift */,
 				A44444444444444444444444 /* ContentView.swift */,
+				APPDELEGATEFILE0000 /* AppDelegate.swift */,
+				ENTITLEMENTSFILE000 /* MadiniaApp.entitlements */,
 				MODELS0000000000000000 /* Models */,
 				VIEWS00000000000000000 /* Views */,
 				VIEWMODELS000000000000 /* ViewModels */,
 				SERVICES00000000000000 /* Services */,
 				COMPONENTS000000000000 /* Components */,
 				EXTENSIONS000000000000 /* Extensions */,
+				UTILS00000000000000000 /* Utils */,
 				RESOURCES0000000000000 /* Resources */,
 			);
-			path = MadiniaApp;
+			name = MadiniaApp;
 			sourceTree = "<group>";
 		};
 		A88888888888888888888888 /* Products */ = {
 			isa = PBXGroup;
 			children = (
 				A55555555555555555555555 /* MadiniaApp.app */,
+				TESTTARGETPRODUCT00000 /* MadiniaAppTests.xctest */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		MODELS0000000000000000 /* Models */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Models;
-			sourceTree = "<group>";
-		};
-		VIEWS00000000000000000 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				VIEWSHOME0000000000000 /* Home */,
-				VIEWSFORMATIONS000000 /* Formations */,
-				VIEWSBLOG0000000000000 /* Blog */,
-				VIEWSCONTACT000000000 /* Contact */,
-				VIEWSMADI0000000000000 /* Madi */,
-				VIEWSSHARED00000000000 /* Shared */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
-		VIEWSHOME0000000000000 /* Home */ = {
-			isa = PBXGroup;
-			children = (
-				VIEWSHOMECOMP00000000 /* Components */,
-			);
-			path = Home;
-			sourceTree = "<group>";
-		};
-		VIEWSHOMECOMP00000000 /* Components */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Components;
-			sourceTree = "<group>";
-		};
-		VIEWSFORMATIONS000000 /* Formations */ = {
-			isa = PBXGroup;
-			children = (
-				VIEWSFORMCOMP0000000 /* Components */,
-			);
-			path = Formations;
-			sourceTree = "<group>";
-		};
-		VIEWSFORMCOMP0000000 /* Components */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Components;
-			sourceTree = "<group>";
-		};
-		VIEWSBLOG0000000000000 /* Blog */ = {
-			isa = PBXGroup;
-			children = (
-				VIEWSBLOGCOMP0000000 /* Components */,
-			);
-			path = Blog;
-			sourceTree = "<group>";
-		};
-		VIEWSBLOGCOMP0000000 /* Components */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Components;
-			sourceTree = "<group>";
-		};
-		VIEWSCONTACT000000000 /* Contact */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Contact;
-			sourceTree = "<group>";
-		};
-		VIEWSMADI0000000000000 /* Madi */ = {
-			isa = PBXGroup;
-			children = (
-				VIEWSMADICOMP0000000 /* Components */,
-			);
-			path = Madi;
-			sourceTree = "<group>";
-		};
-		VIEWSMADICOMP0000000 /* Components */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Components;
-			sourceTree = "<group>";
-		};
-		VIEWSSHARED00000000000 /* Shared */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Shared;
-			sourceTree = "<group>";
-		};
-		VIEWMODELS000000000000 /* ViewModels */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ViewModels;
-			sourceTree = "<group>";
-		};
-		SERVICES00000000000000 /* Services */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Services;
 			sourceTree = "<group>";
 		};
 		COMPONENTS000000000000 /* Components */ = {
@@ -172,11 +196,189 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		MODELS0000000000000000 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				FORMATIONFILE0000000000 /* Formation.swift */,
+				ARTICLEFILE00000000000 /* Article.swift */,
+				LOADSTATEFILE0000000000 /* LoadingState.swift */,
+				MADIMSGFILE000000000 /* MadiMessage.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		RESOURCES0000000000000 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		SERVICES00000000000000 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				APIERRORFILE00000000000 /* APIError.swift */,
+				APISERVICEFILE000000000 /* APIService.swift */,
+				NAVCONTEXTFILE000000 /* NavigationContext.swift */,
+				MADISERVICEFILE00000 /* MadiService.swift */,
+				PUSHSERVICEFILE0000 /* PushNotificationService.swift */,
+				DEEPLINKSERVFILE000 /* DeepLinkService.swift */,
+				FORMREPOFILE0000000 /* FormationsRepository.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		TESTSGROUP0000000000000 /* MadiniaAppTests */ = {
+			isa = PBXGroup;
+			children = (
+				FORMATIONTESTFILE000000 /* FormationTests.swift */,
+				APISERVICETESTFILE00000 /* APIServiceTests.swift */,
+				MAINTABTESTFILE0000000 /* MainTabViewTests.swift */,
+				HOMEVMTESTFILE00000000 /* HomeViewModelTests.swift */,
+				PROGRESSPATHTESTFILE0 /* ProgressPathTests.swift */,
+				FORMVMTESTFILE0000000 /* FormationsViewModelTests.swift */,
+			);
+			path = MadiniaAppTests;
+			sourceTree = "<group>";
+		};
+		VIEWMODELS000000000000 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		VIEWS00000000000000000 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				VIEWSHOME0000000000000 /* Home */,
+				VIEWSFORMATIONS000000 /* Formations */,
+				VIEWSBLOG0000000000000 /* Blog */,
+				VIEWSCONTACT000000000 /* Contact */,
+				VIEWSMADI0000000000000 /* Madi */,
+				VIEWSSETTINGS0000000 /* Settings */,
+				VIEWSSHARED00000000000 /* Shared */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		VIEWSBLOG0000000000000 /* Blog */ = {
+			isa = PBXGroup;
+			children = (
+				BLOGVIEWFILE00000000000 /* BlogView.swift */,
+				BLOGVMFILE0000000000 /* BlogViewModel.swift */,
+				ARTICLEDETAILFILE0000 /* ArticleDetailView.swift */,
+				VIEWSBLOGCOMP0000000 /* Components */,
+			);
+			path = Blog;
+			sourceTree = "<group>";
+		};
+		VIEWSBLOGCOMP0000000 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				ARTICLECARDFILE000000 /* ArticleCard.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		VIEWSCONTACT000000000 /* Contact */ = {
+			isa = PBXGroup;
+			children = (
+				CONTVIEWFILE00000000000 /* ContactView.swift */,
+				CONTACTVMFILE0000000 /* ContactViewModel.swift */,
+			);
+			path = Contact;
+			sourceTree = "<group>";
+		};
+		VIEWSFORMATIONS000000 /* Formations */ = {
+			isa = PBXGroup;
+			children = (
+				FORMVIEWFILE00000000000 /* FormationsView.swift */,
+				FORMVMFILE0000000000 /* FormationsViewModel.swift */,
+				FORMDETAILFILE0000000 /* FormationDetailView.swift */,
+				PREREGSHEETFILE00000 /* PreRegistrationSheet.swift */,
+				PREREGVMFILE00000000 /* PreRegistrationViewModel.swift */,
+				VIEWSFORMCOMP0000000 /* Components */,
+			);
+			path = Formations;
+			sourceTree = "<group>";
+		};
+		VIEWSFORMCOMP0000000 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				FORMCARDFILE000000000 /* FormationCard.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		VIEWSHOME0000000000000 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				HOMEVIEWFILE00000000000 /* HomeView.swift */,
+				HOMEVIEWMODELFILE00000 /* HomeViewModel.swift */,
+				VIEWSHOMECOMP00000000 /* Components */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		VIEWSHOMECOMP00000000 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				WELCOMESECTIONFILE000 /* WelcomeSection.swift */,
+				HIGHLIGHTCARDFILE00000 /* HighlightCard.swift */,
+				QUICKACCESSFILE0000000 /* QuickAccessSection.swift */,
+				PROGRESSPATHFILE00000 /* ProgressPath.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		VIEWSMADI0000000000000 /* Madi */ = {
+			isa = PBXGroup;
+			children = (
+				MADICHATVIEWFILE0000 /* MadiChatView.swift */,
+				MADICHATVMFILE000000 /* MadiChatViewModel.swift */,
+				VIEWSMADICOMP0000000 /* Components */,
+			);
+			path = Madi;
+			sourceTree = "<group>";
+		};
+		VIEWSMADICOMP0000000 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				MADIFABFILE000000000 /* MadiFAB.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		VIEWSSHARED00000000000 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				MAINTABFILE000000000000 /* MainTabView.swift */,
+				LOADINGVIEWFILE0000000 /* LoadingView.swift */,
+				ERRORVIEWFILE0000000000 /* ErrorView.swift */,
+				COLORHEXFILE000000000 /* Color+Hex.swift */,
+				INFOBADGEFILE00000000 /* InfoBadge.swift */,
+				CATEGORYCHIPFILE0000 /* CategoryChip.swift */,
+				PERMPROMPTFILE00000 /* PermissionPromptView.swift */,
+				DESIGNSYSTEMFILE000 /* DesignSystem.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		VIEWSSETTINGS0000000 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				NOTIFSETTINGSFILE00 /* NotificationSettingsView.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		UTILS00000000000000000 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				EMAILVALIDFILE000000 /* EmailValidator.swift */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -199,6 +401,24 @@
 			productReference = A55555555555555555555555 /* MadiniaApp.app */;
 			productType = "com.apple.product-type.application";
 		};
+		TESTTARGET0000000000000 /* MadiniaAppTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = TESTCONFIGLIST0000000 /* Build configuration list for PBXNativeTarget "MadiniaAppTests" */;
+			buildPhases = (
+				TESTSOURCES00000000000 /* Sources */,
+				TESTFRAMEWORKS0000000 /* Frameworks */,
+				TESTRESOURCES00000000 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				TESTTARGETDEP000000000 /* PBXTargetDependency */,
+			);
+			name = MadiniaAppTests;
+			productName = MadiniaAppTests;
+			productReference = TESTTARGETPRODUCT00000 /* MadiniaAppTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -211,6 +431,10 @@
 				TargetAttributes = {
 					A99999999999999999999999 = {
 						CreatedOnToolsVersion = 15.0;
+					};
+					TESTTARGET0000000000000 = {
+						CreatedOnToolsVersion = 15.0;
+						TestTargetID = A99999999999999999999999;
 					};
 				};
 			};
@@ -229,31 +453,10 @@
 			projectRoot = "";
 			targets = (
 				A99999999999999999999999 /* MadiniaApp */,
+				TESTTARGET0000000000000 /* MadiniaAppTests */,
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXSourcesBuildPhase section */
-		SOURCES0000000000000000 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				A11111111111111111111111 /* MadiniaApp.swift in Sources */,
-				A33333333333333333333333 /* ContentView.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXSourcesBuildPhase section */
-
-/* Begin PBXFrameworksBuildPhase section */
-		FRAMEWORKS000000000000 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXResourcesBuildPhase section */
 		RESOURCES1000000000000 /* Resources */ = {
@@ -263,7 +466,90 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		TESTRESOURCES00000000 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		SOURCES0000000000000000 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A11111111111111111111111 /* MadiniaApp.swift in Sources */,
+				A33333333333333333333333 /* ContentView.swift in Sources */,
+				HOMEVIEWBUILD0000000000 /* HomeView.swift in Sources */,
+				HOMEVIEWMODELBUILD0000 /* HomeViewModel.swift in Sources */,
+				WELCOMESECTIONBUILD00 /* WelcomeSection.swift in Sources */,
+				HIGHLIGHTCARDBUILD0000 /* HighlightCard.swift in Sources */,
+				QUICKACCESSBUILD000000 /* QuickAccessSection.swift in Sources */,
+				LOADINGVIEWBUILD000000 /* LoadingView.swift in Sources */,
+				ERRORVIEWBUILD000000000 /* ErrorView.swift in Sources */,
+				FORMVIEWBUILD0000000000 /* FormationsView.swift in Sources */,
+				BLOGVIEWBUILD0000000000 /* BlogView.swift in Sources */,
+				CONTVIEWBUILD0000000000 /* ContactView.swift in Sources */,
+				MAINTABBUILD00000000000 /* MainTabView.swift in Sources */,
+				FORMATIONBUILD000000000 /* Formation.swift in Sources */,
+				LOADSTATEBUILD000000000 /* LoadingState.swift in Sources */,
+				APIERRORBUILD0000000000 /* APIError.swift in Sources */,
+				APISERVICEBUILD00000000 /* APIService.swift in Sources */,
+				PROGRESSPATHBUILD0000 /* ProgressPath.swift in Sources */,
+				FORMVMFILEBUILD000000 /* FormationsViewModel.swift in Sources */,
+				FORMCARDBUILD00000000 /* FormationCard.swift in Sources */,
+				FORMDETAILBUILD000000 /* FormationDetailView.swift in Sources */,
+				PREREGSHEETBUILD0000 /* PreRegistrationSheet.swift in Sources */,
+				PREREGVMBUILD0000000 /* PreRegistrationViewModel.swift in Sources */,
+				EMAILVALIDBUILD00000 /* EmailValidator.swift in Sources */,
+				COLORHEXBUILD00000000 /* Color+Hex.swift in Sources */,
+				INFOBADGEBUILD0000000 /* InfoBadge.swift in Sources */,
+				CATEGORYCHIPBUILD000 /* CategoryChip.swift in Sources */,
+				ARTICLEBUILD0000000000 /* Article.swift in Sources */,
+				BLOGVMBUILD0000000000 /* BlogViewModel.swift in Sources */,
+				ARTICLECARDBUILD00000 /* ArticleCard.swift in Sources */,
+				ARTICLEDETAILBUILD000 /* ArticleDetailView.swift in Sources */,
+				NAVCONTEXTBUILD00000 /* NavigationContext.swift in Sources */,
+				CONTACTVMBUILD000000 /* ContactViewModel.swift in Sources */,
+				MADIMSGBUILD00000000 /* MadiMessage.swift in Sources */,
+				MADISERVICEBUILD0000 /* MadiService.swift in Sources */,
+				MADICHATVMBUILD00000 /* MadiChatViewModel.swift in Sources */,
+				MADIFABBUILD00000000 /* MadiFAB.swift in Sources */,
+				MADICHATVIEWBUILD00 /* MadiChatView.swift in Sources */,
+				PUSHSERVICEBUILD000 /* PushNotificationService.swift in Sources */,
+				NOTIFSETTINGSBUILD0 /* NotificationSettingsView.swift in Sources */,
+				PERMPROMPTBUILD0000 /* PermissionPromptView.swift in Sources */,
+				APPDELEGATEBUILD000 /* AppDelegate.swift in Sources */,
+				DEEPLINKSERVBUILD00 /* DeepLinkService.swift in Sources */,
+				DESIGNSYSTEMBUILD00 /* DesignSystem.swift in Sources */,
+				FORMREPOBUILD000000 /* FormationsRepository.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		TESTSOURCES00000000000 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FORMATIONTESTBUILD00000 /* FormationTests.swift in Sources */,
+				APISERVICETESTBUILD000 /* APIServiceTests.swift in Sources */,
+				MAINTABTESTBUILD000000 /* MainTabViewTests.swift in Sources */,
+				HOMEVMTESTBUILD0000000 /* HomeViewModelTests.swift in Sources */,
+				PROGRESSPATHTESTBUILD /* ProgressPathTests.swift in Sources */,
+				FORMVMTESTBUILD000000 /* FormationsViewModelTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		TESTTARGETDEP000000000 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A99999999999999999999999 /* MadiniaApp */;
+			targetProxy = TESTCONTAINERPROXY0000 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		DEBUGCONFIG0000000000 /* Debug */ = {
@@ -390,12 +676,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = MadiniaApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = Madinia;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -405,12 +693,13 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 0.1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = fr.madinia.MadiniaApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -422,12 +711,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = MadiniaApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = Madinia;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -437,21 +728,67 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 0.1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = fr.madinia.MadiniaApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
+		TESTTARGETDEBUG0000000 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = fr.madinia.MadiniaAppTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MadiniaApp.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/MadiniaApp";
+			};
+			name = Debug;
+		};
+		TESTTARGETRELEASE00000 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = fr.madinia.MadiniaAppTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MadiniaApp.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/MadiniaApp";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		CONFIGLIST00000000000 /* Build configuration list for PBXNativeTarget "MadiniaApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				TARGETDEBUG0000000000 /* Debug */,
+				TARGETRELEASE000000000 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		PROJECTCONFIG0000000 /* Build configuration list for PBXProject "MadiniaApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -461,11 +798,11 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		CONFIGLIST00000000000 /* Build configuration list for PBXNativeTarget "MadiniaApp" */ = {
+		TESTCONFIGLIST0000000 /* Build configuration list for PBXNativeTarget "MadiniaAppTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				TARGETDEBUG0000000000 /* Debug */,
-				TARGETRELEASE000000000 /* Release */,
+				TESTTARGETDEBUG0000000 /* Debug */,
+				TESTTARGETRELEASE00000 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

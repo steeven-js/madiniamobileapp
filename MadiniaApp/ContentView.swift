@@ -9,14 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        VStack {
-            Image(systemName: "graduationcap.fill")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Bienvenue sur Madinia")
-                .font(.title)
-        }
-        .padding()
+        MainTabView()
     }
 }
 
