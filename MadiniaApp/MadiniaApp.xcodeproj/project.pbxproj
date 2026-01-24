@@ -58,6 +58,10 @@
 		DEEPLINKSERVBUILD00 /* DeepLinkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEEPLINKSERVFILE000 /* DeepLinkService.swift */; };
 		DESIGNSYSTEMBUILD00 /* DesignSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DESIGNSYSTEMFILE000 /* DesignSystem.swift */; };
 		FORMREPOBUILD000000 /* FormationsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = FORMREPOFILE0000000 /* FormationsRepository.swift */; };
+		CATEGORYCARDBUILD00 /* CategoryCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = CATEGORYCARDFILE000 /* CategoryCard.swift */; };
+		CATEGORYSECBUILD000 /* CategoriesSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = CATEGORYSECFILE0000 /* CategoriesSection.swift */; };
+		CATGRIDCARDBUILD00 /* CategoryGridCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = CATGRIDCARDFILE000 /* CategoryGridCard.swift */; };
+		CATGRIDVIEWBUILD00 /* CategoriesGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CATGRIDVIEWFILE000 /* CategoriesGridView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -125,6 +129,10 @@
 		ENTITLEMENTSFILE000 /* MadiniaApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MadiniaApp.entitlements; sourceTree = "<group>"; };
 		DESIGNSYSTEMFILE000 /* DesignSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSystem.swift; sourceTree = "<group>"; };
 		FORMREPOFILE0000000 /* FormationsRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormationsRepository.swift; sourceTree = "<group>"; };
+		CATEGORYCARDFILE000 /* CategoryCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCard.swift; sourceTree = "<group>"; };
+		CATEGORYSECFILE0000 /* CategoriesSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesSection.swift; sourceTree = "<group>"; };
+		CATGRIDCARDFILE000 /* CategoryGridCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryGridCard.swift; sourceTree = "<group>"; };
+		CATGRIDVIEWFILE000 /* CategoriesGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesGridView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -316,6 +324,7 @@
 			children = (
 				HOMEVIEWFILE00000000000 /* HomeView.swift */,
 				HOMEVIEWMODELFILE00000 /* HomeViewModel.swift */,
+				CATGRIDVIEWFILE000 /* CategoriesGridView.swift */,
 				VIEWSHOMECOMP00000000 /* Components */,
 			);
 			path = Home;
@@ -328,6 +337,9 @@
 				HIGHLIGHTCARDFILE00000 /* HighlightCard.swift */,
 				QUICKACCESSFILE0000000 /* QuickAccessSection.swift */,
 				PROGRESSPATHFILE00000 /* ProgressPath.swift */,
+				CATEGORYCARDFILE000 /* CategoryCard.swift */,
+				CATEGORYSECFILE0000 /* CategoriesSection.swift */,
+				CATGRIDCARDFILE000 /* CategoryGridCard.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -525,6 +537,10 @@
 				DEEPLINKSERVBUILD00 /* DeepLinkService.swift in Sources */,
 				DESIGNSYSTEMBUILD00 /* DesignSystem.swift in Sources */,
 				FORMREPOBUILD000000 /* FormationsRepository.swift in Sources */,
+				CATEGORYCARDBUILD00 /* CategoryCard.swift in Sources */,
+				CATEGORYSECBUILD000 /* CategoriesSection.swift in Sources */,
+				CATGRIDCARDBUILD00 /* CategoryGridCard.swift in Sources */,
+				CATGRIDVIEWBUILD00 /* CategoriesGridView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

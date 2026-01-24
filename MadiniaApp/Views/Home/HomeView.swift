@@ -16,6 +16,9 @@ struct HomeView: View {
     /// Selected tab binding for navigation from quick access
     @Binding var selectedTab: Int
 
+    /// Navigation state for categories grid
+    @State private var showCategoriesGrid = false
+
     var body: some View {
         ScrollView {
             VStack(spacing: MadiniaSpacing.lg) {
@@ -24,8 +27,8 @@ struct HomeView: View {
 
                 // Progress path - always visible (static content)
                 ProgressPath { step in
-                    // Navigate to formations tab
-                    // Later Story 2.6 will add navigation to specific formation
+                    // Navigate to formations tab (show all)
+                    FormationsRepository.shared.setSelectedCategory(nil)
                     selectedTab = 1
                 }
 
@@ -35,12 +38,25 @@ struct HomeView: View {
                     LoadingView(message: "Chargement des formations...")
 
                 case .loaded:
+                    // Categories section
+                    CategoriesSection(
+                        categories: viewModel.categories,
+                        onViewAllTap: { showCategoriesGrid = true },
+                        onCategoryTap: { category in
+                            FormationsRepository.shared.setSelectedCategory(category)
+                            selectedTab = 1
+                        }
+                    )
+
                     // Highlighted formations section
                     highlightsSection
 
                     // Quick access buttons
                     QuickAccessSection(
-                        onFormationsTap: { selectedTab = 1 },
+                        onFormationsTap: {
+                            FormationsRepository.shared.setSelectedCategory(nil)
+                            selectedTab = 1
+                        },
                         onBlogTap: { selectedTab = 2 },
                         onContactTap: { selectedTab = 3 }
                     )
@@ -55,6 +71,14 @@ struct HomeView: View {
             .padding(.bottom, MadiniaSpacing.lg)
         }
         .navigationTitle("Accueil")
+        .navigationDestination(isPresented: $showCategoriesGrid) {
+            CategoriesGridView { category in
+                // Set category filter and navigate to formations tab
+                FormationsRepository.shared.setSelectedCategory(category)
+                showCategoriesGrid = false
+                selectedTab = 1
+            }
+        }
         .task {
             await viewModel.loadFormations()
         }
@@ -73,7 +97,8 @@ struct HomeView: View {
                 HStack(spacing: MadiniaSpacing.md) {
                     ForEach(viewModel.highlightedFormations) { formation in
                         HighlightCard(formation: formation) {
-                            // Navigate to formations tab
+                            // Navigate to formations tab (show all)
+                            FormationsRepository.shared.setSelectedCategory(nil)
                             selectedTab = 1
                         }
                     }

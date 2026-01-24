@@ -88,6 +88,9 @@ protocol APIServiceProtocol {
     /// Fetches a single formation by slug
     func fetchFormation(slug: String) async throws -> Formation
 
+    /// Fetches all formation categories from the API
+    func fetchCategories() async throws -> [FormationCategory]
+
     /// Submits a pre-registration for a formation
     func submitPreRegistration(formationId: Int, email: String) async throws
 
@@ -168,6 +171,14 @@ final class APIService: APIServiceProtocol {
     /// - Throws: APIError if the request fails
     func fetchFormation(slug: String) async throws -> Formation {
         let response: FormationDetailResponse = try await request(endpoint: "/formations/\(slug)")
+        return response.data
+    }
+
+    /// Fetches all formation categories from the API
+    /// - Returns: Array of FormationCategory objects with formation counts
+    /// - Throws: APIError if the request fails
+    func fetchCategories() async throws -> [FormationCategory] {
+        let response: APIResponse<[FormationCategory]> = try await request(endpoint: "/categories")
         return response.data
     }
 
@@ -427,6 +438,22 @@ final class MockAPIService: APIServiceProtocol {
         }
 
         return Formation.sample
+    }
+
+    func fetchCategories() async throws -> [FormationCategory] {
+        // Simulate network delay
+        try await Task.sleep(for: .seconds(simulatedDelay))
+
+        if shouldFail {
+            throw errorToThrow
+        }
+
+        return [
+            FormationCategory(id: 1, name: "IA Générative", slug: "ia-generative", description: nil, color: "#8B5CF6", icon: nil, formationsCount: 7),
+            FormationCategory(id: 2, name: "Marketing Digital", slug: "marketing-digital", description: nil, color: "#EC4899", icon: nil, formationsCount: 5),
+            FormationCategory(id: 3, name: "Business", slug: "business", description: nil, color: "#F59E0B", icon: nil, formationsCount: 12),
+            FormationCategory(id: 4, name: "Technologie", slug: "technologie", description: nil, color: "#10B981", icon: nil, formationsCount: 3),
+        ]
     }
 
     func submitPreRegistration(formationId: Int, email: String) async throws {

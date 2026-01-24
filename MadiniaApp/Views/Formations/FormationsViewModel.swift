@@ -11,17 +11,18 @@ import Foundation
 /// Uses the shared FormationsRepository to avoid redundant API calls.
 @Observable
 final class FormationsViewModel {
-    // MARK: - State
-
-    /// Currently selected category filter (nil = show all)
-    var selectedCategory: FormationCategory?
-
     // MARK: - Dependencies
 
     /// Shared repository for formations data
     private let repository: FormationsRepository
 
     // MARK: - Computed Properties
+
+    /// Currently selected category filter (synced with repository for cross-view access)
+    var selectedCategory: FormationCategory? {
+        get { repository.selectedCategoryFilter }
+        set { repository.selectedCategoryFilter = newValue }
+    }
 
     /// Current loading state (proxied from repository)
     var loadingState: LoadingState<[Formation]> {
@@ -57,6 +58,7 @@ final class FormationsViewModel {
     @MainActor
     func loadFormations() async {
         await repository.fetchIfNeeded()
+        await repository.fetchCategoriesIfNeeded()
     }
 
     /// Refreshes formations from the API (for pull-to-refresh)

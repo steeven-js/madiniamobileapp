@@ -78,12 +78,43 @@ struct Formation: Codable, Identifiable, Hashable {
 }
 
 /// Represents a formation category
-struct FormationCategory: Codable, Hashable {
+struct FormationCategory: Codable, Hashable, Identifiable {
     let id: Int
     let name: String
     let slug: String?
+    let description: String?
     let color: String?
     let icon: String?
+    let formationsCount: Int?
+
+    /// CodingKeys for API response mapping
+    enum CodingKeys: String, CodingKey {
+        case id, name, slug, description, color, icon
+        case formationsCount
+    }
+
+    /// Initialize with default values for backwards compatibility
+    init(id: Int, name: String, slug: String?, description: String? = nil, color: String?, icon: String?, formationsCount: Int? = nil) {
+        self.id = id
+        self.name = name
+        self.slug = slug
+        self.description = description
+        self.color = color
+        self.icon = icon
+        self.formationsCount = formationsCount
+    }
+
+    /// Custom decoder to handle optional formationsCount
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decode(Int.self, forKey: .id)
+        name = try container.decode(String.self, forKey: .name)
+        slug = try container.decodeIfPresent(String.self, forKey: .slug)
+        description = try container.decodeIfPresent(String.self, forKey: .description)
+        color = try container.decodeIfPresent(String.self, forKey: .color)
+        icon = try container.decodeIfPresent(String.self, forKey: .icon)
+        formationsCount = try container.decodeIfPresent(Int.self, forKey: .formationsCount)
+    }
 }
 
 // MARK: - Preview/Mock Data
@@ -102,7 +133,7 @@ extension Formation {
         certification: false,
         certificationLabel: "Non certifiante",
         imageUrl: nil,
-        category: FormationCategory(id: 1, name: "IA Générative", slug: "ia-generative", color: "#8B5CF6", icon: nil),
+        category: FormationCategory(id: 1, name: "IA Générative", slug: "ia-generative", description: nil, color: "#8B5CF6", icon: nil, formationsCount: 7),
         description: "Découvrez les fondamentaux de l'IA générative.",
         objectives: nil,
         prerequisites: nil,
@@ -128,7 +159,7 @@ extension Formation {
             certification: false,
             certificationLabel: "Non certifiante",
             imageUrl: nil,
-            category: FormationCategory(id: 1, name: "IA Générative", slug: "ia-generative", color: "#8B5CF6", icon: nil),
+            category: FormationCategory(id: 1, name: "IA Générative", slug: "ia-generative", description: nil, color: "#8B5CF6", icon: nil, formationsCount: 7),
             description: nil, objectives: nil, prerequisites: nil, program: nil,
             targetAudience: nil, trainingMethods: nil, pdfFileUrl: nil, viewsCount: nil, publishedAt: nil
         ),
@@ -144,7 +175,7 @@ extension Formation {
             certification: false,
             certificationLabel: "Non certifiante",
             imageUrl: nil,
-            category: FormationCategory(id: 1, name: "IA Générative", slug: "ia-generative", color: "#8B5CF6", icon: nil),
+            category: FormationCategory(id: 1, name: "IA Générative", slug: "ia-generative", description: nil, color: "#8B5CF6", icon: nil, formationsCount: 7),
             description: nil, objectives: nil, prerequisites: nil, program: nil,
             targetAudience: nil, trainingMethods: nil, pdfFileUrl: nil, viewsCount: nil, publishedAt: nil
         ),
@@ -160,7 +191,7 @@ extension Formation {
             certification: true,
             certificationLabel: "Certifiante",
             imageUrl: nil,
-            category: FormationCategory(id: 2, name: "Expert", slug: "expert", color: "#EF4444", icon: nil),
+            category: FormationCategory(id: 2, name: "Expert", slug: "expert", description: nil, color: "#EF4444", icon: nil, formationsCount: 3),
             description: nil, objectives: nil, prerequisites: nil, program: nil,
             targetAudience: nil, trainingMethods: nil, pdfFileUrl: nil, viewsCount: nil, publishedAt: nil
         )

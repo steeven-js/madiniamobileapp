@@ -33,6 +33,11 @@ final class HomeViewModel {
         repository.formations
     }
 
+    /// Returns unique categories from loaded formations
+    var categories: [FormationCategory] {
+        repository.categories
+    }
+
     // MARK: - Initialization
 
     /// Creates a HomeViewModel with the specified repository
@@ -43,13 +48,14 @@ final class HomeViewModel {
 
     // MARK: - Actions
 
-    /// Loads formations if needed (uses cache if available)
+    /// Loads formations and categories if needed (uses cache if available)
     @MainActor
     func loadFormations() async {
         await repository.fetchIfNeeded()
+        await repository.fetchCategoriesIfNeeded()
     }
 
-    /// Retries loading formations after an error
+    /// Retries loading formations and categories after an error
     @MainActor
     func retry() async {
         await repository.refresh()
