@@ -75,6 +75,7 @@ struct UnifiedDetailView: View {
 
     @State private var selectedTab: DetailTab = .about
     @State private var isFavorite: Bool = false
+    @State private var showFullScreenImage: Bool = false
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
@@ -121,6 +122,12 @@ struct UnifiedDetailView: View {
         }
         .navigationBarHidden(true)
         .background(Color(.systemBackground))
+        .fullScreenCover(isPresented: $showFullScreenImage) {
+            FullScreenImageViewer(
+                imageUrl: config.imageUrl,
+                isPresented: $showFullScreenImage
+            )
+        }
     }
 
     // MARK: - Hero Section
@@ -130,12 +137,15 @@ struct UnifiedDetailView: View {
             // Dark background
             Color(red: 0.15, green: 0.15, blue: 0.2)
 
-            // Center the image vertically
+            // Center the image vertically - tappable
             VStack {
                 Spacer()
 
-                // Always use placeholder image (mock)
-                placeholderImage
+                // Image content (real or placeholder)
+                heroImageContent
+                    .onTapGesture {
+                        showFullScreenImage = true
+                    }
 
                 Spacer()
             }
@@ -170,6 +180,49 @@ struct UnifiedDetailView: View {
             .padding(.top, 50) // Safe area offset
         }
         .frame(height: 380)
+    }
+
+    /// Hero image content with expand icon overlay
+    @ViewBuilder
+    private var heroImageContent: some View {
+        ZStack(alignment: .bottomTrailing) {
+            if let imageUrl = config.imageUrl, let url = URL(string: imageUrl) {
+                // Real image from API
+                AsyncImage(url: url) { phase in
+                    switch phase {
+                    case .empty:
+                        placeholderImage
+                    case .success(let image):
+                        image
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 280, height: 220)
+                            .clipShape(RoundedRectangle(cornerRadius: 16))
+                    case .failure:
+                        placeholderImage
+                    @unknown default:
+                        placeholderImage
+                    }
+                }
+            } else {
+                // Placeholder when no image URL
+                placeholderImage
+            }
+
+            // Expand icon indicator
+            expandIcon
+        }
+    }
+
+    /// Expand icon overlay to indicate tap-to-zoom
+    private var expandIcon: some View {
+        Image(systemName: "arrow.up.left.and.arrow.down.right")
+            .font(.system(size: 12, weight: .semibold))
+            .foregroundStyle(.white)
+            .padding(8)
+            .background(Color.black.opacity(0.5))
+            .clipShape(Circle())
+            .padding(12)
     }
 
     private var placeholderImage: some View {

@@ -78,6 +78,7 @@
 		A8F7E8E079BF4CC1B341A115 /* FormationRowCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D3DCDFE34F48409F3F3A81 /* FormationRowCard.swift */; };
 		E938F1489C664B0886221C5D /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27672990C3B42CCB1D283F0 /* SearchBar.swift */; };
 		UNIFIEDDETAILBUILD000 /* UnifiedDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = UNIFIEDDETAILFILE0000 /* UnifiedDetailView.swift */; };
+		FULLSCREENIMGBUILD000 /* FullScreenImageViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FULLSCREENIMGFILE0000 /* FullScreenImageViewer.swift */; };
 		ALLFORMATIONSBUILD000 /* AllFormationsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ALLFORMATIONSFILE0000 /* AllFormationsListView.swift */; };
 		CACHESERVICEBUILD0000 /* CacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CACHESERVICEFILE00000 /* CacheService.swift */; };
 		APPDATAREPOBUILD00000 /* AppDataRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = APPDATAREPOFILE000000 /* AppDataRepository.swift */; };
@@ -170,6 +171,7 @@
 		B1D3DCDFE34F48409F3F3A81 /* FormationRowCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormationRowCard.swift; sourceTree = "<group>"; };
 		D27672990C3B42CCB1D283F0 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 		UNIFIEDDETAILFILE0000 /* UnifiedDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnifiedDetailView.swift; sourceTree = "<group>"; };
+		FULLSCREENIMGFILE0000 /* FullScreenImageViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenImageViewer.swift; sourceTree = "<group>"; };
 		ALLFORMATIONSFILE0000 /* AllFormationsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllFormationsListView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -446,6 +448,7 @@
 			isa = PBXGroup;
 			children = (
 				UNIFIEDDETAILFILE0000 /* UnifiedDetailView.swift */,
+				FULLSCREENIMGFILE0000 /* FullScreenImageViewer.swift */,
 			);
 			path = DetailView;
 			sourceTree = "<group>";
@@ -640,6 +643,7 @@
 				A8F7E8E079BF4CC1B341A115 /* FormationRowCard.swift in Sources */,
 				E938F1489C664B0886221C5D /* SearchBar.swift in Sources */,
 				UNIFIEDDETAILBUILD000 /* UnifiedDetailView.swift in Sources */,
+				FULLSCREENIMGBUILD000 /* FullScreenImageViewer.swift in Sources */,
 				ALLFORMATIONSBUILD000 /* AllFormationsListView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
