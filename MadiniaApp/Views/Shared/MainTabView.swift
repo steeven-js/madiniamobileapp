@@ -49,13 +49,13 @@ struct MainTabView: View {
                 .accessibilityLabel("Accueil")
                 .accessibilityHint("Affiche l'écran d'accueil avec les highlights")
 
-                FormationsTab(selectedFormationSlug: $selectedFormationSlug)
+                SearchTab(selectedFormationSlug: $selectedFormationSlug)
                     .tabItem {
-                        Label("Formations", systemImage: "graduationcap.fill")
+                        Label("Recherche", systemImage: "magnifyingglass")
                     }
                     .tag(1)
-                    .accessibilityLabel("Formations")
-                    .accessibilityHint("Affiche le catalogue des formations disponibles")
+                    .accessibilityLabel("Recherche")
+                    .accessibilityHint("Rechercher des formations, services et catégories")
 
                 MadiniaHubView()
                     .tabItem {
@@ -135,38 +135,33 @@ struct MainTabView: View {
     }
 }
 
-// MARK: - Formations Tab with Navigation
+// MARK: - Search Tab with Navigation
 
-private struct FormationsTab: View {
+private struct SearchTab: View {
     @Binding var selectedFormationSlug: String?
     @State private var navigationPath = NavigationPath()
-    @State private var formationToShow: Formation?
 
     private let apiService: APIServiceProtocol = APIService.shared
 
     var body: some View {
-        NavigationStack(path: $navigationPath) {
-            FormationsView()
-                .navigationDestination(for: Formation.self) { formation in
-                    FormationDetailView(formation: formation)
+        SearchView()
+            .onChange(of: selectedFormationSlug) { _, newSlug in
+                guard let slug = newSlug else { return }
+                Task {
+                    await loadAndNavigateToFormation(slug: slug)
                 }
-        }
-        .onChange(of: selectedFormationSlug) { _, newSlug in
-            guard let slug = newSlug else { return }
-            Task {
-                await loadAndNavigateToFormation(slug: slug)
             }
-        }
     }
 
     @MainActor
     private func loadAndNavigateToFormation(slug: String) async {
         do {
             let formation = try await apiService.fetchFormation(slug: slug)
-            navigationPath.append(formation)
+            // SearchView handles its own navigation, so we need to broadcast this
+            // For now, the deep link will open the Search tab
             selectedFormationSlug = nil
         } catch {
-            // Handle error silently - user will see empty navigation
+            // Handle error silently
             selectedFormationSlug = nil
         }
     }

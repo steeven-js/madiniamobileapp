@@ -91,6 +91,9 @@ protocol APIServiceProtocol {
     /// Fetches all formation categories from the API
     func fetchCategories() async throws -> [FormationCategory]
 
+    /// Fetches all available services from the API
+    func fetchServices() async throws -> [Service]
+
     /// Submits a pre-registration for a formation
     func submitPreRegistration(formationId: Int, email: String) async throws
 
@@ -179,6 +182,14 @@ final class APIService: APIServiceProtocol {
     /// - Throws: APIError if the request fails
     func fetchCategories() async throws -> [FormationCategory] {
         let response: APIResponse<[FormationCategory]> = try await request(endpoint: "/categories")
+        return response.data
+    }
+
+    /// Fetches all services from the API
+    /// - Returns: Array of Service objects
+    /// - Throws: APIError if the request fails
+    func fetchServices() async throws -> [Service] {
+        let response: APIResponse<[Service]> = try await request(endpoint: "/services")
         return response.data
     }
 
@@ -454,6 +465,17 @@ final class MockAPIService: APIServiceProtocol {
             FormationCategory(id: 3, name: "Business", slug: "business", description: nil, color: "#F59E0B", icon: nil, formationsCount: 12),
             FormationCategory(id: 4, name: "Technologie", slug: "technologie", description: nil, color: "#10B981", icon: nil, formationsCount: 3),
         ]
+    }
+
+    func fetchServices() async throws -> [Service] {
+        // Simulate network delay
+        try await Task.sleep(for: .seconds(simulatedDelay))
+
+        if shouldFail {
+            throw errorToThrow
+        }
+
+        return Service.samples
     }
 
     func submitPreRegistration(formationId: Int, email: String) async throws {

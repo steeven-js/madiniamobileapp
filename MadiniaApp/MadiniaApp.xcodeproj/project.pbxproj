@@ -68,6 +68,15 @@
 		TOPRATEDSECBUILD00 /* TopRatedSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = TOPRATEDSECFILE000 /* TopRatedSection.swift */; };
 		WELCOMESECTIONBUILD00 /* WelcomeSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = WELCOMESECTIONFILE000 /* WelcomeSection.swift */; };
 		120D914AC37DA0B3BB2093EA /* MadiniaHubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C111D8DAAA40A220EC343BF /* MadiniaHubView.swift */; };
+		787FE2E2847049AF8BF794F8 /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F77A683D12C49159C9B01BC /* Service.swift */; };
+		8D4009FECA844FC4898C72BA /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D498316447A40F1BCD95A1A /* SearchView.swift */; };
+		4F5CF21489ED4D3B91C9168A /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AABB2D1FCAE4F0584974B1C /* SearchViewModel.swift */; };
+		A5BA44DE02E14CA29F52FABB /* CategoryListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6183133022A04548810955CC /* CategoryListView.swift */; };
+		36B78635747049BFA5AB1A9D /* ServiceDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB02D656A044D26A0789F00 /* ServiceDetailView.swift */; };
+		9CDBDDF55D8D49A7B70A7FAB /* ServiceCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D014559F2844681BFBBA16E /* ServiceCard.swift */; };
+		BB7138A4957A4D56BA0AA952 /* SectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C253FBE3FF0F4042BFF8302C /* SectionHeader.swift */; };
+		A8F7E8E079BF4CC1B341A115 /* FormationRowCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D3DCDFE34F48409F3F3A81 /* FormationRowCard.swift */; };
+		E938F1489C664B0886221C5D /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27672990C3B42CCB1D283F0 /* SearchBar.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -145,6 +154,15 @@
 		TOPRATEDSECFILE000 /* TopRatedSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopRatedSection.swift; sourceTree = "<group>"; };
 		WELCOMESECTIONFILE000 /* WelcomeSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeSection.swift; sourceTree = "<group>"; };
 		3C111D8DAAA40A220EC343BF /* MadiniaHubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MadiniaHubView.swift; sourceTree = "<group>"; };
+		3F77A683D12C49159C9B01BC /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
+		5D498316447A40F1BCD95A1A /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
+		1AABB2D1FCAE4F0584974B1C /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
+		6183133022A04548810955CC /* CategoryListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryListView.swift; sourceTree = "<group>"; };
+		BBB02D656A044D26A0789F00 /* ServiceDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceDetailView.swift; sourceTree = "<group>"; };
+		7D014559F2844681BFBBA16E /* ServiceCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceCard.swift; sourceTree = "<group>"; };
+		C253FBE3FF0F4042BFF8302C /* SectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeader.swift; sourceTree = "<group>"; };
+		B1D3DCDFE34F48409F3F3A81 /* FormationRowCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormationRowCard.swift; sourceTree = "<group>"; };
+		D27672990C3B42CCB1D283F0 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -224,6 +242,7 @@
 				ARTICLEFILE00000000000 /* Article.swift */,
 				LOADSTATEFILE0000000000 /* LoadingState.swift */,
 				MADIMSGFILE000000000 /* MadiMessage.swift */,
+				3F77A683D12C49159C9B01BC /* Service.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -280,6 +299,7 @@
 		VIEWS00000000000000000 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				7F675963CD36484CB0CFB3A8 /* Search */,
 				VIEWSHOME0000000000000 /* Home */,
 				VIEWSFORMATIONS000000 /* Formations */,
 				VIEWSBLOG0000000000000 /* Blog */,
@@ -409,6 +429,29 @@
 				APPROOTVIEWFILE000 /* AppRootView.swift */,
 			);
 			path = Shared;
+			sourceTree = "<group>";
+		};
+		7F675963CD36484CB0CFB3A8 /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				E9D7F3BFA61A462F9A1421FF /* Components */,
+				5D498316447A40F1BCD95A1A /* SearchView.swift */,
+				1AABB2D1FCAE4F0584974B1C /* SearchViewModel.swift */,
+				6183133022A04548810955CC /* CategoryListView.swift */,
+				BBB02D656A044D26A0789F00 /* ServiceDetailView.swift */,
+			);
+			path = Search;
+			sourceTree = "<group>";
+		};
+		E9D7F3BFA61A462F9A1421FF /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				7D014559F2844681BFBBA16E /* ServiceCard.swift */,
+				C253FBE3FF0F4042BFF8302C /* SectionHeader.swift */,
+				B1D3DCDFE34F48409F3F3A81 /* FormationRowCard.swift */,
+				D27672990C3B42CCB1D283F0 /* SearchBar.swift */,
+			);
+			path = Components;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -565,6 +608,15 @@
 				TOPRATEDSECBUILD00 /* TopRatedSection.swift in Sources */,
 				SPLASHVIEWBUILD0000 /* SplashView.swift in Sources */,
 				APPROOTVIEWBUILD00 /* AppRootView.swift in Sources */,
+				787FE2E2847049AF8BF794F8 /* Service.swift in Sources */,
+				8D4009FECA844FC4898C72BA /* SearchView.swift in Sources */,
+				4F5CF21489ED4D3B91C9168A /* SearchViewModel.swift in Sources */,
+				A5BA44DE02E14CA29F52FABB /* CategoryListView.swift in Sources */,
+				36B78635747049BFA5AB1A9D /* ServiceDetailView.swift in Sources */,
+				9CDBDDF55D8D49A7B70A7FAB /* ServiceCard.swift in Sources */,
+				BB7138A4957A4D56BA0AA952 /* SectionHeader.swift in Sources */,
+				A8F7E8E079BF4CC1B341A115 /* FormationRowCard.swift in Sources */,
+				E938F1489C664B0886221C5D /* SearchBar.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
