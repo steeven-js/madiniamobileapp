@@ -67,6 +67,7 @@
 		TOPRATEDCARDBUILD0 /* TopRatedCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = TOPRATEDCARDFILE00 /* TopRatedCard.swift */; };
 		TOPRATEDSECBUILD00 /* TopRatedSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = TOPRATEDSECFILE000 /* TopRatedSection.swift */; };
 		WELCOMESECTIONBUILD00 /* WelcomeSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = WELCOMESECTIONFILE000 /* WelcomeSection.swift */; };
+		120D914AC37DA0B3BB2093EA /* MadiniaHubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C111D8DAAA40A220EC343BF /* MadiniaHubView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -143,6 +144,7 @@
 		TOPRATEDCARDFILE00 /* TopRatedCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopRatedCard.swift; sourceTree = "<group>"; };
 		TOPRATEDSECFILE000 /* TopRatedSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopRatedSection.swift; sourceTree = "<group>"; };
 		WELCOMESECTIONFILE000 /* WelcomeSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeSection.swift; sourceTree = "<group>"; };
+		3C111D8DAAA40A220EC343BF /* MadiniaHubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MadiniaHubView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -370,6 +372,7 @@
 			children = (
 				MADICHATVIEWFILE0000 /* MadiChatView.swift */,
 				MADICHATVMFILE000000 /* MadiChatViewModel.swift */,
+				3C111D8DAAA40A220EC343BF /* MadiniaHubView.swift */,
 				VIEWSMADICOMP0000000 /* Components */,
 			);
 			path = Madi;
@@ -544,6 +547,7 @@
 				MADIMSGBUILD00000000 /* MadiMessage.swift in Sources */,
 				MADISERVICEBUILD0000 /* MadiService.swift in Sources */,
 				MADICHATVMBUILD00000 /* MadiChatViewModel.swift in Sources */,
+				120D914AC37DA0B3BB2093EA /* MadiniaHubView.swift in Sources */,
 				MADIFABBUILD00000000 /* MadiFAB.swift in Sources */,
 				MADICHATVIEWBUILD00 /* MadiChatView.swift in Sources */,
 				PUSHSERVICEBUILD000 /* PushNotificationService.swift in Sources */,

@@ -25,13 +25,6 @@ struct HomeView: View {
                 // Welcome section with Madinia branding
                 WelcomeSection()
 
-                // Progress path - always visible (static content)
-                ProgressPath { step in
-                    // Navigate to formations tab (show all)
-                    FormationsRepository.shared.setSelectedCategory(nil)
-                    selectedTab = 1
-                }
-
                 // Content based on loading state
                 switch viewModel.loadingState {
                 case .idle, .loading:
@@ -102,7 +95,6 @@ fileprivate struct HomeView_LoadingPreview: View {
             ScrollView {
                 VStack(spacing: 24) {
                     WelcomeSection()
-                    ProgressPath()
                     LoadingView(message: "Chargement des formations...")
                 }
                 .padding(.horizontal)
@@ -122,7 +114,6 @@ fileprivate struct HomeView_ErrorPreview: View {
             ScrollView {
                 VStack(spacing: 24) {
                     WelcomeSection()
-                    ProgressPath()
                     ErrorView(message: "Erreur de connexion. Vérifiez votre connexion internet.") {
                         print("Retry")
                     }

@@ -57,15 +57,18 @@ struct MainTabView: View {
                     .accessibilityLabel("Formations")
                     .accessibilityHint("Affiche le catalogue des formations disponibles")
 
-                NavigationStack {
-                    BlogView()
-                }
-                .tabItem {
-                    Label("Blog", systemImage: "doc.text.fill")
-                }
-                .tag(2)
-                .accessibilityLabel("Blog")
-                .accessibilityHint("Affiche les articles de blog")
+                MadiniaHubView()
+                    .tabItem {
+                        Label {
+                            Text("Madin.IA")
+                        } icon: {
+                            Image("madinia-tab-icon")
+                                .renderingMode(.template)
+                        }
+                    }
+                    .tag(2)
+                    .accessibilityLabel("Madin.IA")
+                    .accessibilityHint("Affiche le hub Madin.IA avec blog, à propos et actualités")
 
                 ContactView()
                     .tabItem {
@@ -111,7 +114,7 @@ struct MainTabView: View {
         .onChange(of: deepLinkArticleSlug.wrappedValue) { _, newSlug in
             if let slug = newSlug {
                 selectedArticleSlug = slug
-                selectedTab = 2 // Switch to Blog tab
+                selectedTab = 2 // Switch to Madin.IA tab
                 deepLinkArticleSlug.wrappedValue = nil
             }
         }
@@ -180,7 +183,7 @@ private struct FormationsTab: View {
         }
 }
 
-#Preview("Blog Tab") {
+#Preview("Madin.IA Tab") {
     MainTabView()
         .onAppear {
             UserDefaults.standard.set(2, forKey: "selectedTab")
