@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		7802C29E2F25281B00EE8B5D /* Assets 2.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7802C29D2F25281B00EE8B5D /* Assets 2.xcassets */; };
+		7802C29E2F25281B00EE8B5D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7802C29D2F25281B00EE8B5D /* Assets.xcassets */; };
 		A11111111111111111111111 /* MadiniaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A22222222222222222222222 /* MadiniaApp.swift */; };
 		A33333333333333333333333 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44444444444444444444444 /* ContentView.swift */; };
 		APIERRORBUILD0000000000 /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = APIERRORFILE00000000000 /* APIError.swift */; };
@@ -80,7 +80,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		7802C29D2F25281B00EE8B5D /* Assets 2.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Assets 2.xcassets"; sourceTree = "<group>"; };
+		7802C29D2F25281B00EE8B5D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Assets.xcassets"; sourceTree = "<group>"; };
 		A22222222222222222222222 /* MadiniaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MadiniaApp.swift; sourceTree = "<group>"; };
 		A44444444444444444444444 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		A55555555555555555555555 /* MadiniaApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MadiniaApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -179,7 +179,7 @@
 				A44444444444444444444444 /* ContentView.swift */,
 				APPDELEGATEFILE0000 /* AppDelegate.swift */,
 				ENTITLEMENTSFILE000 /* MadiniaApp.entitlements */,
-				7802C29D2F25281B00EE8B5D /* Assets 2.xcassets */,
+				7802C29D2F25281B00EE8B5D /* Assets.xcassets */,
 				MODELS0000000000000000 /* Models */,
 				VIEWS00000000000000000 /* Views */,
 				VIEWMODELS000000000000 /* ViewModels */,
@@ -490,7 +490,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7802C29E2F25281B00EE8B5D /* Assets 2.xcassets in Resources */,
+				7802C29E2F25281B00EE8B5D /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
