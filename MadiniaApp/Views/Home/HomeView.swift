@@ -7,20 +7,20 @@
 
 import SwiftUI
 
-/// Home screen view displaying welcome section, highlighted formations, and quick access.
+/// Home screen view displaying welcome section, categories, and top rated formations.
 /// Handles loading, error, and loaded states for formation data.
 struct HomeView: View {
     /// ViewModel managing home screen state and data
     @State private var viewModel = HomeViewModel()
 
-    /// Selected tab binding for navigation from quick access
+    /// Selected tab binding for navigation
     @Binding var selectedTab: Int
 
     /// Navigation state for categories grid
     @State private var showCategoriesGrid = false
 
     var body: some View {
-        ScrollView {
+        ScrollView(.vertical, showsIndicators: true) {
             VStack(spacing: MadiniaSpacing.lg) {
                 // Welcome section with Madinia branding
                 WelcomeSection()
@@ -48,17 +48,17 @@ struct HomeView: View {
                         }
                     )
 
-                    // Highlighted formations section
-                    highlightsSection
-
-                    // Quick access buttons
-                    QuickAccessSection(
-                        onFormationsTap: {
+                    // Top rated formations section
+                    TopRatedSection(
+                        formations: viewModel.topRatedFormations,
+                        onViewAllTap: {
                             FormationsRepository.shared.setSelectedCategory(nil)
                             selectedTab = 1
                         },
-                        onBlogTap: { selectedTab = 2 },
-                        onContactTap: { selectedTab = 3 }
+                        onFormationTap: { _ in
+                            FormationsRepository.shared.setSelectedCategory(nil)
+                            selectedTab = 1
+                        }
                     )
 
                 case .error(let message):
@@ -67,6 +67,7 @@ struct HomeView: View {
                     }
                 }
             }
+            .frame(maxWidth: .infinity)
             .padding(.horizontal, MadiniaSpacing.md)
             .padding(.bottom, MadiniaSpacing.lg)
         }
@@ -81,31 +82,6 @@ struct HomeView: View {
         }
         .task {
             await viewModel.loadFormations()
-        }
-    }
-
-    // MARK: - Subviews
-
-    /// Horizontal scrolling section showing highlighted formations
-    private var highlightsSection: some View {
-        VStack(alignment: .leading, spacing: MadiniaSpacing.sm) {
-            Text("Formations à la une")
-                .font(MadiniaTypography.title2)
-                .fontWeight(.bold)
-
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: MadiniaSpacing.md) {
-                    ForEach(viewModel.highlightedFormations) { formation in
-                        HighlightCard(formation: formation) {
-                            // Navigate to formations tab (show all)
-                            FormationsRepository.shared.setSelectedCategory(nil)
-                            selectedTab = 1
-                        }
-                    }
-                }
-                .padding(.horizontal, MadiniaSpacing.xs) // Prevent shadow clipping
-            }
-            .padding(.horizontal, -MadiniaSpacing.xs) // Compensate for inner padding
         }
     }
 }

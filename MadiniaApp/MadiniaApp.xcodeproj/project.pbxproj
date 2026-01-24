@@ -62,6 +62,8 @@
 		CATEGORYSECBUILD000 /* CategoriesSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = CATEGORYSECFILE0000 /* CategoriesSection.swift */; };
 		CATGRIDCARDBUILD00 /* CategoryGridCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = CATGRIDCARDFILE000 /* CategoryGridCard.swift */; };
 		CATGRIDVIEWBUILD00 /* CategoriesGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CATGRIDVIEWFILE000 /* CategoriesGridView.swift */; };
+		TOPRATEDCARDBUILD0 /* TopRatedCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = TOPRATEDCARDFILE00 /* TopRatedCard.swift */; };
+		TOPRATEDSECBUILD00 /* TopRatedSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = TOPRATEDSECFILE000 /* TopRatedSection.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -133,6 +135,8 @@
 		CATEGORYSECFILE0000 /* CategoriesSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesSection.swift; sourceTree = "<group>"; };
 		CATGRIDCARDFILE000 /* CategoryGridCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryGridCard.swift; sourceTree = "<group>"; };
 		CATGRIDVIEWFILE000 /* CategoriesGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesGridView.swift; sourceTree = "<group>"; };
+		TOPRATEDCARDFILE00 /* TopRatedCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopRatedCard.swift; sourceTree = "<group>"; };
+		TOPRATEDSECFILE000 /* TopRatedSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopRatedSection.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -340,6 +344,8 @@
 				CATEGORYCARDFILE000 /* CategoryCard.swift */,
 				CATEGORYSECFILE0000 /* CategoriesSection.swift */,
 				CATGRIDCARDFILE000 /* CategoryGridCard.swift */,
+				TOPRATEDCARDFILE00 /* TopRatedCard.swift */,
+				TOPRATEDSECFILE000 /* TopRatedSection.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -541,6 +547,8 @@
 				CATEGORYSECBUILD000 /* CategoriesSection.swift in Sources */,
 				CATGRIDCARDBUILD00 /* CategoryGridCard.swift in Sources */,
 				CATGRIDVIEWBUILD00 /* CategoriesGridView.swift in Sources */,
+				TOPRATEDCARDBUILD0 /* TopRatedCard.swift in Sources */,
+				TOPRATEDSECBUILD00 /* TopRatedSection.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

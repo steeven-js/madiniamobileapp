@@ -28,6 +28,12 @@ final class HomeViewModel {
         repository.highlightedFormations
     }
 
+    /// Returns the first 3 formations for top rated section
+    /// (hardcoded for now, will use actual ratings later)
+    var topRatedFormations: [Formation] {
+        Array(repository.formations.prefix(3))
+    }
+
     /// Returns all loaded formations
     var allFormations: [Formation] {
         repository.formations
