@@ -7,13 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		7802C29A2F25236300EE8B5D /* Assets 2.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7802C2992F25236300EE8B5D /* Assets 2.xcassets */; };
+		7802C29E2F25281B00EE8B5D /* Assets 2.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7802C29D2F25281B00EE8B5D /* Assets 2.xcassets */; };
 		A11111111111111111111111 /* MadiniaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A22222222222222222222222 /* MadiniaApp.swift */; };
 		A33333333333333333333333 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44444444444444444444444 /* ContentView.swift */; };
 		APIERRORBUILD0000000000 /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = APIERRORFILE00000000000 /* APIError.swift */; };
 		APISERVICEBUILD00000000 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = APISERVICEFILE000000000 /* APIService.swift */; };
 		APISERVICETESTBUILD000 /* APIServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = APISERVICETESTFILE00000 /* APIServiceTests.swift */; };
 		APPDELEGATEBUILD000 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = APPDELEGATEFILE0000 /* AppDelegate.swift */; };
+		APPROOTVIEWBUILD00 /* AppRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = APPROOTVIEWFILE000 /* AppRootView.swift */; };
 		ARTICLEBUILD0000000000 /* Article.swift in Sources */ = {isa = PBXBuildFile; fileRef = ARTICLEFILE00000000000 /* Article.swift */; };
 		ARTICLECARDBUILD00000 /* ArticleCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = ARTICLECARDFILE000000 /* ArticleCard.swift */; };
 		ARTICLEDETAILBUILD000 /* ArticleDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ARTICLEDETAILFILE0000 /* ArticleDetailView.swift */; };
@@ -62,6 +63,7 @@
 		PROGRESSPATHTESTBUILD /* ProgressPathTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = PROGRESSPATHTESTFILE0 /* ProgressPathTests.swift */; };
 		PUSHSERVICEBUILD000 /* PushNotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = PUSHSERVICEFILE0000 /* PushNotificationService.swift */; };
 		QUICKACCESSBUILD000000 /* QuickAccessSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = QUICKACCESSFILE0000000 /* QuickAccessSection.swift */; };
+		SPLASHVIEWBUILD0000 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = SPLASHVIEWFILE00000 /* SplashView.swift */; };
 		TOPRATEDCARDBUILD0 /* TopRatedCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = TOPRATEDCARDFILE00 /* TopRatedCard.swift */; };
 		TOPRATEDSECBUILD00 /* TopRatedSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = TOPRATEDSECFILE000 /* TopRatedSection.swift */; };
 		WELCOMESECTIONBUILD00 /* WelcomeSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = WELCOMESECTIONFILE000 /* WelcomeSection.swift */; };
@@ -78,7 +80,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		7802C2992F25236300EE8B5D /* Assets 2.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Assets 2.xcassets"; sourceTree = "<group>"; };
+		7802C29D2F25281B00EE8B5D /* Assets 2.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Assets 2.xcassets"; sourceTree = "<group>"; };
 		A22222222222222222222222 /* MadiniaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MadiniaApp.swift; sourceTree = "<group>"; };
 		A44444444444444444444444 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		A55555555555555555555555 /* MadiniaApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MadiniaApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -86,6 +88,7 @@
 		APISERVICEFILE000000000 /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
 		APISERVICETESTFILE00000 /* APIServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIServiceTests.swift; sourceTree = "<group>"; };
 		APPDELEGATEFILE0000 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		APPROOTVIEWFILE000 /* AppRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRootView.swift; sourceTree = "<group>"; };
 		ARTICLECARDFILE000000 /* ArticleCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleCard.swift; sourceTree = "<group>"; };
 		ARTICLEDETAILFILE0000 /* ArticleDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleDetailView.swift; sourceTree = "<group>"; };
 		ARTICLEFILE00000000000 /* Article.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Article.swift; sourceTree = "<group>"; };
@@ -135,6 +138,7 @@
 		PROGRESSPATHTESTFILE0 /* ProgressPathTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressPathTests.swift; sourceTree = "<group>"; };
 		PUSHSERVICEFILE0000 /* PushNotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationService.swift; sourceTree = "<group>"; };
 		QUICKACCESSFILE0000000 /* QuickAccessSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickAccessSection.swift; sourceTree = "<group>"; };
+		SPLASHVIEWFILE00000 /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 		TESTTARGETPRODUCT00000 /* MadiniaAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MadiniaAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		TOPRATEDCARDFILE00 /* TopRatedCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopRatedCard.swift; sourceTree = "<group>"; };
 		TOPRATEDSECFILE000 /* TopRatedSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopRatedSection.swift; sourceTree = "<group>"; };
@@ -175,7 +179,7 @@
 				A44444444444444444444444 /* ContentView.swift */,
 				APPDELEGATEFILE0000 /* AppDelegate.swift */,
 				ENTITLEMENTSFILE000 /* MadiniaApp.entitlements */,
-				7802C2992F25236300EE8B5D /* Assets 2.xcassets */,
+				7802C29D2F25281B00EE8B5D /* Assets 2.xcassets */,
 				MODELS0000000000000000 /* Models */,
 				VIEWS00000000000000000 /* Views */,
 				VIEWMODELS000000000000 /* ViewModels */,
@@ -398,6 +402,8 @@
 				CATEGORYCHIPFILE0000 /* CategoryChip.swift */,
 				PERMPROMPTFILE00000 /* PermissionPromptView.swift */,
 				DESIGNSYSTEMFILE000 /* DesignSystem.swift */,
+				SPLASHVIEWFILE00000 /* SplashView.swift */,
+				APPROOTVIEWFILE000 /* AppRootView.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -484,7 +490,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7802C29A2F25236300EE8B5D /* Assets 2.xcassets in Resources */,
+				7802C29E2F25281B00EE8B5D /* Assets 2.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -553,6 +559,8 @@
 				CATGRIDVIEWBUILD00 /* CategoriesGridView.swift in Sources */,
 				TOPRATEDCARDBUILD0 /* TopRatedCard.swift in Sources */,
 				TOPRATEDSECBUILD00 /* TopRatedSection.swift in Sources */,
+				SPLASHVIEWBUILD0000 /* SplashView.swift in Sources */,
+				APPROOTVIEWBUILD00 /* AppRootView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -710,7 +718,7 @@
 				DEVELOPMENT_ASSET_PATHS = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = Madinia;
+				INFOPLIST_KEY_CFBundleDisplayName = Madin.IA;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -745,7 +753,7 @@
 				DEVELOPMENT_ASSET_PATHS = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = Madinia;
+				INFOPLIST_KEY_CFBundleDisplayName = Madin.IA;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
