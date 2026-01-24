@@ -7,6 +7,11 @@
 
 import SwiftUI
 
+/// Navigation destination for all formations list
+struct AllFormationsDestination: Hashable {
+    let formations: [Formation]
+}
+
 /// Main search screen centralizing services, formations, and categories.
 /// Replaces the old Formations tab with a unified search experience.
 /// Based on Figma mockup "16 Search".
@@ -20,6 +25,9 @@ struct SearchView: View {
     /// Controls sheet presentation for service detail
     @State private var selectedService: Service?
 
+    /// Controls navigation to all formations
+    @State private var showAllFormations = false
+
     var body: some View {
         NavigationStack(path: $navigationPath) {
             content
@@ -30,6 +38,9 @@ struct SearchView: View {
                 }
                 .navigationDestination(for: FormationCategory.self) { category in
                     CategoryListView(category: category, formations: viewModel.formations)
+                }
+                .navigationDestination(isPresented: $showAllFormations) {
+                    AllFormationsListView(formations: viewModel.formations)
                 }
         }
         .task {
@@ -145,9 +156,7 @@ struct SearchView: View {
         VStack(alignment: .leading, spacing: MadiniaSpacing.sm) {
             SectionHeader(title: "Nos Formations") {
                 // Navigate to all formations list
-                if let firstCategory = viewModel.categories.first {
-                    navigationPath.append(firstCategory)
-                }
+                showAllFormations = true
             }
 
             VStack(spacing: MadiniaSpacing.sm) {

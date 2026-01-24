@@ -9,37 +9,54 @@ import Foundation
 import Observation
 
 /// ViewModel managing data for the SearchView.
-/// Handles loading of services, formations, and categories.
+/// Uses AppDataRepository for preloaded data - no additional API calls needed.
 @Observable
 final class SearchViewModel {
-    // MARK: - Published Properties
+    // MARK: - Dependencies
 
-    /// All loaded services
-    private(set) var services: [Service] = []
+    /// Centralized data repository (preloaded during splash)
+    private let dataRepository: AppDataRepository
 
-    /// All loaded formations
-    private(set) var formations: [Formation] = []
-
-    /// All loaded categories
-    private(set) var categories: [FormationCategory] = []
-
-    /// Current loading state (using Void as data is stored separately)
-    private(set) var loadingState: LoadingState<Void> = .idle
+    // MARK: - State
 
     /// Search query text
     var searchQuery: String = ""
 
-    // MARK: - Dependencies
-
-    private let apiService: APIServiceProtocol
-
     // MARK: - Initialization
 
-    init(apiService: APIServiceProtocol = APIService.shared) {
-        self.apiService = apiService
+    init(dataRepository: AppDataRepository = .shared) {
+        self.dataRepository = dataRepository
     }
 
-    // MARK: - Computed Properties
+    // MARK: - Data Access (from preloaded repository)
+
+    /// All services (preloaded)
+    var services: [Service] {
+        dataRepository.services
+    }
+
+    /// All formations (preloaded)
+    var formations: [Formation] {
+        dataRepository.formations
+    }
+
+    /// All categories (preloaded)
+    var categories: [FormationCategory] {
+        dataRepository.categories
+    }
+
+    /// Loading state based on repository
+    var loadingState: LoadingState<Void> {
+        if dataRepository.isLoading && !dataRepository.hasData {
+            return .loading
+        } else if let error = dataRepository.errorMessage, !dataRepository.hasData {
+            return .error(error)
+        } else {
+            return .loaded(())
+        }
+    }
+
+    // MARK: - Computed Properties (Filtering)
 
     /// Filtered services based on search query
     var filteredServices: [Service] {
@@ -81,36 +98,18 @@ final class SearchViewModel {
         !searchQuery.isEmpty
     }
 
-    // MARK: - Data Loading
+    // MARK: - Actions
 
-    /// Loads all data (services, formations, categories) in parallel
+    /// Called when view appears - data is already preloaded, nothing to do
     @MainActor
     func loadData() async {
-        loadingState = .loading
-
-        do {
-            async let servicesTask = apiService.fetchServices()
-            async let formationsTask = apiService.fetchFormations()
-            async let categoriesTask = apiService.fetchCategories()
-
-            let (loadedServices, loadedFormations, loadedCategories) = try await (
-                servicesTask,
-                formationsTask,
-                categoriesTask
-            )
-
-            services = loadedServices
-            formations = loadedFormations
-            categories = loadedCategories
-            loadingState = .loaded(())
-        } catch {
-            loadingState = .error(error.localizedDescription)
-        }
+        // Data is already preloaded by AppDataRepository during splash
+        // This method exists for API compatibility but does nothing
     }
 
-    /// Refreshes all data
+    /// Refreshes data from API (pull-to-refresh)
     @MainActor
     func refresh() async {
-        await loadData()
+        await dataRepository.refresh()
     }
 }

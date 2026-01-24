@@ -8,13 +8,13 @@
 import SwiftUI
 
 /// Root view managing splash screen and main content transition.
-/// Coordinates with FormationsRepository to determine when initial data is loaded.
+/// Preloads all app data during splash before showing main content.
 struct AppRootView: View {
     /// App launch state
     @State private var appState = AppLaunchState()
 
-    /// Shared repository for initial data loading status
-    private let repository = FormationsRepository.shared
+    /// Centralized data repository for preloading
+    private let dataRepository = AppDataRepository.shared
 
     /// Accessibility: reduced motion preference
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
@@ -40,26 +40,25 @@ struct AppRootView: View {
 
     // MARK: - Data Loading
 
-    /// Performs initial data loading and manages splash screen dismissal
+    /// Performs initial data loading and manages splash screen dismissal.
+    /// Waits for both minimum splash duration AND data to be ready.
     private func performInitialLoad() async {
         // Start loading data and minimum duration concurrently
         await withTaskGroup(of: Void.self) { group in
-            // Load formations
+            // Preload all app data (formations, categories, services)
             group.addTask {
-                await repository.fetchIfNeeded()
+                await dataRepository.preloadAllData()
             }
 
-            // Load categories
+            // Minimum splash duration for branding (1.5 seconds)
+            // This ensures the logo animation completes
             group.addTask {
-                await repository.fetchCategoriesIfNeeded()
+                try? await Task.sleep(for: .milliseconds(1500))
             }
 
-            // Minimum splash duration for branding (1.2 seconds)
-            group.addTask {
-                try? await Task.sleep(for: .milliseconds(1200))
-            }
-
-            // Wait for all tasks to complete
+            // Wait for BOTH tasks to complete
+            // - Data must be loaded (or failed with cache fallback)
+            // - Minimum time must have elapsed
             await group.waitForAll()
         }
 

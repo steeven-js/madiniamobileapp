@@ -127,12 +127,8 @@ final class APIService: APIServiceProtocol {
     static let shared = APIService()
 
     /// Base URL for the Madinia API
-    /// Change to your production URL when deploying
-    #if DEBUG
-    private let baseURL = "http://127.0.0.1:8000/api/v1"
-    #else
+    /// Using production API (local API doesn't have routes configured)
     private let baseURL = "https://madinia.fr/api/v1"
-    #endif
 
     /// URLSession for network requests (injectable for testing)
     private let session: URLSession
@@ -145,6 +141,9 @@ final class APIService: APIServiceProtocol {
 
     /// Base delay for exponential backoff (in seconds)
     private let baseRetryDelay: TimeInterval = 1.0
+
+    /// API key for authenticated requests
+    private let apiKey = "fuNvIPt3f0uglrWP4SV6n7FSzr1VwLnApSCb4KjzrUUs611k8GUjOF7HNPfAqWay"
 
     // MARK: - Initialization
 
@@ -285,6 +284,7 @@ final class APIService: APIServiceProtocol {
         request.httpMethod = method
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.setValue("application/json", forHTTPHeaderField: "Accept")
+        request.setValue(apiKey, forHTTPHeaderField: "X-API-Key")
         request.timeoutInterval = 30
 
         var lastError: APIError = .networkError("Unknown error")
@@ -335,6 +335,7 @@ final class APIService: APIServiceProtocol {
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.setValue("application/json", forHTTPHeaderField: "Accept")
+        request.setValue(apiKey, forHTTPHeaderField: "X-API-Key")
         request.timeoutInterval = 30
 
         // Encode body

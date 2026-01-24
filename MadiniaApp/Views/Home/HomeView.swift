@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-/// Home screen view displaying welcome section, categories, and top rated formations.
+/// Home screen view displaying welcome section, categories, and most viewed formations.
 /// Handles loading, error, and loaded states for formation data.
 struct HomeView: View {
     /// ViewModel managing home screen state and data
@@ -18,6 +18,9 @@ struct HomeView: View {
 
     /// Navigation state for categories grid
     @State private var showCategoriesGrid = false
+
+    /// Navigation state for formation detail
+    @State private var selectedFormation: Formation?
 
     var body: some View {
         ScrollView(.vertical, showsIndicators: true) {
@@ -41,16 +44,16 @@ struct HomeView: View {
                         }
                     )
 
-                    // Top rated formations section
+                    // Most viewed formations section
                     TopRatedSection(
-                        formations: viewModel.topRatedFormations,
+                        formations: viewModel.mostViewedFormations,
                         onViewAllTap: {
-                            FormationsRepository.shared.setSelectedCategory(nil)
+                            // Navigate to search tab to see all formations
                             selectedTab = 1
                         },
-                        onFormationTap: { _ in
-                            FormationsRepository.shared.setSelectedCategory(nil)
-                            selectedTab = 1
+                        onFormationTap: { formation in
+                            // Navigate to formation detail
+                            selectedFormation = formation
                         }
                     )
 
@@ -72,6 +75,9 @@ struct HomeView: View {
                 showCategoriesGrid = false
                 selectedTab = 1
             }
+        }
+        .navigationDestination(item: $selectedFormation) { formation in
+            FormationDetailView(formation: formation)
         }
         .task {
             await viewModel.loadFormations()

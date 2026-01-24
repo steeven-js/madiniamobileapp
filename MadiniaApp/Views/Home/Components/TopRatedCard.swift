@@ -7,14 +7,14 @@
 
 import SwiftUI
 
-/// Horizontal card for Top Rated formations section.
-/// Displays image with rating badge, title, duration, and level.
+/// Horizontal card for Most Viewed formations section.
+/// Displays image with views badge, title, duration, and level.
 struct TopRatedCard: View {
     /// The formation to display
     let formation: Formation
 
-    /// Rating value (hardcoded for now, will be dynamic later)
-    var rating: Double = 5.0
+    /// Views count (optional, from API)
+    var viewsCount: Int?
 
     /// Action when card is tapped
     var onTap: (() -> Void)?
@@ -28,8 +28,8 @@ struct TopRatedCard: View {
             onTap?()
         } label: {
             HStack(spacing: MadiniaSpacing.sm) {
-                // Image with rating badge
-                imageWithRating
+                // Image with views badge
+                imageWithViewsBadge
 
                 // Content
                 VStack(alignment: .leading, spacing: MadiniaSpacing.xxs) {
@@ -85,7 +85,7 @@ struct TopRatedCard: View {
 
     // MARK: - Subviews
 
-    private var imageWithRating: some View {
+    private var imageWithViewsBadge: some View {
         ZStack(alignment: .bottomLeading) {
             // Formation image
             if let imageUrl = formation.imageUrl, let url = URL(string: imageUrl) {
@@ -110,9 +110,11 @@ struct TopRatedCard: View {
                 imagePlaceholder
             }
 
-            // Rating badge
-            ratingBadge
-                .padding(MadiniaSpacing.xxs)
+            // Views badge
+            if let views = viewsCount ?? formation.viewsCount, views > 0 {
+                viewsBadge(count: views)
+                    .padding(MadiniaSpacing.xxs)
+            }
         }
         .frame(width: imageSize, height: imageSize)
     }
@@ -134,13 +136,13 @@ struct TopRatedCard: View {
             }
     }
 
-    private var ratingBadge: some View {
+    private func viewsBadge(count: Int) -> some View {
         HStack(spacing: 2) {
-            Image(systemName: "star.fill")
+            Image(systemName: "eye.fill")
                 .font(.system(size: 8))
-                .foregroundStyle(MadiniaColors.gold)
+                .foregroundStyle(.white)
 
-            Text(String(format: "%.1f", rating))
+            Text(formatViewsCount(count))
                 .font(.system(size: 10, weight: .semibold))
                 .foregroundStyle(.white)
         }
@@ -148,8 +150,17 @@ struct TopRatedCard: View {
         .padding(.vertical, 3)
         .background(
             Capsule()
-                .fill(MadiniaColors.darkGray.opacity(0.85))
+                .fill(MadiniaColors.violet.opacity(0.85))
         )
+    }
+
+    /// Formats views count for display (e.g., 1234 -> "1.2k")
+    private func formatViewsCount(_ count: Int) -> String {
+        if count >= 1000 {
+            let value = Double(count) / 1000.0
+            return String(format: "%.1fk", value)
+        }
+        return "\(count)"
     }
 
     // MARK: - Computed Properties
@@ -170,11 +181,11 @@ struct TopRatedCard: View {
 
 // MARK: - Preview
 
-#Preview("Top Rated Card") {
+#Preview("Most Viewed Card") {
     VStack(spacing: MadiniaSpacing.sm) {
-        TopRatedCard(formation: Formation.sample)
-        TopRatedCard(formation: Formation.samples[1])
-        TopRatedCard(formation: Formation.samples[2])
+        TopRatedCard(formation: Formation.sample, viewsCount: 1523)
+        TopRatedCard(formation: Formation.samples[1], viewsCount: 892)
+        TopRatedCard(formation: Formation.samples[2], viewsCount: 456)
     }
     .padding(MadiniaSpacing.md)
 }

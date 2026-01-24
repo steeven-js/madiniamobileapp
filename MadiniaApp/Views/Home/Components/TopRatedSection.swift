@@ -7,10 +7,10 @@
 
 import SwiftUI
 
-/// Section displaying top rated formations on the Home screen.
+/// Section displaying most viewed formations on the Home screen.
 /// Shows vertical list of TopRatedCard components.
 struct TopRatedSection: View {
-    /// Formations to display (first 3 top rated)
+    /// Formations to display (top 5 most viewed)
     let formations: [Formation]
 
     /// Action when "View all" is tapped
@@ -24,10 +24,10 @@ struct TopRatedSection: View {
             // Header row
             headerRow
 
-            // Formation cards
+            // Formation cards (max 5 most viewed)
             VStack(spacing: MadiniaSpacing.sm) {
-                ForEach(formations.prefix(3)) { formation in
-                    TopRatedCard(formation: formation, rating: 5.0) {
+                ForEach(formations.prefix(5)) { formation in
+                    TopRatedCard(formation: formation) {
                         onFormationTap?(formation)
                     }
                 }
@@ -39,7 +39,7 @@ struct TopRatedSection: View {
 
     private var headerRow: some View {
         HStack {
-            Text("Top Rated")
+            Text("Les plus consultées")
                 .font(MadiniaTypography.title2)
                 .fontWeight(.bold)
 
@@ -56,7 +56,7 @@ struct TopRatedSection: View {
                 }
                 .foregroundStyle(MadiniaColors.gold)
             }
-            .accessibilityLabel("Voir toutes les formations top rated")
+            .accessibilityLabel("Voir toutes les formations")
         }
     }
 }

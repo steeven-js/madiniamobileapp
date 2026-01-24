@@ -8,62 +8,66 @@
 import Foundation
 
 /// ViewModel for the Home screen, managing formation data and loading state.
-/// Uses the shared FormationsRepository to avoid redundant API calls.
+/// Uses the shared AppDataRepository - data is preloaded during splash.
 @Observable
 final class HomeViewModel {
     // MARK: - Dependencies
 
-    /// Shared repository for formations data
-    private let repository: FormationsRepository
+    /// Centralized data repository (preloaded during splash)
+    private let dataRepository: AppDataRepository
 
     // MARK: - Computed Properties
 
-    /// Current loading state (proxied from repository)
+    /// Current loading state based on repository
     var loadingState: LoadingState<[Formation]> {
-        repository.loadingState
+        if dataRepository.isLoading && !dataRepository.hasData {
+            return .loading
+        } else if let error = dataRepository.errorMessage, !dataRepository.hasData {
+            return .error(error)
+        } else {
+            return .loaded(dataRepository.formations)
+        }
     }
 
     /// Returns the first 3 formations for the highlights section
     var highlightedFormations: [Formation] {
-        repository.highlightedFormations
+        dataRepository.highlightedFormations
     }
 
-    /// Returns the first 3 formations for top rated section
-    /// (hardcoded for now, will use actual ratings later)
-    var topRatedFormations: [Formation] {
-        Array(repository.formations.prefix(3))
+    /// Returns most viewed formations
+    var mostViewedFormations: [Formation] {
+        dataRepository.mostViewedFormations
     }
 
     /// Returns all loaded formations
     var allFormations: [Formation] {
-        repository.formations
+        dataRepository.formations
     }
 
-    /// Returns unique categories from loaded formations
+    /// Returns all categories
     var categories: [FormationCategory] {
-        repository.categories
+        dataRepository.categories
     }
 
     // MARK: - Initialization
 
     /// Creates a HomeViewModel with the specified repository
-    /// - Parameter repository: Shared formations repository (defaults to singleton)
-    init(repository: FormationsRepository = .shared) {
-        self.repository = repository
+    init(dataRepository: AppDataRepository = .shared) {
+        self.dataRepository = dataRepository
     }
 
     // MARK: - Actions
 
-    /// Loads formations and categories if needed (uses cache if available)
+    /// Called when view appears - data is already preloaded, nothing to do
     @MainActor
     func loadFormations() async {
-        await repository.fetchIfNeeded()
-        await repository.fetchCategoriesIfNeeded()
+        // Data is already preloaded by AppDataRepository during splash
+        // This method exists for API compatibility but does nothing
     }
 
-    /// Retries loading formations and categories after an error
+    /// Refreshes data from API (pull-to-refresh)
     @MainActor
     func retry() async {
-        await repository.refresh()
+        await dataRepository.refresh()
     }
 }

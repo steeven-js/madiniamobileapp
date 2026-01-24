@@ -77,6 +77,10 @@
 		BB7138A4957A4D56BA0AA952 /* SectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C253FBE3FF0F4042BFF8302C /* SectionHeader.swift */; };
 		A8F7E8E079BF4CC1B341A115 /* FormationRowCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D3DCDFE34F48409F3F3A81 /* FormationRowCard.swift */; };
 		E938F1489C664B0886221C5D /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27672990C3B42CCB1D283F0 /* SearchBar.swift */; };
+		UNIFIEDDETAILBUILD000 /* UnifiedDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = UNIFIEDDETAILFILE0000 /* UnifiedDetailView.swift */; };
+		ALLFORMATIONSBUILD000 /* AllFormationsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ALLFORMATIONSFILE0000 /* AllFormationsListView.swift */; };
+		CACHESERVICEBUILD0000 /* CacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CACHESERVICEFILE00000 /* CacheService.swift */; };
+		APPDATAREPOBUILD00000 /* AppDataRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = APPDATAREPOFILE000000 /* AppDataRepository.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -96,6 +100,8 @@
 		A55555555555555555555555 /* MadiniaApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MadiniaApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		APIERRORFILE00000000000 /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
 		APISERVICEFILE000000000 /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
+		CACHESERVICEFILE00000 /* CacheService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheService.swift; sourceTree = "<group>"; };
+		APPDATAREPOFILE000000 /* AppDataRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDataRepository.swift; sourceTree = "<group>"; };
 		APISERVICETESTFILE00000 /* APIServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIServiceTests.swift; sourceTree = "<group>"; };
 		APPDELEGATEFILE0000 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		APPROOTVIEWFILE000 /* AppRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRootView.swift; sourceTree = "<group>"; };
@@ -163,6 +169,8 @@
 		C253FBE3FF0F4042BFF8302C /* SectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeader.swift; sourceTree = "<group>"; };
 		B1D3DCDFE34F48409F3F3A81 /* FormationRowCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormationRowCard.swift; sourceTree = "<group>"; };
 		D27672990C3B42CCB1D283F0 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
+		UNIFIEDDETAILFILE0000 /* UnifiedDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnifiedDetailView.swift; sourceTree = "<group>"; };
+		ALLFORMATIONSFILE0000 /* AllFormationsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllFormationsListView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -259,6 +267,8 @@
 			children = (
 				APIERRORFILE00000000000 /* APIError.swift */,
 				APISERVICEFILE000000000 /* APIService.swift */,
+				APPDATAREPOFILE000000 /* AppDataRepository.swift */,
+				CACHESERVICEFILE00000 /* CacheService.swift */,
 				NAVCONTEXTFILE000000 /* NavigationContext.swift */,
 				MADISERVICEFILE00000 /* MadiService.swift */,
 				PUSHSERVICEFILE0000 /* PushNotificationService.swift */,
@@ -417,6 +427,7 @@
 		VIEWSSHARED00000000000 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				DETAILVIEWGROUP000000 /* DetailView */,
 				MAINTABFILE000000000000 /* MainTabView.swift */,
 				LOADINGVIEWFILE0000000 /* LoadingView.swift */,
 				ERRORVIEWFILE0000000000 /* ErrorView.swift */,
@@ -431,6 +442,14 @@
 			path = Shared;
 			sourceTree = "<group>";
 		};
+		DETAILVIEWGROUP000000 /* DetailView */ = {
+			isa = PBXGroup;
+			children = (
+				UNIFIEDDETAILFILE0000 /* UnifiedDetailView.swift */,
+			);
+			path = DetailView;
+			sourceTree = "<group>";
+		};
 		7F675963CD36484CB0CFB3A8 /* Search */ = {
 			isa = PBXGroup;
 			children = (
@@ -439,6 +458,7 @@
 				1AABB2D1FCAE4F0584974B1C /* SearchViewModel.swift */,
 				6183133022A04548810955CC /* CategoryListView.swift */,
 				BBB02D656A044D26A0789F00 /* ServiceDetailView.swift */,
+				ALLFORMATIONSFILE0000 /* AllFormationsListView.swift */,
 			);
 			path = Search;
 			sourceTree = "<group>";
@@ -571,6 +591,8 @@
 				LOADSTATEBUILD000000000 /* LoadingState.swift in Sources */,
 				APIERRORBUILD0000000000 /* APIError.swift in Sources */,
 				APISERVICEBUILD00000000 /* APIService.swift in Sources */,
+				APPDATAREPOBUILD00000 /* AppDataRepository.swift in Sources */,
+				CACHESERVICEBUILD0000 /* CacheService.swift in Sources */,
 				PROGRESSPATHBUILD0000 /* ProgressPath.swift in Sources */,
 				FORMVMFILEBUILD000000 /* FormationsViewModel.swift in Sources */,
 				FORMCARDBUILD00000000 /* FormationCard.swift in Sources */,
@@ -617,6 +639,8 @@
 				BB7138A4957A4D56BA0AA952 /* SectionHeader.swift in Sources */,
 				A8F7E8E079BF4CC1B341A115 /* FormationRowCard.swift in Sources */,
 				E938F1489C664B0886221C5D /* SearchBar.swift in Sources */,
+				UNIFIEDDETAILBUILD000 /* UnifiedDetailView.swift in Sources */,
+				ALLFORMATIONSBUILD000 /* AllFormationsListView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
