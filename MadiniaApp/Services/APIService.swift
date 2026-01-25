@@ -24,12 +24,24 @@ struct FormationDetailResponse: Decodable {
 
 /// Request body for pre-registration submission
 struct PreRegistrationRequest: Encodable {
+    let firstName: String
+    let lastName: String
     let email: String
+    let phone: String
     let formationId: Int
+    let fundingMethod: String
+    let preferredFormat: String
+    let comments: String?
 
     enum CodingKeys: String, CodingKey {
+        case firstName = "first_name"
+        case lastName = "last_name"
         case email
+        case phone
         case formationId = "formation_id"
+        case fundingMethod = "funding_method"
+        case preferredFormat = "preferred_format"
+        case comments
     }
 }
 
@@ -95,7 +107,16 @@ protocol APIServiceProtocol {
     func fetchServices() async throws -> [Service]
 
     /// Submits a pre-registration for a formation
-    func submitPreRegistration(formationId: Int, email: String) async throws
+    func submitPreRegistration(
+        firstName: String,
+        lastName: String,
+        email: String,
+        phone: String,
+        formationId: Int,
+        fundingMethod: String,
+        preferredFormat: String,
+        comments: String?
+    ) async throws
 
     /// Fetches all published articles from the API
     func fetchArticles() async throws -> [Article]
@@ -202,12 +223,27 @@ final class APIService: APIServiceProtocol {
     }
 
     /// Submits a pre-registration for a formation
-    /// - Parameters:
-    ///   - formationId: The formation's ID
-    ///   - email: User's email address
     /// - Throws: APIError if the request fails
-    func submitPreRegistration(formationId: Int, email: String) async throws {
-        let body = PreRegistrationRequest(email: email, formationId: formationId)
+    func submitPreRegistration(
+        firstName: String,
+        lastName: String,
+        email: String,
+        phone: String,
+        formationId: Int,
+        fundingMethod: String,
+        preferredFormat: String,
+        comments: String?
+    ) async throws {
+        let body = PreRegistrationRequest(
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            phone: phone,
+            formationId: formationId,
+            fundingMethod: fundingMethod,
+            preferredFormat: preferredFormat,
+            comments: comments
+        )
         let _: PreRegistrationResponse = try await postRequest(endpoint: "/pre-registrations", body: body)
     }
 
@@ -488,7 +524,16 @@ final class MockAPIService: APIServiceProtocol {
         return Service.samples
     }
 
-    func submitPreRegistration(formationId: Int, email: String) async throws {
+    func submitPreRegistration(
+        firstName: String,
+        lastName: String,
+        email: String,
+        phone: String,
+        formationId: Int,
+        fundingMethod: String,
+        preferredFormat: String,
+        comments: String?
+    ) async throws {
         // Simulate network delay
         try await Task.sleep(for: .seconds(simulatedDelay))
 

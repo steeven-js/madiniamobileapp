@@ -71,8 +71,8 @@ struct FormationDetailView: View {
     /// Error message
     @State private var errorMessage: String?
 
-    /// Controls the pre-registration sheet
-    @State private var showPreRegistration = false
+    /// Controls navigation to pre-registration view
+    @State private var navigateToPreRegistration = false
 
     /// API service
     private let apiService = APIService.shared
@@ -85,8 +85,8 @@ struct FormationDetailView: View {
                 errorView(message: error)
             } else {
                 UnifiedDetailView(config: configuration)
-                    .sheet(isPresented: $showPreRegistration) {
-                        PreRegistrationSheet(formation: displayFormation)
+                    .navigationDestination(isPresented: $navigateToPreRegistration) {
+                        PreRegistrationView(formation: displayFormation)
                     }
                     .sheet(item: $selectedRelatedFormation) { relatedFormation in
                         FormationDetailSheetView(formation: relatedFormation)
@@ -193,7 +193,7 @@ struct FormationDetailView: View {
             relatedFormations: relatedFormations,
             availableTabs: tabs,
             ctaTitle: "Pré-inscription",
-            ctaAction: { showPreRegistration = true },
+            ctaAction: { navigateToPreRegistration = true },
             onRelatedFormationTap: { tappedFormation in
                 // If we have a callback (sheet mode), use it to replace current formation
                 // Otherwise, open a new sheet
