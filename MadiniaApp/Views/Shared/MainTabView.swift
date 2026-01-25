@@ -104,6 +104,11 @@ struct MainTabView: View {
         }
         .task {
             await pushService.checkAuthorizationStatus()
+            // Show permission prompt on first launch after a short delay
+            if pushService.shouldPromptForPermission {
+                try? await Task.sleep(for: .seconds(2))
+                isShowingPermissionPrompt = true
+            }
         }
         .onChange(of: deepLinkFormationSlug.wrappedValue) { _, newSlug in
             if let slug = newSlug {
