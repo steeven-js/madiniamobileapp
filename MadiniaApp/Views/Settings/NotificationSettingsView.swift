@@ -46,6 +46,14 @@ struct NotificationSettingsView: View {
                             updatePreferences()
                         }
                     ))
+
+                    Toggle("Rappels d'engagement", isOn: Binding(
+                        get: { pushService.notifyEngagement },
+                        set: { newValue in
+                            pushService.notifyEngagement = newValue
+                            updatePreferences()
+                        }
+                    ))
                 }
             }
 

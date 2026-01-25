@@ -46,6 +46,9 @@ final class PushNotificationService: NSObject {
     @AppStorage("notif_reminders") var notifyReminders: Bool = true
 
     @ObservationIgnored
+    @AppStorage("notif_engagement") var notifyEngagement: Bool = true
+
+    @ObservationIgnored
     @AppStorage("permission_requested") private var permissionRequested: Bool = false
 
     // MARK: - Dependencies
@@ -136,7 +139,8 @@ final class PushNotificationService: NSObject {
                 preferences: NotificationPreferences(
                     newFormations: notifyNewFormations,
                     newArticles: notifyNewArticles,
-                    reminders: notifyReminders
+                    reminders: notifyReminders,
+                    engagement: notifyEngagement
                 )
             )
         } catch {
@@ -157,7 +161,8 @@ final class PushNotificationService: NSObject {
                 preferences: NotificationPreferences(
                     newFormations: notifyNewFormations,
                     newArticles: notifyNewArticles,
-                    reminders: notifyReminders
+                    reminders: notifyReminders,
+                    engagement: notifyEngagement
                 )
             )
         } catch {
@@ -179,11 +184,13 @@ struct NotificationPreferences: Encodable {
     let newFormations: Bool
     let newArticles: Bool
     let reminders: Bool
+    let engagement: Bool
 
     enum CodingKeys: String, CodingKey {
         case newFormations = "new_formations"
         case newArticles = "new_articles"
         case reminders
+        case engagement
     }
 }
 
@@ -195,20 +202,23 @@ extension PushNotificationService {
         enum ContentType: String {
             case formation
             case article
+            case home
         }
 
         let type: ContentType
-        let id: String
+        let slug: String?
     }
 
     /// Parses a notification's userInfo into a payload
     func parseNotification(userInfo: [AnyHashable: Any]) -> NotificationPayload? {
         guard let typeString = userInfo["type"] as? String,
-              let type = NotificationPayload.ContentType(rawValue: typeString),
-              let id = userInfo["id"] as? String else {
+              let type = NotificationPayload.ContentType(rawValue: typeString) else {
             return nil
         }
 
-        return NotificationPayload(type: type, id: id)
+        // slug is optional for home type
+        let slug = userInfo["slug"] as? String
+
+        return NotificationPayload(type: type, slug: slug)
     }
 }

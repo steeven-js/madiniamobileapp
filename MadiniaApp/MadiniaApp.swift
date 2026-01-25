@@ -55,9 +55,16 @@ struct MadiniaApp: App {
         appDelegate.onDeepLink = { payload in
             switch payload.type {
             case .formation:
-                deepLinkFormationSlug = payload.id
+                if let slug = payload.slug {
+                    deepLinkFormationSlug = slug
+                }
             case .article:
-                deepLinkArticleSlug = payload.id
+                if let slug = payload.slug {
+                    deepLinkArticleSlug = slug
+                }
+            case .home:
+                // Already on home, nothing to do
+                break
             }
         }
     }
