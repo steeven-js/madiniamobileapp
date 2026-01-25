@@ -17,6 +17,12 @@ struct MainTabView: View {
     /// Controls the Madi chat sheet presentation
     @State private var isShowingMadiChat = false
 
+    /// Controls the settings sheet presentation
+    @State private var isShowingSettings = false
+
+    /// Theme manager for applying color scheme to sheets
+    private var themeManager = ThemeManager.shared
+
     /// Formation to navigate to from Madi recommendation
     @State private var selectedFormationSlug: String?
 
@@ -79,7 +85,29 @@ struct MainTabView: View {
                     .accessibilityHint("Affiche le formulaire de contact")
             }
 
-            // Madi FAB overlay
+            // Settings button overlay (top-right)
+            VStack {
+                HStack {
+                    Spacer()
+                    Button {
+                        isShowingSettings = true
+                    } label: {
+                        Image(systemName: "gearshape.fill")
+                            .font(.title3)
+                            .foregroundStyle(MadiniaColors.gold)
+                            .padding(MadiniaSpacing.sm)
+                            .background(.ultraThinMaterial)
+                            .clipShape(Circle())
+                            .shadow(color: .black.opacity(0.1), radius: 4, y: 2)
+                    }
+                    .accessibilityLabel("Paramètres")
+                    .padding(.trailing, MadiniaSpacing.md)
+                    .padding(.top, 4) // Just below safe area
+                }
+                Spacer()
+            }
+
+            // Madi FAB overlay (bottom-right)
             VStack {
                 Spacer()
                 HStack {
@@ -98,9 +126,24 @@ struct MainTabView: View {
             }
             .presentationDetents([.large])
             .presentationDragIndicator(.visible)
+            .preferredColorScheme(themeManager.colorScheme)
         }
         .sheet(isPresented: $isShowingPermissionPrompt) {
             PermissionPromptView()
+                .preferredColorScheme(themeManager.colorScheme)
+        }
+        .sheet(isPresented: $isShowingSettings) {
+            NavigationStack {
+                SettingsView()
+                    .toolbar {
+                        ToolbarItem(placement: .topBarTrailing) {
+                            Button("Fermer") {
+                                isShowingSettings = false
+                            }
+                        }
+                    }
+            }
+            .preferredColorScheme(themeManager.colorScheme)
         }
         .task {
             await pushService.checkAuthorizationStatus()

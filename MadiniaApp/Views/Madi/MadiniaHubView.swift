@@ -47,7 +47,7 @@ struct MadiniaHubView: View {
             VStack(spacing: MadiniaSpacing.sm) {
                 Text(tab.title)
                     .font(MadiniaTypography.headline)
-                    .foregroundStyle(selectedTab == tab ? MadiniaColors.darkGray : .secondary)
+                    .foregroundStyle(selectedTab == tab ? .primary : .secondary)
 
                 // Underline indicator
                 Rectangle()
@@ -107,7 +107,7 @@ struct MadiniaHubView: View {
 
                     Text("Madin.IA")
                         .font(.system(size: 28, weight: .bold))
-                        .foregroundStyle(MadiniaColors.darkGray)
+                        .foregroundStyle(.primary)
 
                     Text("Former vous à l'Intelligence Artificielle")
                         .font(MadiniaTypography.body)
@@ -140,7 +140,7 @@ struct MadiniaHubView: View {
                 VStack(spacing: MadiniaSpacing.md) {
                     Text("Une question ?")
                         .font(MadiniaTypography.headline)
-                        .foregroundStyle(MadiniaColors.darkGray)
+                        .foregroundStyle(.primary)
 
                     Text("N'hésitez pas à nous contacter pour en savoir plus sur nos formations.")
                         .font(MadiniaTypography.body)
@@ -166,7 +166,7 @@ struct MadiniaHubView: View {
             VStack(alignment: .leading, spacing: MadiniaSpacing.xs) {
                 Text(title)
                     .font(MadiniaTypography.headline)
-                    .foregroundStyle(MadiniaColors.darkGray)
+                    .foregroundStyle(.primary)
 
                 Text(content)
                     .font(MadiniaTypography.body)

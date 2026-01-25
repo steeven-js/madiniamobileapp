@@ -13,8 +13,34 @@ import SwiftUI
 enum MadiniaColors {
     // Primary brand colors
     static let gold = Color(red: 238/255, green: 208/255, blue: 118/255) // #EED076
-    static let violet = Color(red: 88/255, green: 37/255, blue: 134/255) // #582586
-    static let darkGray = Color(red: 10/255, green: 18/255, blue: 27/255) // #0A121B
+
+    /// Violet - adaptive for dark mode (lighter purple for better visibility)
+    static let violet = Color(UIColor { traitCollection in
+        if traitCollection.userInterfaceStyle == .dark {
+            // Lighter lavender/purple for dark mode - better accessibility
+            return UIColor(red: 180/255, green: 140/255, blue: 220/255, alpha: 1) // #B48CDC
+        } else {
+            // Original violet for light mode
+            return UIColor(red: 88/255, green: 37/255, blue: 134/255, alpha: 1) // #582586
+        }
+    })
+
+    /// Dark gray - adaptive for dark mode (white text on dark backgrounds)
+    static let darkGray = Color(UIColor { traitCollection in
+        if traitCollection.userInterfaceStyle == .dark {
+            // White for dark mode
+            return UIColor.white
+        } else {
+            // Original dark gray for light mode
+            return UIColor(red: 10/255, green: 18/255, blue: 27/255, alpha: 1) // #0A121B
+        }
+    })
+
+    /// Original dark gray (always dark) - use for text on gold backgrounds for contrast
+    static let darkGrayFixed = Color(red: 10/255, green: 18/255, blue: 27/255) // #0A121B
+
+    /// Original violet (always dark) - use when you need the original violet
+    static let violetFixed = Color(red: 88/255, green: 37/255, blue: 134/255) // #582586
 
     // Level colors (semantic)
     static let levelStarter = Color.green
@@ -24,6 +50,16 @@ enum MadiniaColors {
     // Functional colors
     static let cardBackground = Color(UIColor.secondarySystemBackground)
     static let surfaceBackground = Color(UIColor.systemBackground)
+
+    // Semantic colors for adaptive theming
+    /// Primary text color - adapts to light/dark mode
+    static let primaryText = Color.primary
+    /// Secondary text color - adapts to light/dark mode
+    static let secondaryText = Color.secondary
+    /// Elevated background for cards and sheets
+    static let elevatedBackground = Color(UIColor.secondarySystemBackground)
+    /// Grouped background for list sections
+    static let groupedBackground = Color(UIColor.systemGroupedBackground)
 
     /// Returns the appropriate color for a formation level
     static func levelColor(for level: String) -> Color {
@@ -183,7 +219,7 @@ struct MadiniaGoldButtonStyle: ButtonStyle {
             .padding(.horizontal, MadiniaSpacing.md)
             .padding(.vertical, MadiniaSpacing.xs)
             .background(MadiniaColors.gold)
-            .foregroundStyle(MadiniaColors.darkGray)
+            .foregroundStyle(MadiniaColors.darkGrayFixed) // Always dark text on gold
             .clipShape(Capsule())
             .opacity(configuration.isPressed ? 0.8 : 1.0)
     }
@@ -205,7 +241,7 @@ extension View {
             .padding(.horizontal, MadiniaSpacing.xs)
             .padding(.vertical, MadiniaSpacing.xxs)
             .background(MadiniaColors.gold)
-            .foregroundStyle(MadiniaColors.darkGray)
+            .foregroundStyle(MadiniaColors.darkGrayFixed) // Always dark text on gold
             .clipShape(Capsule())
     }
 

@@ -20,7 +20,7 @@ struct WelcomeSection: View {
             Text("Bienvenue chez Madin.IA")
                 .font(MadiniaTypography.title)
                 .fontWeight(.bold)
-                .foregroundStyle(MadiniaColors.darkGray)
+                .foregroundStyle(.primary)
                 .multilineTextAlignment(.center)
 
             // Tagline

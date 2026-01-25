@@ -13,6 +13,9 @@ struct MadiniaApp: App {
     /// App delegate for handling push notifications
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
 
+    /// Theme manager for light/dark mode
+    @State private var themeManager = ThemeManager.shared
+
     /// Deep link state for navigation
     @State private var deepLinkFormationSlug: String?
     @State private var deepLinkArticleSlug: String?
@@ -25,6 +28,7 @@ struct MadiniaApp: App {
             ContentView()
                 .environment(\.deepLinkFormationSlug, $deepLinkFormationSlug)
                 .environment(\.deepLinkArticleSlug, $deepLinkArticleSlug)
+                .preferredColorScheme(themeManager.colorScheme)
                 .onAppear {
                     setupDeepLinkHandler()
                 }

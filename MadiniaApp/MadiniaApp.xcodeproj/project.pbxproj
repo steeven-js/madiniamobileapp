@@ -82,6 +82,9 @@
 		TOPRATEDSECBUILD00 /* TopRatedSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = TOPRATEDSECFILE000 /* TopRatedSection.swift */; };
 		UNIFIEDDETAILBUILD000 /* UnifiedDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = UNIFIEDDETAILFILE0000 /* UnifiedDetailView.swift */; };
 		WELCOMESECTIONBUILD00 /* WelcomeSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = WELCOMESECTIONFILE000 /* WelcomeSection.swift */; };
+		THEMEMANAGERBUILD000 /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = THEMEMANAGERFILE0000 /* ThemeManager.swift */; };
+		APPEARANCESETTBUILD0 /* AppearanceSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = APPEARANCESETTFILE00 /* AppearanceSettingsView.swift */; };
+		SETTINGSVIEWBUILD000 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = SETTINGSVIEWFILE0000 /* SettingsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -173,6 +176,9 @@
 		TOPRATEDSECFILE000 /* TopRatedSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopRatedSection.swift; sourceTree = "<group>"; };
 		UNIFIEDDETAILFILE0000 /* UnifiedDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnifiedDetailView.swift; sourceTree = "<group>"; };
 		WELCOMESECTIONFILE000 /* WelcomeSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeSection.swift; sourceTree = "<group>"; };
+		THEMEMANAGERFILE0000 /* ThemeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeManager.swift; sourceTree = "<group>"; };
+		APPEARANCESETTFILE00 /* AppearanceSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceSettingsView.swift; sourceTree = "<group>"; };
+		SETTINGSVIEWFILE0000 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -309,6 +315,7 @@
 				PUSHSERVICEFILE0000 /* PushNotificationService.swift */,
 				DEEPLINKSERVFILE000 /* DeepLinkService.swift */,
 				FORMREPOFILE0000000 /* FormationsRepository.swift */,
+				THEMEMANAGERFILE0000 /* ThemeManager.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -455,6 +462,8 @@
 			isa = PBXGroup;
 			children = (
 				NOTIFSETTINGSFILE00 /* NotificationSettingsView.swift */,
+				APPEARANCESETTFILE00 /* AppearanceSettingsView.swift */,
+				SETTINGSVIEWFILE0000 /* SettingsView.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -645,6 +654,9 @@
 				UNIFIEDDETAILBUILD000 /* UnifiedDetailView.swift in Sources */,
 				FULLSCREENIMGBUILD000 /* FullScreenImageViewer.swift in Sources */,
 				ALLFORMATIONSBUILD000 /* AllFormationsListView.swift in Sources */,
+				THEMEMANAGERBUILD000 /* ThemeManager.swift in Sources */,
+				APPEARANCESETTBUILD0 /* AppearanceSettingsView.swift in Sources */,
+				SETTINGSVIEWBUILD000 /* SettingsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
