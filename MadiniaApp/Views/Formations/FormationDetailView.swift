@@ -7,17 +7,63 @@
 
 import SwiftUI
 
+// MARK: - Sheet Wrapper
+
+/// Wrapper view for presenting FormationDetailView in a sheet.
+/// Manages its own state to allow replacing the current formation without stacking sheets.
+struct FormationDetailSheetView: View {
+    /// Initial formation to display
+    let initialFormation: Formation
+
+    /// Current formation being displayed (can change when tapping related)
+    @State private var currentFormation: Formation
+
+    /// Environment dismiss
+    @Environment(\.dismiss) private var dismiss
+
+    init(formation: Formation) {
+        self.initialFormation = formation
+        self._currentFormation = State(initialValue: formation)
+    }
+
+    var body: some View {
+        NavigationStack {
+            FormationDetailView(
+                formation: currentFormation,
+                onRelatedFormationTap: { newFormation in
+                    // Replace current formation instead of opening new sheet
+                    withAnimation(.easeInOut(duration: 0.2)) {
+                        currentFormation = newFormation
+                    }
+                }
+            )
+        }
+        .id(currentFormation.id) // Force view refresh when formation changes
+    }
+}
+
+// MARK: - Main View
+
 /// Full detail view for a formation using the unified detail design.
 /// Fetches complete formation data from API to display all fields.
 struct FormationDetailView: View {
     /// The formation from the list (partial data)
     let formation: Formation
 
+    /// Optional callback for related formation tap (used in sheet mode)
+    var onRelatedFormationTap: ((Formation) -> Void)?
+
     /// Navigation context for contact form pre-fill
     @Environment(\.navigationContext) private var navigationContext
 
     /// Full formation data loaded from API
     @State private var fullFormation: Formation?
+
+    /// Related formations from API
+    @State private var relatedFormations: [Formation] = []
+
+    /// Selected related formation for navigation (only used when not in sheet mode)
+    @State private var selectedRelatedFormation: Formation?
 
     /// Loading state
     @State private var isLoading = true
@@ -42,10 +88,19 @@ struct FormationDetailView: View {
                     .sheet(isPresented: $showPreRegistration) {
                         PreRegistrationSheet(formation: displayFormation)
                     }
+                    .sheet(item: $selectedRelatedFormation) { relatedFormation in
+                        FormationDetailSheetView(formation: relatedFormation)
+                    }
             }
         }
-        .task {
+        .task(id: formation.id) {
             await loadFullFormation()
+        }
+        .onChange(of: formation.id) { _, _ in
+            // Reset state when formation changes (for sheet replacement)
+            fullFormation = nil
+            relatedFormations = []
+            isLoading = true
         }
         .onAppear {
             navigationContext.setFormation(formation)
@@ -93,10 +148,13 @@ struct FormationDetailView: View {
         errorMessage = nil
 
         do {
-            fullFormation = try await apiService.fetchFormation(slug: formation.slug)
+            let result = try await apiService.fetchFormationWithRelated(slug: formation.slug)
+            fullFormation = result.formation
+            relatedFormations = result.related
         } catch {
             // Use partial data as fallback
             fullFormation = nil
+            relatedFormations = []
             #if DEBUG
             print("Failed to load full formation: \(error)")
             #endif
@@ -114,6 +172,11 @@ struct FormationDetailView: View {
 
     private var configuration: DetailViewConfiguration {
         let f = displayFormation
+        // Show related tab only if there are related formations
+        let tabs: [DetailTab] = relatedFormations.isEmpty
+            ? [.about, .prerequisites]
+            : [.about, .prerequisites, .related]
+
         return DetailViewConfiguration(
             title: f.title,
             subtitle: f.shortDescription,
@@ -127,9 +190,19 @@ struct FormationDetailView: View {
             prerequisites: f.prerequisites,
             targetAudience: f.targetAudience,
             trainingMethods: f.trainingMethods,
-            availableTabs: [.about, .prerequisites],
+            relatedFormations: relatedFormations,
+            availableTabs: tabs,
             ctaTitle: "Pré-inscription",
             ctaAction: { showPreRegistration = true },
+            onRelatedFormationTap: { tappedFormation in
+                // If we have a callback (sheet mode), use it to replace current formation
+                // Otherwise, open a new sheet
+                if let callback = onRelatedFormationTap {
+                    callback(tappedFormation)
+                } else {
+                    selectedRelatedFormation = tappedFormation
+                }
+            },
             shareUrl: shareURL
         )
     }

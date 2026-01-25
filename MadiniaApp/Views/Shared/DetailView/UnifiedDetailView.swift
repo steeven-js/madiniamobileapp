@@ -11,6 +11,7 @@ import SwiftUI
 enum DetailTab: String, CaseIterable {
     case about = "À propos"
     case prerequisites = "Prérequis"
+    case related = "Similaires"
 }
 
 /// Configuration for the unified detail view
@@ -27,9 +28,11 @@ struct DetailViewConfiguration {
     let prerequisites: String?
     let targetAudience: String?
     let trainingMethods: String?
+    let relatedFormations: [Formation]
     let availableTabs: [DetailTab]
     let ctaTitle: String
     let ctaAction: () -> Void
+    let onRelatedFormationTap: ((Formation) -> Void)?
     let shareUrl: URL?
 
     init(
@@ -45,9 +48,11 @@ struct DetailViewConfiguration {
         prerequisites: String? = nil,
         targetAudience: String? = nil,
         trainingMethods: String? = nil,
+        relatedFormations: [Formation] = [],
         availableTabs: [DetailTab] = [.about, .prerequisites],
         ctaTitle: String = "S'inscrire",
         ctaAction: @escaping () -> Void = {},
+        onRelatedFormationTap: ((Formation) -> Void)? = nil,
         shareUrl: URL? = nil
     ) {
         self.title = title
@@ -62,9 +67,11 @@ struct DetailViewConfiguration {
         self.prerequisites = prerequisites
         self.targetAudience = targetAudience
         self.trainingMethods = trainingMethods
+        self.relatedFormations = relatedFormations
         self.availableTabs = availableTabs
         self.ctaTitle = ctaTitle
         self.ctaAction = ctaAction
+        self.onRelatedFormationTap = onRelatedFormationTap
         self.shareUrl = shareUrl
     }
 }
@@ -133,80 +140,91 @@ struct UnifiedDetailView: View {
     // MARK: - Hero Section
 
     private var heroSection: some View {
-        ZStack(alignment: .top) {
-            // Dark background
-            Color(red: 0.15, green: 0.15, blue: 0.2)
+        GeometryReader { geometry in
+            ZStack(alignment: .top) {
+                // Dark background
+                Color(red: 0.15, green: 0.15, blue: 0.2)
 
-            // Center the image vertically - tappable
-            VStack {
-                Spacer()
+                // Image positioned towards bottom, taking available height
+                VStack(spacing: 0) {
+                    // Top spacing for nav buttons (safe area + button height)
+                    Spacer()
+                        .frame(height: 100)
 
-                // Image content (real or placeholder)
-                heroImageContent
-                    .onTapGesture {
-                        showFullScreenImage = true
-                    }
+                    // Image content (real or placeholder) - fills remaining space
+                    heroImageContent(availableWidth: geometry.size.width)
+                        .onTapGesture {
+                            showFullScreenImage = true
+                        }
 
-                Spacer()
-            }
-
-            // Navigation buttons overlay
-            HStack {
-                // Back button
-                Button {
-                    dismiss()
-                } label: {
-                    Image(systemName: "chevron.left")
-                        .font(.system(size: 18, weight: .semibold))
-                        .foregroundStyle(.white)
-                        .frame(width: 44, height: 44)
+                    // Small bottom padding
+                    Spacer()
+                        .frame(height: 20)
                 }
 
-                Spacer()
-
-                // Favorite button
-                Button {
-                    withAnimation(.spring(response: 0.3)) {
-                        isFavorite.toggle()
+                // Navigation buttons overlay
+                HStack {
+                    // Back button
+                    Button {
+                        dismiss()
+                    } label: {
+                        Image(systemName: "chevron.left")
+                            .font(.system(size: 18, weight: .semibold))
+                            .foregroundStyle(.white)
+                            .frame(width: 44, height: 44)
                     }
-                } label: {
-                    Image(systemName: isFavorite ? "heart.fill" : "heart")
-                        .font(.system(size: 18))
-                        .foregroundStyle(isFavorite ? .red : .white)
-                        .frame(width: 44, height: 44)
+
+                    Spacer()
+
+                    // Favorite button
+                    Button {
+                        withAnimation(.spring(response: 0.3)) {
+                            isFavorite.toggle()
+                        }
+                    } label: {
+                        Image(systemName: isFavorite ? "heart.fill" : "heart")
+                            .font(.system(size: 18))
+                            .foregroundStyle(isFavorite ? .red : .white)
+                            .frame(width: 44, height: 44)
+                    }
                 }
+                .padding(.horizontal, 8)
+                .padding(.top, 50) // Safe area offset
             }
-            .padding(.horizontal, 8)
-            .padding(.top, 50) // Safe area offset
         }
         .frame(height: 380)
     }
 
     /// Hero image content with expand icon overlay
     @ViewBuilder
-    private var heroImageContent: some View {
+    private func heroImageContent(availableWidth: CGFloat) -> some View {
+        let imageWidth = availableWidth - 40 // 20px padding on each side
+        let imageHeight: CGFloat = 260 // Taller image
+
         ZStack(alignment: .bottomTrailing) {
             if let imageUrl = config.imageUrl, let url = URL(string: imageUrl) {
                 // Real image from API
                 AsyncImage(url: url) { phase in
                     switch phase {
                     case .empty:
-                        placeholderImage
+                        ProgressView()
+                            .tint(.white)
+                            .frame(width: imageWidth, height: imageHeight)
                     case .success(let image):
                         image
                             .resizable()
                             .aspectRatio(contentMode: .fit)
-                            .frame(width: 280, height: 220)
+                            .frame(maxWidth: imageWidth, maxHeight: imageHeight)
                             .clipShape(RoundedRectangle(cornerRadius: 16))
                     case .failure:
-                        placeholderImage
+                        placeholderImage(width: imageWidth, height: imageHeight)
                     @unknown default:
-                        placeholderImage
+                        placeholderImage(width: imageWidth, height: imageHeight)
                     }
                 }
             } else {
                 // Placeholder when no image URL
-                placeholderImage
+                placeholderImage(width: imageWidth, height: imageHeight)
             }
 
             // Expand icon indicator
@@ -225,7 +243,7 @@ struct UnifiedDetailView: View {
             .padding(12)
     }
 
-    private var placeholderImage: some View {
+    private func placeholderImage(width: CGFloat, height: CGFloat) -> some View {
         RoundedRectangle(cornerRadius: 16)
             .fill(
                 LinearGradient(
@@ -237,7 +255,7 @@ struct UnifiedDetailView: View {
                     endPoint: .bottomTrailing
                 )
             )
-            .frame(width: 280, height: 220)
+            .frame(width: width, height: height)
             .overlay {
                 // Decorative circles like in Figma
                 ZStack {
@@ -362,6 +380,8 @@ struct UnifiedDetailView: View {
             aboutContent
         case .prerequisites:
             prerequisitesContent
+        case .related:
+            relatedContent
         }
     }
 
@@ -436,6 +456,28 @@ struct UnifiedDetailView: View {
                     .font(.system(size: 15))
                     .foregroundStyle(.primary)
                     .lineSpacing(4)
+            }
+        }
+    }
+
+    /// Tab 3: Similaires - Formations liées
+    private var relatedContent: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            Text("Formations similaires")
+                .font(.system(size: 18, weight: .bold))
+
+            if config.relatedFormations.isEmpty {
+                Text("Aucune formation similaire")
+                    .font(.system(size: 15))
+                    .foregroundStyle(.secondary)
+            } else {
+                VStack(spacing: 12) {
+                    ForEach(config.relatedFormations) { formation in
+                        TopRatedCard(formation: formation) {
+                            config.onRelatedFormationTap?(formation)
+                        }
+                    }
+                }
             }
         }
     }

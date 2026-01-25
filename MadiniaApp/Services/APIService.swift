@@ -176,6 +176,15 @@ final class APIService: APIServiceProtocol {
         return response.data
     }
 
+    /// Fetches a single formation with related formations
+    /// - Parameter slug: The formation's URL slug
+    /// - Returns: Tuple of (Formation, [Formation]) with full details and related formations
+    /// - Throws: APIError if the request fails
+    func fetchFormationWithRelated(slug: String) async throws -> (formation: Formation, related: [Formation]) {
+        let response: FormationDetailResponse = try await request(endpoint: "/formations/\(slug)")
+        return (response.data, response.related ?? [])
+    }
+
     /// Fetches all formation categories from the API
     /// - Returns: Array of FormationCategory objects with formation counts
     /// - Throws: APIError if the request fails
