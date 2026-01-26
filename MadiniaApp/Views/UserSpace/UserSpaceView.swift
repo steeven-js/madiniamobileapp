@@ -89,6 +89,19 @@ struct UserSpaceView: View {
                 )
             }
             .buttonStyle(.plain)
+
+            // Pre-registrations - Navigable
+            NavigationLink {
+                MyPreRegistrationsView()
+            } label: {
+                featureCard(
+                    icon: "doc.text.fill",
+                    title: "Mes pré-inscriptions",
+                    description: "Consultez vos demandes de pré-inscription aux formations (max 5).",
+                    showChevron: true
+                )
+            }
+            .buttonStyle(.plain)
         }
     }
 

@@ -32,6 +32,7 @@ struct PreRegistrationRequest: Encodable {
     let fundingMethod: String
     let preferredFormat: String
     let comments: String?
+    let deviceUUID: String?
 
     enum CodingKeys: String, CodingKey {
         case firstName = "first_name"
@@ -42,13 +43,8 @@ struct PreRegistrationRequest: Encodable {
         case fundingMethod = "funding_method"
         case preferredFormat = "preferred_format"
         case comments
+        case deviceUUID = "device_uuid"
     }
-}
-
-/// API response for pre-registration submission
-struct PreRegistrationResponse: Decodable {
-    let success: Bool
-    let message: String?
 }
 
 /// API response for article detail with related articles
@@ -115,8 +111,12 @@ protocol APIServiceProtocol {
         formationId: Int,
         fundingMethod: String,
         preferredFormat: String,
-        comments: String?
-    ) async throws
+        comments: String?,
+        deviceUUID: String?
+    ) async throws -> PreRegistrationCreateResponse
+
+    /// Fetches pre-registrations for a device
+    func fetchPreRegistrations(deviceUUID: String) async throws -> [PreRegistration]
 
     /// Fetches all published articles from the API
     func fetchArticles() async throws -> [Article]
@@ -232,8 +232,9 @@ final class APIService: APIServiceProtocol {
         formationId: Int,
         fundingMethod: String,
         preferredFormat: String,
-        comments: String?
-    ) async throws {
+        comments: String?,
+        deviceUUID: String?
+    ) async throws -> PreRegistrationCreateResponse {
         let body = PreRegistrationRequest(
             firstName: firstName,
             lastName: lastName,
@@ -242,9 +243,18 @@ final class APIService: APIServiceProtocol {
             formationId: formationId,
             fundingMethod: fundingMethod,
             preferredFormat: preferredFormat,
-            comments: comments
+            comments: comments,
+            deviceUUID: deviceUUID
         )
-        let _: PreRegistrationResponse = try await postRequest(endpoint: "/pre-registrations", body: body)
+        return try await postRequest(endpoint: "/pre-registrations", body: body)
+    }
+
+    func fetchPreRegistrations(deviceUUID: String) async throws -> [PreRegistration] {
+        let response: PreRegistrationsListResponse = try await request(
+            endpoint: "/pre-registrations",
+            queryItems: [URLQueryItem(name: "device_uuid", value: deviceUUID)]
+        )
+        return response.data
     }
 
     /// Fetches all published articles from the API
@@ -313,14 +323,22 @@ final class APIService: APIServiceProtocol {
     /// - Parameters:
     ///   - endpoint: API endpoint path (e.g., "/formations")
     ///   - method: HTTP method (defaults to GET)
+    ///   - queryItems: Optional query parameters
     /// - Returns: Decoded response of type T
     /// - Throws: APIError if all retry attempts fail
     private func request<T: Decodable>(
         endpoint: String,
-        method: String = "GET"
+        method: String = "GET",
+        queryItems: [URLQueryItem]? = nil
     ) async throws -> T {
-        // Build URL
-        guard let url = URL(string: "\(baseURL)\(endpoint)") else {
+        // Build URL with optional query items
+        guard var components = URLComponents(string: "\(baseURL)\(endpoint)") else {
+            throw APIError.invalidURL
+        }
+        if let queryItems = queryItems, !queryItems.isEmpty {
+            components.queryItems = queryItems
+        }
+        guard let url = components.url else {
             throw APIError.invalidURL
         }
 
@@ -532,8 +550,9 @@ final class MockAPIService: APIServiceProtocol {
         formationId: Int,
         fundingMethod: String,
         preferredFormat: String,
-        comments: String?
-    ) async throws {
+        comments: String?,
+        deviceUUID: String?
+    ) async throws -> PreRegistrationCreateResponse {
         // Simulate network delay
         try await Task.sleep(for: .seconds(simulatedDelay))
 
@@ -541,7 +560,26 @@ final class MockAPIService: APIServiceProtocol {
             throw errorToThrow
         }
 
-        // Success - no return value needed
+        // Return mock response
+        return PreRegistrationCreateResponse(
+            success: true,
+            message: "Pré-inscription créée",
+            data: nil,
+            currentCount: 1,
+            maxAllowed: 5,
+            remaining: 4,
+            errorCode: nil
+        )
+    }
+
+    func fetchPreRegistrations(deviceUUID: String) async throws -> [PreRegistration] {
+        try await Task.sleep(for: .seconds(simulatedDelay))
+
+        if shouldFail {
+            throw errorToThrow
+        }
+
+        return []
     }
 
     func fetchArticles() async throws -> [Article] {

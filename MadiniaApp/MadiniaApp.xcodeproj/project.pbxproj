@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8D3BF7B2358241BEB78E6069 /* MyPreRegistrationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B05CA648DDB49F8BA3204D0 /* MyPreRegistrationsView.swift */; };
+		83ECEFB2D96349D7B60F1E53 /* MyPreRegistrationsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A082AA394C634C269594E699 /* MyPreRegistrationsViewModel.swift */; };
+		74ADBB69B67E440599A5D0A1 /* PreRegistrationsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF68241339949EBB1EF3EDF /* PreRegistrationsService.swift */; };
+		B348C4CE47024C2DBAA7444A /* PreRegistration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425DA60DAEB04458BF3A5B66 /* PreRegistration.swift */; };
 		69F0DABE1A1A44B2A391906B /* AllServicesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C73721984AE4C4D9B120091 /* AllServicesListView.swift */; };
 		120D914AC37DA0B3BB2093EA /* MadiniaHubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C111D8DAAA40A220EC343BF /* MadiniaHubView.swift */; };
 		36B78635747049BFA5AB1A9D /* ServiceDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB02D656A044D26A0789F00 /* ServiceDetailView.swift */; };
@@ -104,6 +108,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5B05CA648DDB49F8BA3204D0 /* MyPreRegistrationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Views/UserSpace/MyPreRegistrationsView.swift; sourceTree = "<group>"; };
+		A082AA394C634C269594E699 /* MyPreRegistrationsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModels/MyPreRegistrationsViewModel.swift; sourceTree = "<group>"; };
+		0AF68241339949EBB1EF3EDF /* PreRegistrationsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Services/PreRegistrationsService.swift; sourceTree = "<group>"; };
+		425DA60DAEB04458BF3A5B66 /* PreRegistration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models/PreRegistration.swift; sourceTree = "<group>"; };
 		7C73721984AE4C4D9B120091 /* AllServicesListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllServicesListView.swift; sourceTree = "<group>"; };
 		1AABB2D1FCAE4F0584974B1C /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		3C111D8DAAA40A220EC343BF /* MadiniaHubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MadiniaHubView.swift; sourceTree = "<group>"; };
@@ -612,6 +620,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8D3BF7B2358241BEB78E6069 /* MyPreRegistrationsView.swift in Sources */,
+				83ECEFB2D96349D7B60F1E53 /* MyPreRegistrationsViewModel.swift in Sources */,
+				74ADBB69B67E440599A5D0A1 /* PreRegistrationsService.swift in Sources */,
+				B348C4CE47024C2DBAA7444A /* PreRegistration.swift in Sources */,
 				69F0DABE1A1A44B2A391906B /* AllServicesListView.swift in Sources */,
 				
 				B7CDF691054E454FA0AFA335 /* FavoritesService.swift in Sources */,

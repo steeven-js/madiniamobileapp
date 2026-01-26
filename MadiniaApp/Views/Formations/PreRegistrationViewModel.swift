@@ -87,6 +87,24 @@ final class PreRegistrationViewModel {
     // MARK: - Dependencies
 
     private let apiService: APIServiceProtocol
+    private let preRegistrationsService: PreRegistrationsService
+
+    // MARK: - Computed Properties - Limit
+
+    /// Whether the user can create more pre-registrations
+    var canCreateMore: Bool {
+        preRegistrationsService.canCreateMore
+    }
+
+    /// Number of remaining pre-registrations
+    var remainingCount: Int {
+        preRegistrationsService.remainingCount
+    }
+
+    /// Check if user is already pre-registered for a specific formation
+    func isAlreadyRegistered(formationId: Int) -> Bool {
+        preRegistrationsService.isPreRegistered(formationId: formationId)
+    }
 
     // MARK: - Computed Properties - State
 
@@ -152,8 +170,12 @@ final class PreRegistrationViewModel {
 
     // MARK: - Initialization
 
-    init(apiService: APIServiceProtocol = APIService.shared) {
+    init(
+        apiService: APIServiceProtocol = APIService.shared,
+        preRegistrationsService: PreRegistrationsService = .shared
+    ) {
         self.apiService = apiService
+        self.preRegistrationsService = preRegistrationsService
     }
 
     // MARK: - Actions
@@ -166,10 +188,22 @@ final class PreRegistrationViewModel {
         guard isFormValid else { return }
         guard let funding = fundingMethod, let format = preferredFormat else { return }
 
+        // Check if already registered for this formation
+        if preRegistrationsService.isPreRegistered(formationId: formationId) {
+            state = .error("Vous êtes déjà pré-inscrit à cette formation.")
+            return
+        }
+
+        // Check if limit reached
+        if !preRegistrationsService.canCreateMore {
+            state = .error("Vous avez atteint la limite de \(PreRegistrationsService.maxPreRegistrations) pré-inscriptions.")
+            return
+        }
+
         state = .submitting
 
         do {
-            try await apiService.submitPreRegistration(
+            let response = try await apiService.submitPreRegistration(
                 firstName: firstName.trimmingCharacters(in: .whitespacesAndNewlines),
                 lastName: lastName.trimmingCharacters(in: .whitespacesAndNewlines),
                 email: email.trimmingCharacters(in: .whitespacesAndNewlines),
@@ -177,9 +211,19 @@ final class PreRegistrationViewModel {
                 formationId: formationId,
                 fundingMethod: funding.rawValue,
                 preferredFormat: format.rawValue,
-                comments: comments.isEmpty ? nil : comments.trimmingCharacters(in: .whitespacesAndNewlines)
+                comments: comments.isEmpty ? nil : comments.trimmingCharacters(in: .whitespacesAndNewlines),
+                deviceUUID: preRegistrationsService.getDeviceUUID()
             )
-            state = .success
+
+            if response.success {
+                // Add to local service if we got data back
+                if let registration = response.data {
+                    preRegistrationsService.addPreRegistration(registration)
+                }
+                state = .success
+            } else {
+                state = .error(response.message ?? "Erreur lors de l'envoi")
+            }
         } catch let error as APIError {
             state = .error(error.errorDescription ?? "Erreur lors de l'envoi")
         } catch {
