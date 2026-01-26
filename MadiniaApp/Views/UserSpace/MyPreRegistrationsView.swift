@@ -196,7 +196,7 @@ struct PreRegistrationCard: View {
 
                 // Formation title and date
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(registration.formation?.title ?? "Formation #\(registration.formationId)")
+                    Text(registration.displayTitle)
                         .font(MadiniaTypography.headline)
                         .foregroundStyle(.primary)
                         .lineLimit(2)
@@ -351,7 +351,8 @@ struct PreRegistrationCard: View {
                 duration: "14 heures",
                 level: "debutant",
                 imageUrl: nil
-            )
+            ),
+            formationTitle: nil
         )
     )
     .padding()

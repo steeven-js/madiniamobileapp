@@ -84,19 +84,19 @@ struct MadiFAB: View {
             HStack(spacing: 6) {
                 Text(currentTeaserMessage)
                     .font(.system(size: 13, weight: .medium))
-                    .foregroundStyle(MadiniaColors.darkGray)
+                    .foregroundStyle(.primary)
             }
             .padding(.horizontal, 12)
             .padding(.vertical, 8)
             .background(
                 RoundedRectangle(cornerRadius: 16)
-                    .fill(Color.white)
-                    .shadow(color: .black.opacity(0.12), radius: 6, x: 0, y: 2)
+                    .fill(Color(.systemBackground))
+                    .shadow(color: .black.opacity(0.15), radius: 8, x: 0, y: 3)
             )
             .overlay(alignment: .trailing) {
                 // Triangle pointer
                 Triangle()
-                    .fill(Color.white)
+                    .fill(Color(.systemBackground))
                     .frame(width: 10, height: 8)
                     .rotationEffect(.degrees(-90))
                     .offset(x: 14, y: 0)

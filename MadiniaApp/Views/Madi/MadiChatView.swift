@@ -62,6 +62,10 @@ struct MadiChatView: View {
         ScrollViewReader { proxy in
             ScrollView {
                 LazyVStack(spacing: 16) {
+                    // Coming soon teaser banner
+                    comingSoonBanner
+                        .id("teaser")
+
                     ForEach(viewModel.messages) { message in
                         MessageBubble(
                             message: message,
@@ -88,6 +92,72 @@ struct MadiChatView: View {
                 scrollToBottom(proxy: proxy)
             }
         }
+    }
+
+    // MARK: - Coming Soon Banner
+
+    private var comingSoonBanner: some View {
+        VStack(spacing: 12) {
+            // Animated sparkles icon
+            Image(systemName: "wand.and.stars")
+                .font(.system(size: 32))
+                .foregroundStyle(
+                    LinearGradient(
+                        colors: [MadiniaColors.gold, MadiniaColors.violet],
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    )
+                )
+                .symbolEffect(.pulse.byLayer, options: .repeating)
+
+            VStack(spacing: 6) {
+                Text("Madi arrive bientôt !")
+                    .font(.headline)
+                    .foregroundStyle(.primary)
+
+                Text("Je suis en cours de développement pour devenir votre assistant IA personnalisé. Revenez vite pour découvrir toutes mes fonctionnalités !")
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.center)
+            }
+
+            // Feature pills
+            HStack(spacing: 8) {
+                featurePill(icon: "brain.head.profile", text: "IA avancée")
+                featurePill(icon: "message.fill", text: "Chat intelligent")
+            }
+        }
+        .padding(16)
+        .background(
+            RoundedRectangle(cornerRadius: 16)
+                .fill(Color(.secondarySystemBackground))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 16)
+                        .stroke(
+                            LinearGradient(
+                                colors: [MadiniaColors.gold.opacity(0.5), MadiniaColors.violet.opacity(0.5)],
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            ),
+                            lineWidth: 1
+                        )
+                )
+        )
+        .padding(.bottom, 8)
+    }
+
+    private func featurePill(icon: String, text: String) -> some View {
+        HStack(spacing: 4) {
+            Image(systemName: icon)
+                .font(.caption)
+            Text(text)
+                .font(.caption)
+        }
+        .foregroundStyle(MadiniaColors.violet)
+        .padding(.horizontal, 10)
+        .padding(.vertical, 6)
+        .background(MadiniaColors.violet.opacity(0.15))
+        .clipShape(Capsule())
     }
 
     private func scrollToBottom(proxy: ScrollViewProxy) {

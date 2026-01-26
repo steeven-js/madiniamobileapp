@@ -23,6 +23,7 @@ struct PreRegistration: Codable, Identifiable, Equatable {
     let deviceUUID: String?
     let createdAt: String?
     let formation: PreRegistrationFormation?
+    let formationTitle: String?
 
     enum CodingKeys: String, CodingKey {
         case id
@@ -39,6 +40,12 @@ struct PreRegistration: Codable, Identifiable, Equatable {
         case deviceUUID = "device_uuid"
         case createdAt = "created_at"
         case formation
+        case formationTitle = "formation_title"
+    }
+
+    /// Returns the formation title from either the formation object or formationTitle field
+    var displayTitle: String {
+        formation?.title ?? formationTitle ?? "Formation #\(formationId)"
     }
 
     /// Full name of the pre-registrant
@@ -142,8 +149,8 @@ struct PreRegistrationFormation: Codable, Equatable {
 struct PreRegistrationsListResponse: Decodable {
     let success: Bool
     let data: [PreRegistration]
-    let count: Int
-    let maxAllowed: Int
+    let count: Int?
+    let maxAllowed: Int?
 
     enum CodingKeys: String, CodingKey {
         case success, data, count
