@@ -23,10 +23,13 @@ struct SplashView: View {
     /// Accessibility: reduced motion preference
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
+    /// Current color scheme for adaptive styling
+    @Environment(\.colorScheme) private var colorScheme
+
     var body: some View {
         ZStack {
-            // Background
-            Color.white
+            // Background - adaptive to color scheme
+            Color(.systemBackground)
                 .ignoresSafeArea()
 
             VStack(spacing: MadiniaSpacing.lg) {
@@ -41,10 +44,10 @@ struct SplashView: View {
                     .scaleEffect(logoScale)
                     .opacity(logoOpacity)
 
-                // Brand name
+                // Brand name - adaptive to color scheme
                 Text("Madin.IA")
                     .font(.system(size: 36, weight: .bold, design: .default))
-                    .foregroundStyle(MadiniaColors.darkGray)
+                    .foregroundStyle(.primary)
                     .opacity(textOpacity)
 
                 // Tagline
@@ -88,6 +91,12 @@ struct SplashView: View {
 
 // MARK: - Preview
 
-#Preview {
+#Preview("Light Mode") {
     SplashView()
+        .preferredColorScheme(.light)
+}
+
+#Preview("Dark Mode") {
+    SplashView()
+        .preferredColorScheme(.dark)
 }
