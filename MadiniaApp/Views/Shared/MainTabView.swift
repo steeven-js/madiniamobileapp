@@ -7,12 +7,42 @@
 
 import SwiftUI
 
-/// Main tab navigation view providing access to the 4 primary sections of the app.
-/// Uses TabView with NavigationStack per tab for proper navigation hierarchy.
+/// Main tab types for the app
+enum MainTab: Int, CaseIterable {
+    case home = 0
+    case madinia = 1
+    case search = 2
+
+    var title: String {
+        switch self {
+        case .home: return "Accueil"
+        case .madinia: return "Madin.IA"
+        case .search: return "Recherche"
+        }
+    }
+
+    var icon: String {
+        switch self {
+        case .home: return "house.fill"
+        case .madinia: return "madinia-tab-icon"
+        case .search: return "magnifyingglass"
+        }
+    }
+
+    var isSystemIcon: Bool {
+        switch self {
+        case .madinia: return false
+        default: return true
+        }
+    }
+}
+
+/// Main tab navigation view providing access to the primary sections of the app.
+/// Uses a custom App Store-style tab bar with grouped tabs.
 /// Includes the Madi FAB overlay for AI coach access.
 struct MainTabView: View {
-    /// Selected tab index, persisted across app launches
-    @AppStorage("selectedTab") private var selectedTab = 0
+    /// Selected tab, persisted across app launches
+    @AppStorage("selectedTab") private var selectedTab: MainTab = .home
 
     /// Controls the Madi chat sheet presentation
     @State private var isShowingMadiChat = false
@@ -44,45 +74,24 @@ struct MainTabView: View {
 
     var body: some View {
         ZStack {
-            TabView(selection: $selectedTab) {
-                NavigationStack {
-                    HomeView(selectedTab: $selectedTab)
+            // Content based on selected tab
+            Group {
+                switch selectedTab {
+                case .home:
+                    NavigationStack {
+                        HomeView(selectedTab: .constant(0))
+                    }
+                case .madinia:
+                    MadiniaHubView()
+                case .search:
+                    SearchTab(selectedFormationSlug: $selectedFormationSlug)
                 }
-                .tabItem {
-                    Label("Accueil", systemImage: "house.fill")
-                }
-                .tag(0)
-                .accessibilityLabel("Accueil")
-                .accessibilityHint("Affiche l'écran d'accueil avec les highlights")
+            }
 
-                SearchTab(selectedFormationSlug: $selectedFormationSlug)
-                    .tabItem {
-                        Label("Recherche", systemImage: "magnifyingglass")
-                    }
-                    .tag(1)
-                    .accessibilityLabel("Recherche")
-                    .accessibilityHint("Rechercher des formations, services et catégories")
-
-                MadiniaHubView()
-                    .tabItem {
-                        Label {
-                            Text("Madin.IA")
-                        } icon: {
-                            Image("madinia-tab-icon")
-                                .renderingMode(.template)
-                        }
-                    }
-                    .tag(2)
-                    .accessibilityLabel("Madin.IA")
-                    .accessibilityHint("Affiche le hub Madin.IA avec blog, à propos et actualités")
-
-                ContactView()
-                    .tabItem {
-                        Label("Contact", systemImage: "envelope.fill")
-                    }
-                    .tag(3)
-                    .accessibilityLabel("Contact")
-                    .accessibilityHint("Affiche le formulaire de contact")
+            // Custom Tab Bar
+            VStack {
+                Spacer()
+                customTabBar
             }
 
             // Settings button overlay (top-right)
@@ -102,7 +111,7 @@ struct MainTabView: View {
                     }
                     .accessibilityLabel("Paramètres")
                     .padding(.trailing, MadiniaSpacing.md)
-                    .padding(.top, 4) // Just below safe area
+                    .padding(.top, 4)
                 }
                 Spacer()
             }
@@ -114,12 +123,10 @@ struct MainTabView: View {
                     Spacer()
                     MadiFAB(isShowingChat: $isShowingMadiChat)
                         .padding(.trailing, MadiniaSpacing.md)
-                        .padding(.bottom, 80) // Above tab bar
+                        .padding(.bottom, 100) // Above custom tab bar
                 }
             }
         }
-        .tint(MadiniaColors.gold) // Gold tab bar accent
-        .observeKeyboard()
         .sheet(isPresented: $isShowingMadiChat) {
             MadiChatView { recommendation in
                 navigateToFormation(slug: recommendation.formationSlug)
@@ -147,7 +154,6 @@ struct MainTabView: View {
         }
         .task {
             await pushService.checkAuthorizationStatus()
-            // Show permission prompt on first launch after a short delay
             if pushService.shouldPromptForPermission {
                 try? await Task.sleep(for: .seconds(2))
                 isShowingPermissionPrompt = true
@@ -162,20 +168,76 @@ struct MainTabView: View {
         .onChange(of: deepLinkArticleSlug.wrappedValue) { _, newSlug in
             if let slug = newSlug {
                 selectedArticleSlug = slug
-                selectedTab = 2 // Switch to Madin.IA tab
+                selectedTab = .madinia
                 deepLinkArticleSlug.wrappedValue = nil
             }
         }
+    }
+
+    // MARK: - Custom Tab Bar (App Store Style)
+
+    private var customTabBar: some View {
+        HStack(spacing: MadiniaSpacing.sm) {
+            // Left group: Accueil + Madin.IA
+            HStack(spacing: 0) {
+                tabButton(for: .home)
+                tabButton(for: .madinia)
+            }
+            .padding(.horizontal, MadiniaSpacing.xs)
+            .padding(.vertical, MadiniaSpacing.xs)
+            .background(.ultraThinMaterial)
+            .clipShape(RoundedRectangle(cornerRadius: 25))
+
+            // Right group: Recherche
+            tabButton(for: .search)
+                .padding(.horizontal, MadiniaSpacing.sm)
+                .padding(.vertical, MadiniaSpacing.xs)
+                .background(.ultraThinMaterial)
+                .clipShape(RoundedRectangle(cornerRadius: 25))
+        }
+        .padding(.horizontal, MadiniaSpacing.md)
+        .padding(.bottom, MadiniaSpacing.sm)
+    }
+
+    private func tabButton(for tab: MainTab) -> some View {
+        Button {
+            withAnimation(.easeInOut(duration: 0.2)) {
+                selectedTab = tab
+            }
+        } label: {
+            VStack(spacing: 4) {
+                if tab.isSystemIcon {
+                    Image(systemName: tab.icon)
+                        .font(.title2)
+                        .symbolVariant(selectedTab == tab ? .fill : .none)
+                } else {
+                    Image(tab.icon)
+                        .renderingMode(.template)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 24, height: 24)
+                }
+
+                Text(tab.title)
+                    .font(.caption2)
+                    .fontWeight(selectedTab == tab ? .semibold : .regular)
+            }
+            .foregroundStyle(selectedTab == tab ? MadiniaColors.gold : .secondary)
+            .frame(minWidth: 70)
+            .padding(.vertical, MadiniaSpacing.xs)
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(tab.title)
+        .accessibilityAddTraits(selectedTab == tab ? .isSelected : [])
     }
 
     // MARK: - Navigation
 
     private func navigateToFormation(slug: String) {
         selectedFormationSlug = slug
-        selectedTab = 1 // Switch to Formations tab
+        selectedTab = .search
     }
 
-    /// Shows permission prompt after a meaningful action
     func showPermissionPromptIfNeeded() {
         if pushService.shouldPromptForPermission {
             isShowingPermissionPrompt = true
@@ -205,11 +267,8 @@ private struct SearchTab: View {
     private func loadAndNavigateToFormation(slug: String) async {
         do {
             let formation = try await apiService.fetchFormation(slug: slug)
-            // SearchView handles its own navigation, so we need to broadcast this
-            // For now, the deep link will open the Search tab
             selectedFormationSlug = nil
         } catch {
-            // Handle error silently
             selectedFormationSlug = nil
         }
     }
@@ -219,23 +278,16 @@ private struct SearchTab: View {
     MainTabView()
 }
 
-#Preview("Formations Tab") {
+#Preview("Madin.IA Tab") {
     MainTabView()
         .onAppear {
             UserDefaults.standard.set(1, forKey: "selectedTab")
         }
 }
 
-#Preview("Madin.IA Tab") {
+#Preview("Recherche Tab") {
     MainTabView()
         .onAppear {
             UserDefaults.standard.set(2, forKey: "selectedTab")
-        }
-}
-
-#Preview("Contact Tab") {
-    MainTabView()
-        .onAppear {
-            UserDefaults.standard.set(3, forKey: "selectedTab")
         }
 }

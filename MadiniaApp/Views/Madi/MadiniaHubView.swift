@@ -29,13 +29,15 @@ struct MadiniaHubView: View {
     // MARK: - Tab Selector
 
     private var tabSelector: some View {
-        HStack(spacing: 0) {
-            ForEach(HubTab.allCases, id: \.self) { tab in
-                tabButton(for: tab)
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: MadiniaSpacing.lg) {
+                ForEach(HubTab.allCases, id: \.self) { tab in
+                    tabButton(for: tab)
+                }
             }
+            .padding(.horizontal, MadiniaSpacing.md)
+            .padding(.vertical, MadiniaSpacing.sm)
         }
-        .padding(.horizontal, MadiniaSpacing.md)
-        .padding(.vertical, MadiniaSpacing.sm)
     }
 
     private func tabButton(for tab: HubTab) -> some View {
@@ -48,6 +50,7 @@ struct MadiniaHubView: View {
                 Text(tab.title)
                     .font(MadiniaTypography.headline)
                     .foregroundStyle(selectedTab == tab ? .primary : .secondary)
+                    .fixedSize(horizontal: true, vertical: false)
 
                 // Underline indicator
                 Rectangle()
@@ -57,7 +60,6 @@ struct MadiniaHubView: View {
             }
         }
         .buttonStyle(.plain)
-        .frame(maxWidth: .infinity)
         .accessibilityLabel(tab.title)
         .accessibilityAddTraits(selectedTab == tab ? .isSelected : [])
     }
@@ -73,6 +75,10 @@ struct MadiniaHubView: View {
             blogContent
         case .news:
             newsContent
+        case .events:
+            eventsContent
+        case .contact:
+            ContactView()
         }
     }
 
@@ -195,6 +201,22 @@ struct MadiniaHubView: View {
             .padding(MadiniaSpacing.md)
         }
     }
+
+    // MARK: - Events Content
+
+    private var eventsContent: some View {
+        ScrollView {
+            VStack(spacing: MadiniaSpacing.lg) {
+                ContentUnavailableView {
+                    Label("Événements", systemImage: "calendar.badge.clock")
+                } description: {
+                    Text("Les événements Madin.IA arrivent bientôt !\n\nRetrouvez ici nos webinaires, ateliers et rencontres à venir.")
+                }
+                .padding(.top, MadiniaSpacing.xl)
+            }
+            .padding(MadiniaSpacing.md)
+        }
+    }
 }
 
 // MARK: - Hub Tab Enum
@@ -203,12 +225,16 @@ enum HubTab: String, CaseIterable {
     case about
     case blog
     case news
+    case events
+    case contact
 
     var title: String {
         switch self {
         case .about: return "À propos"
         case .blog: return "Blog"
         case .news: return "Actualités"
+        case .events: return "Événements"
+        case .contact: return "Contact"
         }
     }
 }

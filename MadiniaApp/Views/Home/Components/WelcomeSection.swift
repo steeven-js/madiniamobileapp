@@ -42,6 +42,7 @@ struct WelcomeSection: View {
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 80, height: 80)
+                .clipShape(RoundedRectangle(cornerRadius: MadiniaRadius.lg))
                 .accessibilityHidden(true)
         } else {
             // Gradient placeholder with icon
