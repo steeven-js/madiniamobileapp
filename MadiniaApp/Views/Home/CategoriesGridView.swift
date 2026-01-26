@@ -12,12 +12,94 @@ import SwiftUI
 /// Uses masonry layout with alternating card heights.
 struct CategoriesGridView: View {
     /// Repository for formations data
-    private let repository = FormationsRepository.shared
+    @State private var repository = FormationsRepository.shared
 
     /// Action when a category is selected
     var onCategorySelected: ((FormationCategory) -> Void)?
 
     var body: some View {
+        Group {
+            switch repository.categoriesLoadingState {
+            case .idle, .loading:
+                loadingView
+            case .loaded(_):
+                if repository.categories.isEmpty {
+                    emptyStateView
+                } else {
+                    categoriesGridContent
+                }
+            case .error(let message):
+                errorView(message: message)
+            }
+        }
+        .navigationTitle("Catégories")
+        .navigationBarTitleDisplayMode(.large)
+        .background(Color(UIColor.systemGroupedBackground))
+        .task {
+            await repository.fetchCategoriesIfNeeded()
+        }
+    }
+
+    // MARK: - Loading View
+
+    private var loadingView: some View {
+        VStack(spacing: MadiniaSpacing.lg) {
+            ProgressView()
+                .scaleEffect(1.2)
+            Text("Chargement des catégories...")
+                .font(MadiniaTypography.body)
+                .foregroundStyle(.secondary)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+
+    // MARK: - Empty State
+
+    private var emptyStateView: some View {
+        VStack(spacing: MadiniaSpacing.xl) {
+            Image(systemName: "square.grid.2x2")
+                .font(.system(size: 60))
+                .foregroundStyle(MadiniaColors.violet.opacity(0.6))
+
+            Text("Aucune catégorie disponible")
+                .font(MadiniaTypography.title2)
+                .foregroundStyle(.primary)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+
+    // MARK: - Error View
+
+    private func errorView(message: String) -> some View {
+        VStack(spacing: MadiniaSpacing.lg) {
+            Image(systemName: "exclamationmark.triangle")
+                .font(.system(size: 48))
+                .foregroundStyle(.orange)
+
+            Text("Erreur de chargement")
+                .font(MadiniaTypography.title2)
+                .foregroundStyle(.primary)
+
+            Text(message)
+                .font(MadiniaTypography.body)
+                .foregroundStyle(.secondary)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, MadiniaSpacing.xl)
+
+            Button("Réessayer") {
+                Task {
+                    await repository.fetchCategoriesIfNeeded()
+                }
+            }
+            .buttonStyle(.borderedProminent)
+            .tint(MadiniaColors.violet)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+
+    // MARK: - Categories Grid Content
+
+    private var categoriesGridContent: some View {
         ScrollView {
             HStack(alignment: .top, spacing: MadiniaSpacing.md) {
                 // Left column
@@ -48,10 +130,8 @@ struct CategoriesGridView: View {
             }
             .padding(.horizontal, MadiniaSpacing.md)
             .padding(.vertical, MadiniaSpacing.md)
+            .padding(.bottom, 100)
         }
-        .navigationTitle("Catégories")
-        .navigationBarTitleDisplayMode(.large)
-        .background(Color(UIColor.systemGroupedBackground))
     }
 
     // MARK: - Computed Properties
