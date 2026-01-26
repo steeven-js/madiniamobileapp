@@ -86,6 +86,7 @@
 		THEMEMANAGERBUILD000 /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = THEMEMANAGERFILE0000 /* ThemeManager.swift */; };
 		APPEARANCESETTBUILD0 /* AppearanceSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = APPEARANCESETTFILE00 /* AppearanceSettingsView.swift */; };
 		SETTINGSVIEWBUILD000 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = SETTINGSVIEWFILE0000 /* SettingsView.swift */; };
+		USERSPACEVIEWBUILD00 /* UserSpaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = USERSPACEVIEWFILE000 /* UserSpaceView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -181,6 +182,7 @@
 		THEMEMANAGERFILE0000 /* ThemeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeManager.swift; sourceTree = "<group>"; };
 		APPEARANCESETTFILE00 /* AppearanceSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceSettingsView.swift; sourceTree = "<group>"; };
 		SETTINGSVIEWFILE0000 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		USERSPACEVIEWFILE000 /* UserSpaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSpaceView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -359,6 +361,7 @@
 				VIEWSBLOG0000000000000 /* Blog */,
 				VIEWSCONTACT000000000 /* Contact */,
 				VIEWSMADI0000000000000 /* Madi */,
+				VIEWSUSERSPACE00000000 /* UserSpace */,
 				VIEWSSETTINGS0000000 /* Settings */,
 				VIEWSSHARED00000000000 /* Shared */,
 			);
@@ -469,6 +472,14 @@
 				SETTINGSVIEWFILE0000 /* SettingsView.swift */,
 			);
 			path = Settings;
+			sourceTree = "<group>";
+		};
+		VIEWSUSERSPACE00000000 /* UserSpace */ = {
+			isa = PBXGroup;
+			children = (
+				USERSPACEVIEWFILE000 /* UserSpaceView.swift */,
+			);
+			path = UserSpace;
 			sourceTree = "<group>";
 		};
 		VIEWSSHARED00000000000 /* Shared */ = {
@@ -661,6 +672,7 @@
 				APPEARANCESETTBUILD0 /* AppearanceSettingsView.swift in Sources */,
 				SETTINGSVIEWBUILD000 /* SettingsView.swift in Sources */,
 				TEASERCAROUSELBUILD00 /* TeaserCarouselSection.swift in Sources */,
+				USERSPACEVIEWBUILD00 /* UserSpaceView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

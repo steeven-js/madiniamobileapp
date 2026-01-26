@@ -141,7 +141,7 @@ struct UnifiedDetailView: View {
 
     private var heroSection: some View {
         GeometryReader { geometry in
-            ZStack(alignment: .top) {
+            ZStack {
                 // Dark background
                 Color(red: 0.15, green: 0.15, blue: 0.2)
 
@@ -162,34 +162,45 @@ struct UnifiedDetailView: View {
                         .frame(height: 20)
                 }
 
-                // Navigation buttons overlay
-                HStack {
-                    // Back button
-                    Button {
-                        dismiss()
-                    } label: {
-                        Image(systemName: "chevron.left")
-                            .font(.system(size: 18, weight: .semibold))
-                            .foregroundStyle(.white)
-                            .frame(width: 44, height: 44)
-                    }
-
-                    Spacer()
-
-                    // Favorite button
-                    Button {
-                        withAnimation(.spring(response: 0.3)) {
-                            isFavorite.toggle()
+                // Back button (top-left)
+                VStack {
+                    HStack {
+                        Button {
+                            dismiss()
+                        } label: {
+                            Image(systemName: "chevron.left")
+                                .font(.system(size: 18, weight: .semibold))
+                                .foregroundStyle(.white)
+                                .frame(width: 44, height: 44)
                         }
-                    } label: {
-                        Image(systemName: isFavorite ? "heart.fill" : "heart")
-                            .font(.system(size: 18))
-                            .foregroundStyle(isFavorite ? .red : .white)
-                            .frame(width: 44, height: 44)
+                        Spacer()
+                    }
+                    .padding(.horizontal, 8)
+                    .padding(.top, 50) // Safe area offset
+                    Spacer()
+                }
+
+                // Favorite button (bottom-left, large)
+                VStack {
+                    Spacer()
+                    HStack {
+                        Button {
+                            withAnimation(.spring(response: 0.3)) {
+                                isFavorite.toggle()
+                            }
+                        } label: {
+                            Image(systemName: isFavorite ? "heart.fill" : "heart")
+                                .font(.system(size: 24, weight: .semibold))
+                                .foregroundStyle(isFavorite ? .red : .white)
+                                .frame(width: 56, height: 56)
+                                .background(Color.black.opacity(0.4))
+                                .clipShape(Circle())
+                        }
+                        .padding(.leading, 20)
+                        .padding(.bottom, 16)
+                        Spacer()
                     }
                 }
-                .padding(.horizontal, 8)
-                .padding(.top, 50) // Safe area offset
             }
         }
         .frame(height: 380)

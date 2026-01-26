@@ -11,12 +11,14 @@ import SwiftUI
 enum MainTab: Int, CaseIterable {
     case home = 0
     case madinia = 1
-    case search = 2
+    case userSpace = 2
+    case search = 3
 
     var title: String {
         switch self {
         case .home: return "Accueil"
         case .madinia: return "Madin.IA"
+        case .userSpace: return "L'IA&Vous"
         case .search: return "Recherche"
         }
     }
@@ -25,6 +27,7 @@ enum MainTab: Int, CaseIterable {
         switch self {
         case .home: return "house.fill"
         case .madinia: return "madinia-tab-icon"
+        case .userSpace: return "person.crop.circle"
         case .search: return "magnifyingglass"
         }
     }
@@ -83,6 +86,8 @@ struct MainTabView: View {
                     }
                 case .madinia:
                     MadiniaHubView()
+                case .userSpace:
+                    UserSpaceView()
                 case .search:
                     SearchTab(selectedFormationSlug: $selectedFormationSlug)
                 }
@@ -178,10 +183,11 @@ struct MainTabView: View {
 
     private var customTabBar: some View {
         HStack(spacing: MadiniaSpacing.sm) {
-            // Left group: Accueil + Madin.IA
+            // Left group: Accueil + Madin.IA + L'IA&Vous
             HStack(spacing: 0) {
                 tabButton(for: .home)
                 tabButton(for: .madinia)
+                tabButton(for: .userSpace)
             }
             .padding(.horizontal, MadiniaSpacing.xs)
             .padding(.vertical, MadiniaSpacing.xs)
@@ -285,9 +291,16 @@ private struct SearchTab: View {
         }
 }
 
-#Preview("Recherche Tab") {
+#Preview("L'IA&Vous Tab") {
     MainTabView()
         .onAppear {
             UserDefaults.standard.set(2, forKey: "selectedTab")
+        }
+}
+
+#Preview("Recherche Tab") {
+    MainTabView()
+        .onAppear {
+            UserDefaults.standard.set(3, forKey: "selectedTab")
         }
 }
