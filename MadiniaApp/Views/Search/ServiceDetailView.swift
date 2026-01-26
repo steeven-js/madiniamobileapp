@@ -15,6 +15,9 @@ struct ServiceDetailView: View {
     /// Environment dismiss action
     @Environment(\.dismiss) private var dismiss
 
+    /// Navigation context for contact navigation
+    @Environment(\.navigationContext) private var navigationContext
+
     var body: some View {
         NavigationStack {
             UnifiedDetailView(config: configuration)
@@ -39,7 +42,8 @@ struct ServiceDetailView: View {
             availableTabs: [.about],
             ctaTitle: "Nous contacter",
             ctaAction: {
-                // Navigate to contact view handled by parent
+                navigationContext.navigateToContact(from: service)
+                dismiss()
             },
             shareUrl: shareURL
         )

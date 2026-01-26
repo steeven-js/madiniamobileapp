@@ -13,6 +13,9 @@ struct MadiniaHubView: View {
     /// Currently selected tab - default to About since Blog/News have no content yet
     @State private var selectedTab: HubTab = .about
 
+    /// Navigation context for handling contact navigation from services
+    @Environment(\.navigationContext) private var navigationContext
+
     var body: some View {
         NavigationStack {
             tabContent
@@ -23,6 +26,14 @@ struct MadiniaHubView: View {
                 .navigationTitle("Madin.IA")
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbarBackground(.visible, for: .navigationBar)
+        }
+        .onChange(of: navigationContext.shouldNavigateToContact) { _, shouldNavigate in
+            if shouldNavigate {
+                withAnimation(.easeInOut(duration: 0.2)) {
+                    selectedTab = .contact
+                }
+                navigationContext.clearNavigationFlag()
+            }
         }
     }
 

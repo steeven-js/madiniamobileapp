@@ -72,6 +72,9 @@ struct MainTabView: View {
     /// Push notification service
     @State private var pushService = PushNotificationService.shared
 
+    /// Navigation context for handling contact navigation
+    private var navigationContext = NavigationContext.shared
+
     /// API service for fetching formation details
     private let apiService: APIServiceProtocol = APIService.shared
 
@@ -175,6 +178,13 @@ struct MainTabView: View {
                 selectedArticleSlug = slug
                 selectedTab = .madinia
                 deepLinkArticleSlug.wrappedValue = nil
+            }
+        }
+        .onChange(of: navigationContext.shouldNavigateToContact) { _, shouldNavigate in
+            if shouldNavigate {
+                withAnimation(.easeInOut(duration: 0.2)) {
+                    selectedTab = .madinia
+                }
             }
         }
     }

@@ -11,6 +11,7 @@ import SwiftUI
 enum NavigationContextType: String, Codable {
     case formation
     case article
+    case service
 }
 
 /// Model representing the navigation context
@@ -28,6 +29,9 @@ final class NavigationContext {
 
     /// The current navigation context (last viewed item)
     private(set) var currentContext: NavigationContextItem?
+
+    /// Flag to trigger navigation to the Contact screen
+    var shouldNavigateToContact = false
 
     private init() {}
 
@@ -51,9 +55,29 @@ final class NavigationContext {
         )
     }
 
+    /// Sets the context when user views a service
+    func setService(_ service: Service) {
+        currentContext = NavigationContextItem(
+            type: .service,
+            id: service.id,
+            title: service.name
+        )
+    }
+
+    /// Navigate to contact screen with service context
+    func navigateToContact(from service: Service) {
+        setService(service)
+        shouldNavigateToContact = true
+    }
+
     /// Clears the current context (after successful contact submission)
     func clear() {
         currentContext = nil
+    }
+
+    /// Clears navigation flag after navigation is complete
+    func clearNavigationFlag() {
+        shouldNavigateToContact = false
     }
 
     // MARK: - Computed Properties
@@ -74,6 +98,8 @@ final class NavigationContext {
             return "Question sur la formation"
         case .article:
             return "Question sur l'article"
+        case .service:
+            return "Question sur le service"
         }
     }
 
