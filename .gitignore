@@ -1,0 +1,11 @@
+# MCP configuration with API keys
+.mcp.json
+
+# macOS
+.DS_Store
+
+# Xcode
+*.xcuserstate
+xcuserdata/
+DerivedData/
+build/
