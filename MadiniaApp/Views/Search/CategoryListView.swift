@@ -36,6 +36,7 @@ struct CategoryListView: View {
                 }
             }
             .padding(MadiniaSpacing.md)
+            .padding(.bottom, 100) // Space for tab bar
         }
         .navigationTitle(category.name)
         .navigationBarTitleDisplayMode(.large)

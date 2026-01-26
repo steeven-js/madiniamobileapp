@@ -101,6 +101,7 @@ struct SearchView: View {
                 }
             }
             .padding(.vertical, MadiniaSpacing.md)
+            .padding(.bottom, 100) // Space for tab bar
         }
         .refreshable {
             await viewModel.refresh()

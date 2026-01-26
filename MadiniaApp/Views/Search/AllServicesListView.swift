@@ -34,6 +34,7 @@ struct AllServicesListView: View {
                     }
                 }
                 .padding(MadiniaSpacing.md)
+                .padding(.bottom, 100) // Space for tab bar
             }
         }
         .navigationTitle("Nos Services")
