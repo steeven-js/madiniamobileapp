@@ -12,6 +12,8 @@ import SwiftUI
 struct SavedFormationsView: View {
     @State private var viewModel = SavedFormationsViewModel()
     @State private var selectedFormation: Formation?
+    @Environment(\.dismiss) private var dismiss
+    @AppStorage("selectedTab") private var selectedTab: MainTab = .home
 
     var body: some View {
         Group {
@@ -73,6 +75,24 @@ struct SavedFormationsView: View {
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, MadiniaSpacing.xl)
             }
+
+            // Search button
+            Button {
+                dismiss()
+                selectedTab = .search
+            } label: {
+                HStack(spacing: MadiniaSpacing.sm) {
+                    Image(systemName: "magnifyingglass")
+                    Text("Découvrir nos formations")
+                }
+                .font(MadiniaTypography.headline)
+                .foregroundStyle(.white)
+                .padding(.horizontal, MadiniaSpacing.xl)
+                .padding(.vertical, MadiniaSpacing.md)
+                .background(MadiniaColors.violet)
+                .clipShape(Capsule())
+            }
+            .padding(.top, MadiniaSpacing.md)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding(.bottom, 100) // Account for tab bar
