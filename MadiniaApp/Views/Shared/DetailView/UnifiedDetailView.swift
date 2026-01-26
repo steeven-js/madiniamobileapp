@@ -117,7 +117,7 @@ struct UnifiedDetailView: View {
                         tabContent
                             .padding(.horizontal, 20)
                             .padding(.top, 20)
-                            .padding(.bottom, 100)
+                            .padding(.bottom, 180) // Extra space for CTA button + tab bar
                     }
                     .background(Color(.systemBackground))
                 }
@@ -488,14 +488,15 @@ struct UnifiedDetailView: View {
         Button(action: config.ctaAction) {
             Text(config.ctaTitle)
                 .font(.system(size: 16, weight: .semibold))
-                .foregroundStyle(MadiniaColors.darkGray)
+                .foregroundStyle(MadiniaColors.darkGrayFixed)
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 16)
                 .background(MadiniaColors.gold)
                 .clipShape(RoundedRectangle(cornerRadius: 12))
         }
-        .padding(.horizontal, 20)
-        .padding(.bottom, 24)
+        .padding(.leading, 20)
+        .padding(.trailing, 88) // Leave space for Madi FAB on the right
+        .padding(.bottom, 100) // Account for custom tab bar height
         .background(
             LinearGradient(
                 colors: [Color(.systemBackground).opacity(0), Color(.systemBackground)],

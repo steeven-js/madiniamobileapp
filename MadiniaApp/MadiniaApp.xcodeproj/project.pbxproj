@@ -82,6 +82,7 @@
 		TOPRATEDSECBUILD00 /* TopRatedSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = TOPRATEDSECFILE000 /* TopRatedSection.swift */; };
 		UNIFIEDDETAILBUILD000 /* UnifiedDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = UNIFIEDDETAILFILE0000 /* UnifiedDetailView.swift */; };
 		WELCOMESECTIONBUILD00 /* WelcomeSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = WELCOMESECTIONFILE000 /* WelcomeSection.swift */; };
+		TEASERCAROUSELBUILD00 /* TeaserCarouselSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = TEASERCAROUSELFILE000 /* TeaserCarouselSection.swift */; };
 		THEMEMANAGERBUILD000 /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = THEMEMANAGERFILE0000 /* ThemeManager.swift */; };
 		APPEARANCESETTBUILD0 /* AppearanceSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = APPEARANCESETTFILE00 /* AppearanceSettingsView.swift */; };
 		SETTINGSVIEWBUILD000 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = SETTINGSVIEWFILE0000 /* SettingsView.swift */; };
@@ -176,6 +177,7 @@
 		TOPRATEDSECFILE000 /* TopRatedSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopRatedSection.swift; sourceTree = "<group>"; };
 		UNIFIEDDETAILFILE0000 /* UnifiedDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnifiedDetailView.swift; sourceTree = "<group>"; };
 		WELCOMESECTIONFILE000 /* WelcomeSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeSection.swift; sourceTree = "<group>"; };
+		TEASERCAROUSELFILE000 /* TeaserCarouselSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeaserCarouselSection.swift; sourceTree = "<group>"; };
 		THEMEMANAGERFILE0000 /* ThemeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeManager.swift; sourceTree = "<group>"; };
 		APPEARANCESETTFILE00 /* AppearanceSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceSettingsView.swift; sourceTree = "<group>"; };
 		SETTINGSVIEWFILE0000 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
@@ -427,6 +429,7 @@
 			isa = PBXGroup;
 			children = (
 				WELCOMESECTIONFILE000 /* WelcomeSection.swift */,
+				TEASERCAROUSELFILE000 /* TeaserCarouselSection.swift */,
 				HIGHLIGHTCARDFILE00000 /* HighlightCard.swift */,
 				QUICKACCESSFILE0000000 /* QuickAccessSection.swift */,
 				PROGRESSPATHFILE00000 /* ProgressPath.swift */,
@@ -657,6 +660,7 @@
 				THEMEMANAGERBUILD000 /* ThemeManager.swift in Sources */,
 				APPEARANCESETTBUILD0 /* AppearanceSettingsView.swift in Sources */,
 				SETTINGSVIEWBUILD000 /* SettingsView.swift in Sources */,
+				TEASERCAROUSELBUILD00 /* TeaserCarouselSection.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -34,6 +34,18 @@ struct HomeView: View {
                     LoadingView(message: "Chargement des formations...")
 
                 case .loaded:
+                    // News teaser carousel
+                    TeaserCarouselSection(
+                        title: "Actualités",
+                        items: TeaserItem.newsItems
+                    )
+
+                    // Events teaser carousel
+                    TeaserCarouselSection(
+                        title: "Événements",
+                        items: TeaserItem.eventsItems
+                    )
+
                     // Categories section
                     CategoriesSection(
                         categories: viewModel.categories,
