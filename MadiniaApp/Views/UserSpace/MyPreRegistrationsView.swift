@@ -11,6 +11,8 @@ import SwiftUI
 /// Accessible from the UserSpaceView.
 struct MyPreRegistrationsView: View {
     @State private var viewModel = MyPreRegistrationsViewModel()
+    @Environment(\.dismiss) private var dismiss
+    @AppStorage("selectedTab") private var selectedTab: MainTab = .home
 
     var body: some View {
         Group {
@@ -72,6 +74,24 @@ struct MyPreRegistrationsView: View {
 
             // Quota info
             quotaInfoBadge
+
+            // Search button
+            Button {
+                dismiss()
+                selectedTab = .search
+            } label: {
+                HStack(spacing: MadiniaSpacing.sm) {
+                    Image(systemName: "magnifyingglass")
+                    Text("Découvrir nos formations")
+                }
+                .font(MadiniaTypography.headline)
+                .foregroundStyle(.white)
+                .padding(.horizontal, MadiniaSpacing.xl)
+                .padding(.vertical, MadiniaSpacing.md)
+                .background(MadiniaColors.violet)
+                .clipShape(Capsule())
+            }
+            .padding(.top, MadiniaSpacing.md)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding(.bottom, 100)
@@ -155,27 +175,51 @@ struct MyPreRegistrationsView: View {
 
     private func errorView(message: String) -> some View {
         VStack(spacing: MadiniaSpacing.lg) {
-            Image(systemName: "exclamationmark.triangle")
-                .font(.system(size: 48))
-                .foregroundStyle(.orange)
+            Image(systemName: "doc.text")
+                .font(.system(size: 60))
+                .foregroundStyle(MadiniaColors.violet.opacity(0.6))
 
-            Text("Erreur de chargement")
-                .font(MadiniaTypography.title2)
-                .foregroundStyle(.primary)
+            VStack(spacing: MadiniaSpacing.sm) {
+                Text("Aucune pré-inscription")
+                    .font(MadiniaTypography.title2)
+                    .foregroundStyle(.primary)
 
-            Text(message)
-                .font(MadiniaTypography.body)
-                .foregroundStyle(.secondary)
-                .multilineTextAlignment(.center)
+                Text("Vous n'avez pas encore de pré-inscription.\nParcourez nos formations et pré-inscrivez-vous !")
+                    .font(MadiniaTypography.body)
+                    .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, MadiniaSpacing.xl)
+            }
+
+            // Quota info
+            quotaInfoBadge
+
+            // Search button
+            Button {
+                dismiss()
+                selectedTab = .search
+            } label: {
+                HStack(spacing: MadiniaSpacing.sm) {
+                    Image(systemName: "magnifyingglass")
+                    Text("Découvrir nos formations")
+                }
+                .font(MadiniaTypography.headline)
+                .foregroundStyle(.white)
                 .padding(.horizontal, MadiniaSpacing.xl)
+                .padding(.vertical, MadiniaSpacing.md)
+                .background(MadiniaColors.violet)
+                .clipShape(Capsule())
+            }
+            .padding(.top, MadiniaSpacing.md)
 
-            Button("Réessayer") {
+            // Retry button (smaller)
+            Button("Réessayer le chargement") {
                 Task {
                     await viewModel.loadPreRegistrations()
                 }
             }
-            .buttonStyle(.borderedProminent)
-            .tint(MadiniaColors.violet)
+            .font(MadiniaTypography.caption)
+            .foregroundStyle(.secondary)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }

@@ -141,6 +141,31 @@ struct PreRegistrationFormation: Codable, Equatable {
         case id, title, slug, duration, level
         case imageUrl = "image_url"
     }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decode(Int.self, forKey: .id)
+        title = try container.decode(String.self, forKey: .title)
+        slug = try container.decode(String.self, forKey: .slug)
+        level = try container.decodeIfPresent(String.self, forKey: .level)
+        imageUrl = try container.decodeIfPresent(String.self, forKey: .imageUrl)
+
+        // Handle duration as either Int or String
+        if let intDuration = try? container.decode(Int.self, forKey: .duration) {
+            duration = "\(intDuration) heures"
+        } else {
+            duration = try container.decodeIfPresent(String.self, forKey: .duration)
+        }
+    }
+
+    init(id: Int, title: String, slug: String, duration: String?, level: String?, imageUrl: String?) {
+        self.id = id
+        self.title = title
+        self.slug = slug
+        self.duration = duration
+        self.level = level
+        self.imageUrl = imageUrl
+    }
 }
 
 // MARK: - API Response
