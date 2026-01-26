@@ -53,7 +53,6 @@ struct SearchView: View {
                 }
                 .navigationDestination(isPresented: $showCategoriesGrid) {
                     CategoriesGridView { category in
-                        showCategoriesGrid = false
                         navigationPath.append(category)
                     }
                 }
