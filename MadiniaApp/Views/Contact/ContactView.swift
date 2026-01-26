@@ -275,6 +275,7 @@ struct ContactView: View {
             .buttonStyle(.bordered)
         }
         .padding()
+        .padding(.bottom, 100) // Space for tab bar
     }
 
     // MARK: - Helpers
