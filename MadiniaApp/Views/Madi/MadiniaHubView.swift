@@ -95,6 +95,7 @@ struct MadiniaHubView: View {
                 .padding(.top, MadiniaSpacing.xl)
             }
             .padding(MadiniaSpacing.md)
+            .padding(.bottom, 100) // Space for tab bar
         }
     }
 
@@ -159,6 +160,7 @@ struct MadiniaHubView: View {
                 .clipShape(RoundedRectangle(cornerRadius: MadiniaRadius.lg))
             }
             .padding(MadiniaSpacing.md)
+            .padding(.bottom, 100) // Space for tab bar
         }
     }
 
@@ -199,6 +201,7 @@ struct MadiniaHubView: View {
                 .padding(.top, MadiniaSpacing.xl)
             }
             .padding(MadiniaSpacing.md)
+            .padding(.bottom, 100) // Space for tab bar
         }
     }
 
@@ -215,6 +218,7 @@ struct MadiniaHubView: View {
                 .padding(.top, MadiniaSpacing.xl)
             }
             .padding(MadiniaSpacing.md)
+            .padding(.bottom, 100) // Space for tab bar
         }
     }
 }

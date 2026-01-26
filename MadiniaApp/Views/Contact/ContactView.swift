@@ -61,6 +61,7 @@ struct ContactView: View {
                 }
             }
             .padding()
+            .padding(.bottom, 100) // Space for tab bar
         }
         .scrollDismissesKeyboard(.interactively)
     }
