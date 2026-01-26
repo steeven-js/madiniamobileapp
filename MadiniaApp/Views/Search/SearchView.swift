@@ -28,6 +28,12 @@ struct SearchView: View {
     /// Controls navigation to all formations
     @State private var showAllFormations = false
 
+    /// Controls navigation to all services
+    @State private var showAllServices = false
+
+    /// Controls navigation to categories grid
+    @State private var showCategoriesGrid = false
+
     var body: some View {
         NavigationStack(path: $navigationPath) {
             content
@@ -41,6 +47,15 @@ struct SearchView: View {
                 }
                 .navigationDestination(isPresented: $showAllFormations) {
                     AllFormationsListView(formations: viewModel.formations)
+                }
+                .navigationDestination(isPresented: $showAllServices) {
+                    AllServicesListView(services: viewModel.services)
+                }
+                .navigationDestination(isPresented: $showCategoriesGrid) {
+                    CategoriesGridView { category in
+                        showCategoriesGrid = false
+                        navigationPath.append(category)
+                    }
                 }
         }
         .task {
@@ -113,7 +128,7 @@ struct SearchView: View {
     private var categoriesSection: some View {
         VStack(alignment: .leading, spacing: MadiniaSpacing.sm) {
             SectionHeader(title: "Catégories") {
-                // Navigate to categories grid (optional future feature)
+                showCategoriesGrid = true
             }
 
             ScrollView(.horizontal, showsIndicators: false) {
@@ -134,7 +149,7 @@ struct SearchView: View {
     private var servicesSection: some View {
         VStack(alignment: .leading, spacing: MadiniaSpacing.sm) {
             SectionHeader(title: "Nos Services") {
-                // "Voir tout" for services - could show all services list
+                showAllServices = true
             }
 
             ScrollView(.horizontal, showsIndicators: false) {

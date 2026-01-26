@@ -23,6 +23,11 @@ struct TopRatedCard: View {
     private let cardHeight: CGFloat = 90
     private let imageSize: CGFloat = 80
 
+    /// Check if formation is favorited
+    private var isFavorite: Bool {
+        FavoritesService.shared.isFavorite(formationId: formation.id)
+    }
+
     var body: some View {
         Button {
             onTap?()
@@ -62,13 +67,16 @@ struct TopRatedCard: View {
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
 
-                // Favorite button (placeholder for future)
+                // Favorite button
                 Button {
-                    // TODO: Implement favorites
+                    Task {
+                        await FavoritesService.shared.toggleFavorite(formationId: formation.id)
+                    }
                 } label: {
-                    Image(systemName: "heart")
+                    Image(systemName: isFavorite ? "heart.fill" : "heart")
                         .font(.system(size: 18))
-                        .foregroundStyle(.secondary.opacity(0.5))
+                        .foregroundStyle(isFavorite ? .red : .secondary.opacity(0.5))
+                        .animation(.spring(response: 0.3), value: isFavorite)
                 }
                 .buttonStyle(.plain)
             }

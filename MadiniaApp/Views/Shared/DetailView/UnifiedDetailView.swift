@@ -34,6 +34,7 @@ struct DetailViewConfiguration {
     let ctaAction: () -> Void
     let onRelatedFormationTap: ((Formation) -> Void)?
     let shareUrl: URL?
+    let formationId: Int?
 
     init(
         title: String,
@@ -53,7 +54,8 @@ struct DetailViewConfiguration {
         ctaTitle: String = "S'inscrire",
         ctaAction: @escaping () -> Void = {},
         onRelatedFormationTap: ((Formation) -> Void)? = nil,
-        shareUrl: URL? = nil
+        shareUrl: URL? = nil,
+        formationId: Int? = nil
     ) {
         self.title = title
         self.subtitle = subtitle
@@ -73,6 +75,7 @@ struct DetailViewConfiguration {
         self.ctaAction = ctaAction
         self.onRelatedFormationTap = onRelatedFormationTap
         self.shareUrl = shareUrl
+        self.formationId = formationId
     }
 }
 
@@ -81,9 +84,14 @@ struct UnifiedDetailView: View {
     let config: DetailViewConfiguration
 
     @State private var selectedTab: DetailTab = .about
-    @State private var isFavorite: Bool = false
     @State private var showFullScreenImage: Bool = false
     @Environment(\.dismiss) private var dismiss
+
+    /// Computed property to check if current formation is favorite
+    private var isFavorite: Bool {
+        guard let formationId = config.formationId else { return false }
+        return FavoritesService.shared.isFavorite(formationId: formationId)
+    }
 
     var body: some View {
         ZStack(alignment: .bottom) {
@@ -180,25 +188,29 @@ struct UnifiedDetailView: View {
                     Spacer()
                 }
 
-                // Favorite button (bottom-left, large)
-                VStack {
-                    Spacer()
-                    HStack {
-                        Button {
-                            withAnimation(.spring(response: 0.3)) {
-                                isFavorite.toggle()
-                            }
-                        } label: {
-                            Image(systemName: isFavorite ? "heart.fill" : "heart")
-                                .font(.system(size: 24, weight: .semibold))
-                                .foregroundStyle(isFavorite ? .red : .white)
-                                .frame(width: 56, height: 56)
-                                .background(Color.black.opacity(0.4))
-                                .clipShape(Circle())
-                        }
-                        .padding(.leading, 20)
-                        .padding(.bottom, 16)
+                // Favorite button (bottom-left, large) - only show for formations
+                if config.formationId != nil {
+                    VStack {
                         Spacer()
+                        HStack {
+                            Button {
+                                guard let formationId = config.formationId else { return }
+                                Task {
+                                    await FavoritesService.shared.toggleFavorite(formationId: formationId)
+                                }
+                            } label: {
+                                Image(systemName: isFavorite ? "heart.fill" : "heart")
+                                    .font(.system(size: 24, weight: .semibold))
+                                    .foregroundStyle(isFavorite ? .red : .white)
+                                    .frame(width: 56, height: 56)
+                                    .background(Color.black.opacity(0.4))
+                                    .clipShape(Circle())
+                                    .animation(.spring(response: 0.3), value: isFavorite)
+                            }
+                            .padding(.leading, 20)
+                            .padding(.bottom, 16)
+                            Spacer()
+                        }
                     }
                 }
             }

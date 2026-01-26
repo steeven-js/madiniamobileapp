@@ -203,7 +203,8 @@ struct FormationDetailView: View {
                     selectedRelatedFormation = tappedFormation
                 }
             },
-            shareUrl: shareURL
+            shareUrl: shareURL,
+            formationId: f.id
         )
     }
 

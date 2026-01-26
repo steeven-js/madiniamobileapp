@@ -21,6 +21,11 @@ struct FormationRowCard: View {
     private let thumbnailSize: CGFloat = 80
     private let cardHeight: CGFloat = 100
 
+    /// Check if formation is favorited
+    private var isFavorite: Bool {
+        FavoritesService.shared.isFavorite(formationId: formation.id)
+    }
+
     var body: some View {
         Button {
             onTap?()
@@ -70,6 +75,19 @@ struct FormationRowCard: View {
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
+
+                // Favorite button
+                Button {
+                    Task {
+                        await FavoritesService.shared.toggleFavorite(formationId: formation.id)
+                    }
+                } label: {
+                    Image(systemName: isFavorite ? "heart.fill" : "heart")
+                        .font(.system(size: 18))
+                        .foregroundStyle(isFavorite ? .red : .secondary.opacity(0.5))
+                        .animation(.spring(response: 0.3), value: isFavorite)
+                }
+                .buttonStyle(.plain)
             }
             .padding(MadiniaSpacing.sm)
             .frame(height: cardHeight)

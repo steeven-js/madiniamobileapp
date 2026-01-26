@@ -17,6 +17,9 @@ struct UserSpaceView: View {
                     // Hero section
                     heroSection
 
+                    // Available features (saved formations)
+                    availableFeaturesSection
+
                     // Coming soon features
                     comingSoonSection
                 }
@@ -62,6 +65,33 @@ struct UserSpaceView: View {
         .padding(.vertical, MadiniaSpacing.xl)
     }
 
+    // MARK: - Available Features Section
+
+    private var availableFeaturesSection: some View {
+        VStack(spacing: MadiniaSpacing.lg) {
+            // Section title
+            HStack {
+                Text("Disponible")
+                    .font(MadiniaTypography.title2)
+                    .foregroundStyle(.primary)
+                Spacer()
+            }
+
+            // Saved formations - Navigable
+            NavigationLink {
+                SavedFormationsView()
+            } label: {
+                featureCard(
+                    icon: "bookmark.fill",
+                    title: "Formations sauvegardées",
+                    description: "Retrouvez facilement les formations que vous avez mises en favoris.",
+                    showChevron: true
+                )
+            }
+            .buttonStyle(.plain)
+        }
+    }
+
     // MARK: - Coming Soon Section
 
     private var comingSoonSection: some View {
@@ -80,12 +110,6 @@ struct UserSpaceView: View {
                     icon: "chart.line.uptrend.xyaxis",
                     title: "Suivi de progression",
                     description: "Visualisez votre avancement dans les formations et vos accomplissements."
-                )
-
-                featureCard(
-                    icon: "bookmark.fill",
-                    title: "Formations sauvegardées",
-                    description: "Retrouvez facilement les formations que vous avez mises en favoris."
                 )
 
                 featureCard(
@@ -109,7 +133,7 @@ struct UserSpaceView: View {
         }
     }
 
-    private func featureCard(icon: String, title: String, description: String) -> some View {
+    private func featureCard(icon: String, title: String, description: String, showChevron: Bool = false) -> some View {
         HStack(alignment: .top, spacing: MadiniaSpacing.md) {
             // Icon
             Image(systemName: icon)
@@ -132,6 +156,13 @@ struct UserSpaceView: View {
             }
 
             Spacer()
+
+            // Chevron for navigable cards
+            if showChevron {
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 14, weight: .semibold))
+                    .foregroundStyle(.secondary)
+            }
         }
         .padding(MadiniaSpacing.md)
         .background(Color(.systemBackground))

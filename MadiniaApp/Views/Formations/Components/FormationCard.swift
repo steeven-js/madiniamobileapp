@@ -22,6 +22,11 @@ struct FormationCard: View {
     private let cardHeight: CGFloat = 240
     private let heroHeight: CGFloat = 120
 
+    /// Check if formation is favorited
+    private var isFavorite: Bool {
+        FavoritesService.shared.isFavorite(formationId: formation.id)
+    }
+
     var body: some View {
         Button {
             onTap?()
@@ -48,7 +53,7 @@ struct FormationCard: View {
     // MARK: - Hero Section
 
     private var heroSection: some View {
-        ZStack(alignment: .topLeading) {
+        ZStack {
             // Image or gradient placeholder
             if let imageUrl = formation.imageUrl, let url = URL(string: imageUrl) {
                 AsyncImage(url: url) { phase in
@@ -67,17 +72,42 @@ struct FormationCard: View {
                 placeholderGradient
             }
 
-            // Category badge overlay (gold pill)
-            if let category = formation.category {
-                Text(category.name)
-                    .font(MadiniaTypography.caption2)
-                    .fontWeight(.semibold)
-                    .padding(.horizontal, MadiniaSpacing.xs)
-                    .padding(.vertical, MadiniaSpacing.xxs)
-                    .background(MadiniaColors.gold)
-                    .foregroundStyle(MadiniaColors.darkGray)
-                    .clipShape(Capsule())
-                    .padding(MadiniaSpacing.xs)
+            // Overlays
+            VStack {
+                HStack {
+                    // Category badge overlay (gold pill) - top left
+                    if let category = formation.category {
+                        Text(category.name)
+                            .font(MadiniaTypography.caption2)
+                            .fontWeight(.semibold)
+                            .padding(.horizontal, MadiniaSpacing.xs)
+                            .padding(.vertical, MadiniaSpacing.xxs)
+                            .background(MadiniaColors.gold)
+                            .foregroundStyle(MadiniaColors.darkGray)
+                            .clipShape(Capsule())
+                    }
+
+                    Spacer()
+
+                    // Favorite button - top right
+                    Button {
+                        Task {
+                            await FavoritesService.shared.toggleFavorite(formationId: formation.id)
+                        }
+                    } label: {
+                        Image(systemName: isFavorite ? "heart.fill" : "heart")
+                            .font(.system(size: 14, weight: .semibold))
+                            .foregroundStyle(isFavorite ? .red : .white)
+                            .padding(6)
+                            .background(Color.black.opacity(0.4))
+                            .clipShape(Circle())
+                            .animation(.spring(response: 0.3), value: isFavorite)
+                    }
+                    .buttonStyle(.plain)
+                }
+                .padding(MadiniaSpacing.xs)
+
+                Spacer()
             }
         }
         .frame(width: cardWidth, height: heroHeight)
