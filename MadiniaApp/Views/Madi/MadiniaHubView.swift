@@ -35,6 +35,13 @@ struct MadiniaHubView: View {
                 navigationContext.clearNavigationFlag()
             }
         }
+        .onAppear {
+            // Check if we should navigate to contact on appear (handles timing issue)
+            if navigationContext.shouldNavigateToContact {
+                selectedTab = .contact
+                navigationContext.clearNavigationFlag()
+            }
+        }
     }
 
     // MARK: - Tab Selector
