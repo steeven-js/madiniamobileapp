@@ -103,7 +103,7 @@ struct MadiChatView: View {
                 .font(.system(size: 32))
                 .foregroundStyle(
                     LinearGradient(
-                        colors: [MadiniaColors.gold, MadiniaColors.violet],
+                        colors: [MadiniaColors.accent, MadiniaColors.violet],
                         startPoint: .topLeading,
                         endPoint: .bottomTrailing
                     )
@@ -135,7 +135,7 @@ struct MadiChatView: View {
                     RoundedRectangle(cornerRadius: 16)
                         .stroke(
                             LinearGradient(
-                                colors: [MadiniaColors.gold.opacity(0.5), MadiniaColors.violet.opacity(0.5)],
+                                colors: [MadiniaColors.accent.opacity(0.5), MadiniaColors.violet.opacity(0.5)],
                                 startPoint: .topLeading,
                                 endPoint: .bottomTrailing
                             ),

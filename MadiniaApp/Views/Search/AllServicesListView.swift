@@ -15,11 +15,22 @@ struct AllServicesListView: View {
     /// Selected service for detail sheet
     @State private var selectedService: Service?
 
-    /// Grid columns
-    private let columns = [
-        GridItem(.flexible(), spacing: MadiniaSpacing.md),
-        GridItem(.flexible(), spacing: MadiniaSpacing.md)
-    ]
+    /// Horizontal size class for adaptive layout
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+
+    /// Adaptive grid columns - 2 columns on iPhone, more on iPad
+    private var columns: [GridItem] {
+        if horizontalSizeClass == .regular {
+            // iPad: adaptive columns
+            return [GridItem(.adaptive(minimum: 160, maximum: 200), spacing: MadiniaSpacing.md)]
+        } else {
+            // iPhone: fixed 2 columns
+            return [
+                GridItem(.flexible(), spacing: MadiniaSpacing.md),
+                GridItem(.flexible(), spacing: MadiniaSpacing.md)
+            ]
+        }
+    }
 
     var body: some View {
         ScrollView {
@@ -34,7 +45,7 @@ struct AllServicesListView: View {
                     }
                 }
                 .padding(MadiniaSpacing.md)
-                .padding(.bottom, 100) // Space for tab bar
+                .tabBarSafeArea()
             }
         }
         .navigationTitle("Nos Services")

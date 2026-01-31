@@ -94,7 +94,7 @@ final class AppDataRepository {
         }
 
         #if DEBUG
-        print("AppDataRepository: Loaded from cache - \(formations.count) formations, \(categories.count) categories, \(services.count) services")
+        print("AppDataRepository: Loaded from cache - \(formations.count) formations, \(categories.count) categories, \(services.count) services, \(articles.count) articles")
         #endif
     }
 
@@ -110,31 +110,35 @@ final class AppDataRepository {
         errorMessage = nil
 
         do {
-            // Fetch all data in parallel
+            // Fetch all data in parallel (including articles now)
             async let formationsTask = apiService.fetchFormations()
             async let categoriesTask = apiService.fetchCategories()
             async let servicesTask = apiService.fetchServices()
+            async let articlesTask = apiService.fetchArticles()
 
-            let (loadedFormations, loadedCategories, loadedServices) = try await (
+            let (loadedFormations, loadedCategories, loadedServices, loadedArticles) = try await (
                 formationsTask,
                 categoriesTask,
-                servicesTask
+                servicesTask,
+                articlesTask
             )
 
             // Update data
             formations = loadedFormations
             categories = loadedCategories
             services = loadedServices
+            articles = loadedArticles
 
             // Save to cache in background
             Task.detached { [weak self] in
                 self?.cacheService.saveFormations(loadedFormations)
                 self?.cacheService.saveCategories(loadedCategories)
                 self?.cacheService.saveServices(loadedServices)
+                self?.cacheService.saveArticles(loadedArticles)
             }
 
             #if DEBUG
-            print("AppDataRepository: Preloaded from API - \(formations.count) formations, \(categories.count) categories, \(services.count) services")
+            print("AppDataRepository: Preloaded from API - \(formations.count) formations, \(categories.count) categories, \(services.count) services, \(articles.count) articles")
             #endif
 
         } catch {
@@ -168,22 +172,26 @@ final class AppDataRepository {
             async let formationsTask = apiService.fetchFormations()
             async let categoriesTask = apiService.fetchCategories()
             async let servicesTask = apiService.fetchServices()
+            async let articlesTask = apiService.fetchArticles()
 
-            let (loadedFormations, loadedCategories, loadedServices) = try await (
+            let (loadedFormations, loadedCategories, loadedServices, loadedArticles) = try await (
                 formationsTask,
                 categoriesTask,
-                servicesTask
+                servicesTask,
+                articlesTask
             )
 
             formations = loadedFormations
             categories = loadedCategories
             services = loadedServices
+            articles = loadedArticles
 
             // Save to cache
             Task.detached { [weak self] in
                 self?.cacheService.saveFormations(loadedFormations)
                 self?.cacheService.saveCategories(loadedCategories)
                 self?.cacheService.saveServices(loadedServices)
+                self?.cacheService.saveArticles(loadedArticles)
             }
 
         } catch {
@@ -195,9 +203,9 @@ final class AppDataRepository {
         isLoading = false
     }
 
-    // MARK: - Articles (Lazy Loading)
+    // MARK: - Articles Helper
 
-    /// Loads articles on demand (not preloaded to reduce initial load time)
+    /// Loads articles on demand (fallback if not preloaded)
     @MainActor
     func loadArticlesIfNeeded() async {
         guard articles.isEmpty else { return }

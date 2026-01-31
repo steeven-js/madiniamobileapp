@@ -31,6 +31,16 @@ struct SettingsView: View {
                         subtitle: "Gérer les alertes et les rappels"
                     )
                 }
+
+                NavigationLink {
+                    WhatsNewView(isModal: false)
+                } label: {
+                    settingsRow(
+                        icon: "sparkles",
+                        title: "Nouveautés",
+                        subtitle: "Découvrir les dernières mises à jour"
+                    )
+                }
             }
 
             Section {
@@ -47,7 +57,7 @@ struct SettingsView: View {
         HStack(spacing: MadiniaSpacing.md) {
             Image(systemName: icon)
                 .font(.title3)
-                .foregroundStyle(MadiniaColors.gold)
+                .foregroundStyle(MadiniaColors.accent)
                 .frame(width: 28)
 
             VStack(alignment: .leading, spacing: 2) {

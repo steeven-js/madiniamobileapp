@@ -13,6 +13,9 @@ struct FormationsView: View {
     /// ViewModel managing formations data and loading state
     @State private var viewModel = FormationsViewModel()
 
+    /// Horizontal size class for adaptive layout
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+
     var body: some View {
         NavigationStack {
             content
@@ -46,11 +49,19 @@ struct FormationsView: View {
 
     // MARK: - Formations List
 
-    /// Grid columns for 2-column layout (Nuton-style)
-    private let gridColumns = [
-        GridItem(.flexible(), spacing: MadiniaSpacing.md),
-        GridItem(.flexible(), spacing: MadiniaSpacing.md)
-    ]
+    /// Adaptive grid columns - 2 columns on iPhone, more on iPad
+    private var gridColumns: [GridItem] {
+        if horizontalSizeClass == .regular {
+            // iPad: adaptive columns that fit more cards
+            return [GridItem(.adaptive(minimum: 180, maximum: 220), spacing: MadiniaSpacing.md)]
+        } else {
+            // iPhone: fixed 2 columns
+            return [
+                GridItem(.flexible(), spacing: MadiniaSpacing.md),
+                GridItem(.flexible(), spacing: MadiniaSpacing.md)
+            ]
+        }
+    }
 
     private var formationsList: some View {
         ScrollView {

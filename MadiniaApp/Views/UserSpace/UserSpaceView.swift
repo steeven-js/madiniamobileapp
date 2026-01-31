@@ -24,7 +24,7 @@ struct UserSpaceView: View {
                     comingSoonSection
                 }
                 .padding(MadiniaSpacing.md)
-                .padding(.bottom, 100) // Space for custom tab bar
+                .tabBarSafeArea()
             }
             .navigationTitle("L'IA&Vous")
             .navigationBarTitleDisplayMode(.large)
@@ -40,7 +40,7 @@ struct UserSpaceView: View {
                 Circle()
                     .fill(
                         LinearGradient(
-                            colors: [MadiniaColors.gold, MadiniaColors.gold.opacity(0.6)],
+                            colors: [MadiniaColors.accent, MadiniaColors.accent.opacity(0.6)],
                             startPoint: .topLeading,
                             endPoint: .bottomTrailing
                         )
@@ -151,9 +151,9 @@ struct UserSpaceView: View {
             // Icon
             Image(systemName: icon)
                 .font(.title2)
-                .foregroundStyle(MadiniaColors.gold)
+                .foregroundStyle(MadiniaColors.accent)
                 .frame(width: 40, height: 40)
-                .background(MadiniaColors.gold.opacity(0.15))
+                .background(MadiniaColors.accent.opacity(0.15))
                 .clipShape(RoundedRectangle(cornerRadius: MadiniaRadius.sm))
 
             // Content

@@ -17,7 +17,7 @@ struct AllFormationsDestination: Hashable {
 /// Based on Figma mockup "16 Search".
 struct SearchView: View {
     /// ViewModel managing data and search state
-    @Bindable private var viewModel = SearchViewModel()
+    @State private var viewModel = SearchViewModel()
 
     /// Navigation path for programmatic navigation
     @State private var navigationPath = NavigationPath()
@@ -57,9 +57,6 @@ struct SearchView: View {
                     }
                 }
         }
-        .task {
-            await viewModel.loadData()
-        }
         .sheet(item: $selectedService) { service in
             ServiceDetailView(service: service)
         }
@@ -69,17 +66,23 @@ struct SearchView: View {
 
     @ViewBuilder
     private var content: some View {
-        switch viewModel.loadingState {
-        case .idle, .loading:
-            LoadingView(message: "Chargement...")
-
-        case .loaded(_):
-            mainContent
-
-        case .error(let message):
-            ErrorView(message: message) {
-                Task { await viewModel.loadData() }
+        // Data is preloaded during splash - show content directly
+        // Only show error if there's no data at all
+        if viewModel.services.isEmpty && viewModel.formations.isEmpty && viewModel.categories.isEmpty {
+            if let error = AppDataRepository.shared.errorMessage {
+                ErrorView(message: error) {
+                    Task { await viewModel.refresh() }
+                }
+            } else {
+                // Fallback empty state (shouldn't happen normally)
+                ContentUnavailableView {
+                    Label("Aucune donnée", systemImage: "magnifyingglass")
+                } description: {
+                    Text("Tirez vers le bas pour actualiser")
+                }
             }
+        } else {
+            mainContent
         }
     }
 
@@ -101,7 +104,7 @@ struct SearchView: View {
                 }
             }
             .padding(.vertical, MadiniaSpacing.md)
-            .padding(.bottom, 100) // Space for tab bar
+            .tabBarSafeArea()
         }
         .refreshable {
             await viewModel.refresh()

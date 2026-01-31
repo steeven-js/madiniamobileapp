@@ -16,21 +16,13 @@ struct ArticleCard: View {
         VStack(alignment: .leading, spacing: 12) {
             // Cover image
             if let coverUrl = article.coverUrl, let url = URL(string: coverUrl) {
-                AsyncImage(url: url) { phase in
-                    switch phase {
-                    case .success(let image):
-                        image
-                            .resizable()
-                            .aspectRatio(16/9, contentMode: .fill)
-                    case .failure:
-                        imagePlaceholder
-                    case .empty:
-                        ProgressView()
-                            .frame(maxWidth: .infinity)
-                            .aspectRatio(16/9, contentMode: .fit)
-                    @unknown default:
-                        imagePlaceholder
-                    }
+                CachedAsyncImage(url: url) { image in
+                    image
+                        .resizable()
+                        .aspectRatio(16/9, contentMode: .fill)
+                } placeholder: {
+                    ShimmerPlaceholder()
+                        .aspectRatio(16/9, contentMode: .fit)
                 }
                 .frame(height: 180)
                 .clipShape(RoundedRectangle(cornerRadius: 12))
@@ -46,7 +38,7 @@ struct ArticleCard: View {
                         Text(category)
                             .font(MadiniaTypography.caption)
                             .fontWeight(.medium)
-                            .foregroundStyle(MadiniaColors.gold)
+                            .foregroundStyle(MadiniaColors.accent)
                     }
 
                     if let readingTime = article.readingTime {

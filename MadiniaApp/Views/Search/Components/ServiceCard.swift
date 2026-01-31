@@ -50,17 +50,12 @@ struct ServiceCard: View {
         ZStack(alignment: .topLeading) {
             // Image or gradient placeholder
             if let imageUrl = service.imageUrl, let url = URL(string: imageUrl) {
-                AsyncImage(url: url) { phase in
-                    switch phase {
-                    case .success(let image):
-                        image
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                    case .failure, .empty:
-                        placeholderGradient
-                    @unknown default:
-                        placeholderGradient
-                    }
+                CachedAsyncImage(url: url) { image in
+                    image
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                } placeholder: {
+                    ShimmerPlaceholder()
                 }
             } else {
                 placeholderGradient

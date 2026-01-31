@@ -8,20 +8,34 @@
 import SwiftUI
 
 /// Main view for the Blog tab displaying a feed of articles.
+/// Can be used standalone (with its own NavigationStack) or embedded in another NavigationStack.
 struct BlogView: View {
     /// ViewModel managing articles data and loading state
     @State private var viewModel = BlogViewModel()
 
+    /// Whether to show within its own NavigationStack (false when embedded in MadiniaHubView)
+    var embedded: Bool = false
+
     var body: some View {
-        NavigationStack {
+        if embedded {
             content
-                .navigationTitle("Blog")
                 .navigationDestination(for: Article.self) { article in
                     ArticleDetailView(article: article)
                 }
-        }
-        .task {
-            await viewModel.loadArticles()
+                .task {
+                    await viewModel.loadArticles()
+                }
+        } else {
+            NavigationStack {
+                content
+                    .navigationTitle("Blog")
+                    .navigationDestination(for: Article.self) { article in
+                        ArticleDetailView(article: article)
+                    }
+            }
+            .task {
+                await viewModel.loadArticles()
+            }
         }
     }
 
@@ -34,7 +48,11 @@ struct BlogView: View {
             LoadingView(message: "Chargement des articles...")
 
         case .loaded:
-            articlesList
+            if viewModel.articles.isEmpty {
+                emptyState
+            } else {
+                articlesList
+            }
 
         case .error(let message):
             ErrorView(message: message) {
@@ -56,7 +74,27 @@ struct BlogView: View {
                 }
             }
             .padding()
-            .padding(.bottom, 100) // Space for tab bar
+            .tabBarSafeArea()
+        }
+        .refreshable {
+            await viewModel.refresh()
+        }
+    }
+
+    // MARK: - Empty State
+
+    private var emptyState: some View {
+        ScrollView {
+            VStack(spacing: MadiniaSpacing.lg) {
+                ContentUnavailableView {
+                    Label("Aucun article", systemImage: "doc.text")
+                } description: {
+                    Text("Les articles de blog arrivent bientôt !\n\nRetrouvez ici nos conseils, tutoriels et actualités sur l'Intelligence Artificielle.")
+                }
+                .padding(.top, MadiniaSpacing.xl)
+            }
+            .padding(MadiniaSpacing.md)
+            .tabBarSafeArea()
         }
         .refreshable {
             await viewModel.refresh()
@@ -68,6 +106,13 @@ struct BlogView: View {
 
 #Preview {
     BlogView()
+}
+
+#Preview("Embedded") {
+    NavigationStack {
+        BlogView(embedded: true)
+            .navigationTitle("Blog")
+    }
 }
 
 #Preview("Loading") {

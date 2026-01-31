@@ -49,7 +49,7 @@ struct MadiFAB: View {
             } label: {
                 ZStack {
                     Circle()
-                        .fill(MadiniaColors.gold)
+                        .fill(MadiniaColors.accent)
                         .frame(width: 56, height: 56)
                         .shadow(color: MadiniaColors.violet.opacity(0.3), radius: 8, x: 0, y: 4)
 

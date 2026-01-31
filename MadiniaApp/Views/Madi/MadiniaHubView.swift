@@ -47,15 +47,13 @@ struct MadiniaHubView: View {
     // MARK: - Tab Selector
 
     private var tabSelector: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: MadiniaSpacing.lg) {
-                ForEach(HubTab.allCases, id: \.self) { tab in
-                    tabButton(for: tab)
-                }
+        HStack(spacing: 0) {
+            ForEach(HubTab.allCases, id: \.self) { tab in
+                tabButton(for: tab)
             }
-            .padding(.horizontal, MadiniaSpacing.md)
-            .padding(.vertical, MadiniaSpacing.sm)
         }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, MadiniaSpacing.xs)
     }
 
     private func tabButton(for tab: HubTab) -> some View {
@@ -64,18 +62,18 @@ struct MadiniaHubView: View {
                 selectedTab = tab
             }
         } label: {
-            VStack(spacing: MadiniaSpacing.sm) {
-                Text(tab.title)
-                    .font(MadiniaTypography.headline)
-                    .foregroundStyle(selectedTab == tab ? .primary : .secondary)
-                    .fixedSize(horizontal: true, vertical: false)
+            VStack(spacing: 4) {
+                Image(systemName: tab.icon)
+                    .font(.system(size: 20))
+                    .symbolVariant(selectedTab == tab ? .fill : .none)
 
-                // Underline indicator
-                Rectangle()
-                    .fill(selectedTab == tab ? MadiniaColors.gold : Color.clear)
-                    .frame(height: 3)
-                    .cornerRadius(1.5)
+                Text(tab.title)
+                    .font(.caption2)
+                    .fontWeight(selectedTab == tab ? .semibold : .regular)
             }
+            .foregroundStyle(selectedTab == tab ? MadiniaColors.accent : .secondary)
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, MadiniaSpacing.xs)
         }
         .buttonStyle(.plain)
         .accessibilityLabel(tab.title)
@@ -103,18 +101,7 @@ struct MadiniaHubView: View {
     // MARK: - Blog Content
 
     private var blogContent: some View {
-        ScrollView {
-            VStack(spacing: MadiniaSpacing.lg) {
-                ContentUnavailableView {
-                    Label("Blog", systemImage: "doc.text.fill")
-                } description: {
-                    Text("Nos articles de blog arrivent bientôt !\n\nRetrouvez ici nos conseils, tutoriels et actualités sur l'Intelligence Artificielle.")
-                }
-                .padding(.top, MadiniaSpacing.xl)
-            }
-            .padding(MadiniaSpacing.md)
-            .padding(.bottom, 100) // Space for tab bar
-        }
+        BlogView(embedded: true)
     }
 
     // MARK: - About Content
@@ -174,11 +161,11 @@ struct MadiniaHubView: View {
                 }
                 .frame(maxWidth: .infinity)
                 .padding(MadiniaSpacing.lg)
-                .background(MadiniaColors.gold.opacity(0.1))
+                .background(MadiniaColors.accent.opacity(0.1))
                 .clipShape(RoundedRectangle(cornerRadius: MadiniaRadius.lg))
             }
             .padding(MadiniaSpacing.md)
-            .padding(.bottom, 100) // Space for tab bar
+            .tabBarSafeArea()
         }
     }
 
@@ -186,7 +173,7 @@ struct MadiniaHubView: View {
         HStack(alignment: .top, spacing: MadiniaSpacing.md) {
             Image(systemName: icon)
                 .font(.title2)
-                .foregroundStyle(MadiniaColors.gold)
+                .foregroundStyle(MadiniaColors.accent)
                 .frame(width: 32)
 
             VStack(alignment: .leading, spacing: MadiniaSpacing.xs) {
@@ -219,7 +206,7 @@ struct MadiniaHubView: View {
                 .padding(.top, MadiniaSpacing.xl)
             }
             .padding(MadiniaSpacing.md)
-            .padding(.bottom, 100) // Space for tab bar
+            .tabBarSafeArea()
         }
     }
 
@@ -236,7 +223,7 @@ struct MadiniaHubView: View {
                 .padding(.top, MadiniaSpacing.xl)
             }
             .padding(MadiniaSpacing.md)
-            .padding(.bottom, 100) // Space for tab bar
+            .tabBarSafeArea()
         }
     }
 }
@@ -257,6 +244,16 @@ enum HubTab: String, CaseIterable {
         case .news: return "Actualités"
         case .events: return "Événements"
         case .contact: return "Contact"
+        }
+    }
+
+    var icon: String {
+        switch self {
+        case .about: return "info.circle"
+        case .blog: return "doc.richtext"
+        case .news: return "newspaper"
+        case .events: return "calendar"
+        case .contact: return "envelope"
         }
     }
 }

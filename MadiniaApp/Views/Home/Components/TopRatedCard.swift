@@ -97,20 +97,12 @@ struct TopRatedCard: View {
         ZStack(alignment: .bottomLeading) {
             // Formation image
             if let imageUrl = formation.imageUrl, let url = URL(string: imageUrl) {
-                AsyncImage(url: url) { phase in
-                    switch phase {
-                    case .success(let image):
-                        image
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                    case .failure:
-                        imagePlaceholder
-                    case .empty:
-                        ProgressView()
-                            .frame(width: imageSize, height: imageSize)
-                    @unknown default:
-                        imagePlaceholder
-                    }
+                CachedAsyncImage(url: url) { image in
+                    image
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                } placeholder: {
+                    ShimmerPlaceholder()
                 }
                 .frame(width: imageSize, height: imageSize)
                 .clipShape(RoundedRectangle(cornerRadius: MadiniaRadius.sm))
@@ -131,7 +123,7 @@ struct TopRatedCard: View {
         RoundedRectangle(cornerRadius: MadiniaRadius.sm)
             .fill(
                 LinearGradient(
-                    colors: [MadiniaColors.violet.opacity(0.3), MadiniaColors.gold.opacity(0.3)],
+                    colors: [MadiniaColors.violet.opacity(0.3), MadiniaColors.accent.opacity(0.3)],
                     startPoint: .topLeading,
                     endPoint: .bottomTrailing
                 )

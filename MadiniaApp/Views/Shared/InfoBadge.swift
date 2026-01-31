@@ -62,8 +62,8 @@ struct InfoBadge: View {
         switch style {
         case .duration: return .secondary
         case .level(_, let color): return color
-        case .certification: return MadiniaColors.gold
-        case .category(_, let color): return color ?? MadiniaColors.gold
+        case .certification: return MadiniaColors.accent
+        case .category(_, let color): return color ?? MadiniaColors.accent
         }
     }
 
@@ -71,8 +71,8 @@ struct InfoBadge: View {
         switch style {
         case .duration: return .secondary
         case .level(_, let color): return color
-        case .certification: return MadiniaColors.gold
-        case .category(_, let color): return color ?? MadiniaColors.gold
+        case .certification: return MadiniaColors.accent
+        case .category(_, let color): return color ?? MadiniaColors.accent
         }
     }
 

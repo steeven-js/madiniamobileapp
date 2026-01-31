@@ -7,8 +7,8 @@
 
 import Foundation
 
-/// Shared repository for formations data with caching.
-/// Prevents redundant API calls when switching between views.
+/// Shared repository for formations data with category filtering.
+/// Uses AppDataRepository as data source (preloaded during splash).
 @Observable
 final class FormationsRepository {
     // MARK: - Singleton
@@ -16,53 +16,45 @@ final class FormationsRepository {
     /// Shared instance for app-wide access
     static let shared = FormationsRepository()
 
-    // MARK: - State
-
-    /// Cached formations data
-    private(set) var formations: [Formation] = []
-
-    /// Cached categories data
-    private(set) var categories: [FormationCategory] = []
-
-    /// Current loading state for formations
-    private(set) var loadingState: LoadingState<[Formation]> = .idle
-
-    /// Current loading state for categories
-    private(set) var categoriesLoadingState: LoadingState<[FormationCategory]> = .idle
-
-    /// Timestamp of last successful formations fetch
-    private var lastFormationsFetchTime: Date?
-
-    /// Timestamp of last successful categories fetch
-    private var lastCategoriesFetchTime: Date?
-
-    /// Cache duration in seconds (5 minutes)
-    private let cacheDuration: TimeInterval = 300
-
     // MARK: - Dependencies
 
-    private let apiService: APIServiceProtocol
+    /// Centralized data repository (preloaded during splash)
+    private let dataRepository: AppDataRepository
+
+    // MARK: - State
+
+    /// Currently selected category filter for formations tab (shared state)
+    var selectedCategoryFilter: FormationCategory?
 
     // MARK: - Computed Properties
 
-    /// Whether the formations cache is still valid
-    var isFormationsCacheValid: Bool {
-        guard let lastFetch = lastFormationsFetchTime else { return false }
-        return Date().timeIntervalSince(lastFetch) < cacheDuration
+    /// Cached formations data (from AppDataRepository)
+    var formations: [Formation] {
+        dataRepository.formations
     }
 
-    /// Whether the categories cache is still valid
-    var isCategoriesCacheValid: Bool {
-        guard let lastFetch = lastCategoriesFetchTime else { return false }
-        return Date().timeIntervalSince(lastFetch) < cacheDuration
+    /// Cached categories data (from AppDataRepository)
+    var categories: [FormationCategory] {
+        dataRepository.categories
     }
 
-    /// Whether formation data is available (either from cache or loaded)
+    /// Current loading state for formations
+    var loadingState: LoadingState<[Formation]> {
+        if dataRepository.isLoading && !dataRepository.hasData {
+            return .loading
+        } else if let error = dataRepository.errorMessage, !dataRepository.hasData {
+            return .error(error)
+        } else {
+            return .loaded(dataRepository.formations)
+        }
+    }
+
+    /// Whether formation data is available
     var hasFormationsData: Bool {
         !formations.isEmpty
     }
 
-    /// Whether categories data is available (either from cache or loaded)
+    /// Whether categories data is available
     var hasCategoriesData: Bool {
         !categories.isEmpty
     }
@@ -71,9 +63,6 @@ final class FormationsRepository {
     var highlightedFormations: [Formation] {
         Array(formations.prefix(3))
     }
-
-    /// Currently selected category filter for formations tab (shared state)
-    var selectedCategoryFilter: FormationCategory?
 
     /// Sets the category filter and returns true (for navigation chaining)
     @discardableResult
@@ -84,102 +73,40 @@ final class FormationsRepository {
 
     // MARK: - Initialization
 
-    private init(apiService: APIServiceProtocol = APIService.shared) {
-        self.apiService = apiService
+    private init(dataRepository: AppDataRepository = .shared) {
+        self.dataRepository = dataRepository
     }
 
-    /// For testing: create with custom API service
-    static func createForTesting(apiService: APIServiceProtocol) -> FormationsRepository {
-        let repo = FormationsRepository(apiService: apiService)
-        return repo
+    /// For testing: create with custom data repository
+    static func createForTesting(dataRepository: AppDataRepository) -> FormationsRepository {
+        return FormationsRepository(dataRepository: dataRepository)
     }
 
     // MARK: - Actions
 
-    /// Fetches formations if cache is empty or expired.
-    /// Returns immediately if valid cached data exists.
+    /// Fetches formations if needed - data is already preloaded by AppDataRepository
     @MainActor
     func fetchIfNeeded() async {
-        // Return immediately if we have valid cached data
-        if hasFormationsData && isFormationsCacheValid {
-            loadingState = .loaded(formations)
-            return
-        }
-
-        // Don't start a new fetch if one is already in progress
-        guard !loadingState.isLoading else { return }
-
-        await fetchFormations()
+        // Data is already preloaded by AppDataRepository during splash
+        // Nothing to do here
     }
 
-    /// Fetches categories if cache is empty or expired.
-    /// Returns immediately if valid cached data exists.
+    /// Fetches categories if needed - data is already preloaded by AppDataRepository
     @MainActor
     func fetchCategoriesIfNeeded() async {
-        // Return immediately if we have valid cached data
-        if hasCategoriesData && isCategoriesCacheValid {
-            categoriesLoadingState = .loaded(categories)
-            return
-        }
-
-        // Don't start a new fetch if one is already in progress
-        guard !categoriesLoadingState.isLoading else { return }
-
-        await fetchCategories()
+        // Data is already preloaded by AppDataRepository during splash
+        // Nothing to do here
     }
 
-    /// Forces a fresh fetch from the API (for pull-to-refresh).
+    /// Refreshes data from API (for pull-to-refresh)
     @MainActor
     func refresh() async {
-        // Reset cache timestamps to force refresh
-        lastFormationsFetchTime = nil
-        lastCategoriesFetchTime = nil
-        await fetchFormations()
-        await fetchCategories()
+        await dataRepository.refresh()
     }
 
-    /// Internal fetch method for formations
-    @MainActor
-    private func fetchFormations() async {
-        loadingState = .loading
-
-        do {
-            let fetchedFormations = try await apiService.fetchFormations()
-            formations = fetchedFormations
-            lastFormationsFetchTime = Date()
-            loadingState = .loaded(fetchedFormations)
-        } catch let error as APIError {
-            loadingState = .error(error.errorDescription ?? "Erreur inconnue")
-        } catch {
-            loadingState = .error("Erreur de chargement")
-        }
-    }
-
-    /// Internal fetch method for categories
-    @MainActor
-    private func fetchCategories() async {
-        categoriesLoadingState = .loading
-
-        do {
-            let fetchedCategories = try await apiService.fetchCategories()
-            categories = fetchedCategories
-            lastCategoriesFetchTime = Date()
-            categoriesLoadingState = .loaded(fetchedCategories)
-        } catch let error as APIError {
-            categoriesLoadingState = .error(error.errorDescription ?? "Erreur inconnue")
-        } catch {
-            categoriesLoadingState = .error("Erreur de chargement des catégories")
-        }
-    }
-
-    /// Clears the cache (useful for logout or testing)
-    func clearCache() {
-        formations = []
-        categories = []
-        lastFormationsFetchTime = nil
-        lastCategoriesFetchTime = nil
-        loadingState = .idle
-        categoriesLoadingState = .idle
+    /// Clears the category filter
+    func clearFilter() {
+        selectedCategoryFilter = nil
     }
 
     /// Finds a formation by slug

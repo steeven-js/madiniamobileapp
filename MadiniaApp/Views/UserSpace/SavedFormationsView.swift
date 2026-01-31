@@ -62,7 +62,7 @@ struct SavedFormationsView: View {
         VStack(spacing: MadiniaSpacing.xl) {
             Image(systemName: "bookmark")
                 .font(.system(size: 60))
-                .foregroundStyle(MadiniaColors.gold.opacity(0.6))
+                .foregroundStyle(MadiniaColors.accent.opacity(0.6))
 
             VStack(spacing: MadiniaSpacing.sm) {
                 Text("Aucune formation sauvegardée")
@@ -95,7 +95,7 @@ struct SavedFormationsView: View {
             .padding(.top, MadiniaSpacing.md)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .padding(.bottom, 100) // Account for tab bar
+        .tabBarSafeArea()
     }
 
     // MARK: - Formations List
@@ -114,7 +114,7 @@ struct SavedFormationsView: View {
                 }
             }
             .padding(MadiniaSpacing.md)
-            .padding(.bottom, 100) // Space for tab bar
+            .tabBarSafeArea()
         }
     }
 

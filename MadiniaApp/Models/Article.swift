@@ -20,10 +20,13 @@ struct Article: Codable, Identifiable, Hashable {
     let author: ArticleAuthor?
     let coverUrl: String?
     let publishedAt: String?
+    let viewsCount: Int?
+    let likesCount: Int?
 
     // Detail-only fields
     let content: String?
     let heroUrl: String?
+    let shortDescription: String?
 }
 
 /// Author information for an article
@@ -55,8 +58,11 @@ extension Article {
         ),
         coverUrl: nil,
         publishedAt: "2026-01-20T10:00:00+00:00",
+        viewsCount: 156,
+        likesCount: 42,
         content: nil,
-        heroUrl: nil
+        heroUrl: nil,
+        shortDescription: nil
     )
 
     /// Sample articles for previews
@@ -74,8 +80,11 @@ extension Article {
             author: ArticleAuthor(name: "Marc Dupont", avatarUrl: nil, role: nil, bio: nil),
             coverUrl: nil,
             publishedAt: "2026-01-18T14:30:00+00:00",
+            viewsCount: 234,
+            likesCount: 67,
             content: nil,
-            heroUrl: nil
+            heroUrl: nil,
+            shortDescription: nil
         ),
         Article(
             id: 3,
@@ -89,8 +98,11 @@ extension Article {
             author: ArticleAuthor(name: "Julie Lemaire", avatarUrl: nil, role: nil, bio: nil),
             coverUrl: nil,
             publishedAt: "2026-01-15T09:00:00+00:00",
+            viewsCount: 89,
+            likesCount: 23,
             content: nil,
-            heroUrl: nil
+            heroUrl: nil,
+            shortDescription: nil
         )
     ]
 }

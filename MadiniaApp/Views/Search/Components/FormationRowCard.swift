@@ -70,7 +70,7 @@ struct FormationRowCard: View {
                         if formation.certification == true {
                             Image(systemName: "checkmark.seal.fill")
                                 .font(.caption)
-                                .foregroundStyle(MadiniaColors.gold)
+                                .foregroundStyle(MadiniaColors.accent)
                         }
                     }
                 }
@@ -107,17 +107,12 @@ struct FormationRowCard: View {
     private var thumbnailView: some View {
         Group {
             if let imageUrl = formation.imageUrl, let url = URL(string: imageUrl) {
-                AsyncImage(url: url) { phase in
-                    switch phase {
-                    case .success(let image):
-                        image
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                    case .failure, .empty:
-                        placeholderView
-                    @unknown default:
-                        placeholderView
-                    }
+                CachedAsyncImage(url: url) { image in
+                    image
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                } placeholder: {
+                    ShimmerPlaceholder()
                 }
             } else {
                 placeholderView

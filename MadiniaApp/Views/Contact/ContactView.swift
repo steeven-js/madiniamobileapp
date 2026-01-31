@@ -61,7 +61,7 @@ struct ContactView: View {
                 }
             }
             .padding()
-            .padding(.bottom, 100) // Space for tab bar
+            .tabBarSafeArea()
         }
         .scrollDismissesKeyboard(.interactively)
     }
@@ -275,7 +275,7 @@ struct ContactView: View {
             .buttonStyle(.bordered)
         }
         .padding()
-        .padding(.bottom, 100) // Space for tab bar
+        .tabBarSafeArea()
     }
 
     // MARK: - Helpers

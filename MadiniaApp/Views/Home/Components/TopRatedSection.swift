@@ -54,7 +54,7 @@ struct TopRatedSection: View {
                     Image(systemName: "chevron.right")
                         .font(.caption)
                 }
-                .foregroundStyle(MadiniaColors.gold)
+                .foregroundStyle(MadiniaColors.accent)
             }
             .accessibilityLabel("Voir toutes les formations")
         }

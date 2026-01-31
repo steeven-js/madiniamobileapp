@@ -25,6 +25,18 @@ enum MadiniaColors {
         }
     })
 
+    /// Accent color - violet in light mode, gold in dark mode
+    /// Use this as the primary accent color throughout the app
+    static let accent = Color(UIColor { traitCollection in
+        if traitCollection.userInterfaceStyle == .dark {
+            // Gold for dark mode
+            return UIColor(red: 238/255, green: 208/255, blue: 118/255, alpha: 1) // #EED076
+        } else {
+            // Violet for light mode
+            return UIColor(red: 88/255, green: 37/255, blue: 134/255, alpha: 1) // #582586
+        }
+    })
+
     /// Dark gray - adaptive for dark mode (white text on dark backgrounds)
     static let darkGray = Color(UIColor { traitCollection in
         if traitCollection.userInterfaceStyle == .dark {
@@ -218,16 +230,33 @@ struct MadiniaGoldButtonStyle: ButtonStyle {
         configuration.label
             .padding(.horizontal, MadiniaSpacing.md)
             .padding(.vertical, MadiniaSpacing.xs)
-            .background(MadiniaColors.gold)
+            .background(MadiniaColors.accent)
             .foregroundStyle(MadiniaColors.darkGrayFixed) // Always dark text on gold
             .clipShape(Capsule())
             .opacity(configuration.isPressed ? 0.8 : 1.0)
     }
 }
 
+// MARK: - Tab Bar Safe Area
+
+/// View modifier that adds bottom padding for custom tab bar on iPhone only
+struct TabBarSafeAreaModifier: ViewModifier {
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+
+    func body(content: Content) -> some View {
+        content
+            .padding(.bottom, horizontalSizeClass == .regular ? MadiniaSpacing.lg : 100)
+    }
+}
+
 // MARK: - View Extensions
 
 extension View {
+    /// Adds bottom padding for custom tab bar (100pt on iPhone, standard padding on iPad)
+    func tabBarSafeArea() -> some View {
+        modifier(TabBarSafeAreaModifier())
+    }
+
     /// Applies Madinia card styling
     func madiniaCardStyle(cornerRadius: CGFloat = MadiniaRadius.lg) -> some View {
         modifier(MadiniaCardStyle(cornerRadius: cornerRadius))
@@ -240,7 +269,7 @@ extension View {
             .fontWeight(.semibold)
             .padding(.horizontal, MadiniaSpacing.xs)
             .padding(.vertical, MadiniaSpacing.xxs)
-            .background(MadiniaColors.gold)
+            .background(MadiniaColors.accent)
             .foregroundStyle(MadiniaColors.darkGrayFixed) // Always dark text on gold
             .clipShape(Capsule())
     }
@@ -262,7 +291,7 @@ extension View {
 #Preview("Design System Colors") {
     VStack(spacing: 20) {
         HStack(spacing: 16) {
-            colorSwatch("Gold", MadiniaColors.gold)
+            colorSwatch("Gold", MadiniaColors.accent)
             colorSwatch("Violet", MadiniaColors.violet)
             colorSwatch("Dark Gray", MadiniaColors.darkGray)
         }

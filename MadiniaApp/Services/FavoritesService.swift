@@ -63,7 +63,7 @@ final class FavoritesService {
     // MARK: - Private Properties
 
     private let baseURL = "https://madinia.fr/api/v1"
-    private let apiKey = "fuNvIPt3f0uglrWP4SV6n7FSzr1VwLnApSCb4KjzrUUs611k8GUjOF7HNPfAqWay"
+    private var apiKey: String { SecretsManager.apiKey }
     private let session: URLSession
     private let decoder: JSONDecoder
 

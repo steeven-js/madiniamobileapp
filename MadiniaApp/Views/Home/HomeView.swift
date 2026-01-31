@@ -77,7 +77,7 @@ struct HomeView: View {
             }
             .frame(maxWidth: .infinity)
             .padding(.horizontal, MadiniaSpacing.md)
-            .padding(.bottom, 100) // Space for tab bar
+            .tabBarSafeArea()
         }
         .navigationTitle("Accueil")
         .navigationDestination(isPresented: $showCategoriesGrid) {

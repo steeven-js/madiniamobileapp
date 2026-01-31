@@ -54,6 +54,16 @@ struct ArticleDetailResponse: Decodable {
     let related: [Article]?
 }
 
+/// API response for article like/unlike
+struct LikeResponse: Decodable {
+    let success: Bool
+    let message: String?
+    let likesCount: Int?
+}
+
+/// Empty request body for POST requests that don't need a body
+struct EmptyBody: Encodable {}
+
 /// Request payload for contact form submission
 struct ContactRequest: Encodable {
     let firstName: String
@@ -124,6 +134,12 @@ protocol APIServiceProtocol {
     /// Fetches a single article by slug
     func fetchArticle(slug: String) async throws -> Article
 
+    /// Likes an article
+    func likeArticle(slug: String) async throws
+
+    /// Unlikes an article
+    func unlikeArticle(slug: String) async throws
+
     /// Submits a contact form message
     func submitContact(
         firstName: String,
@@ -163,8 +179,8 @@ final class APIService: APIServiceProtocol {
     /// Base delay for exponential backoff (in seconds)
     private let baseRetryDelay: TimeInterval = 1.0
 
-    /// API key for authenticated requests
-    private let apiKey = "fuNvIPt3f0uglrWP4SV6n7FSzr1VwLnApSCb4KjzrUUs611k8GUjOF7HNPfAqWay"
+    /// API key for authenticated requests (obfuscated via SecretsManager)
+    private var apiKey: String { SecretsManager.apiKey }
 
     // MARK: - Initialization
 
@@ -272,6 +288,20 @@ final class APIService: APIServiceProtocol {
     func fetchArticle(slug: String) async throws -> Article {
         let response: ArticleDetailResponse = try await request(endpoint: "/articles/\(slug)")
         return response.data
+    }
+
+    /// Likes an article
+    /// - Parameter slug: The article's URL slug
+    /// - Throws: APIError if the request fails
+    func likeArticle(slug: String) async throws {
+        let _: LikeResponse = try await postRequest(endpoint: "/articles/\(slug)/like", body: EmptyBody())
+    }
+
+    /// Unlikes an article
+    /// - Parameter slug: The article's URL slug
+    /// - Throws: APIError if the request fails
+    func unlikeArticle(slug: String) async throws {
+        let _: LikeResponse = try await postRequest(endpoint: "/articles/\(slug)/unlike", body: EmptyBody())
     }
 
     /// Submits a contact form message
@@ -602,6 +632,16 @@ final class MockAPIService: APIServiceProtocol {
         }
 
         return Article.sample
+    }
+
+    func likeArticle(slug: String) async throws {
+        try await Task.sleep(for: .seconds(simulatedDelay))
+        if shouldFail { throw errorToThrow }
+    }
+
+    func unlikeArticle(slug: String) async throws {
+        try await Task.sleep(for: .seconds(simulatedDelay))
+        if shouldFail { throw errorToThrow }
     }
 
     func submitContact(

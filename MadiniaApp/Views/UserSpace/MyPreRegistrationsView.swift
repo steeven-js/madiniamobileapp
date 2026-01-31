@@ -94,7 +94,7 @@ struct MyPreRegistrationsView: View {
             .padding(.top, MadiniaSpacing.md)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .padding(.bottom, 100)
+        .tabBarSafeArea()
     }
 
     // MARK: - Registrations List
@@ -115,7 +115,7 @@ struct MyPreRegistrationsView: View {
                 .padding(.horizontal, MadiniaSpacing.md)
             }
             .padding(.vertical, MadiniaSpacing.md)
-            .padding(.bottom, 100)
+            .tabBarSafeArea()
         }
     }
 

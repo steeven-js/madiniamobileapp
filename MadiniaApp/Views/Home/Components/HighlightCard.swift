@@ -50,17 +50,12 @@ struct HighlightCard: View {
     @ViewBuilder
     private var heroImage: some View {
         if let imageUrl = formation.imageUrl, let url = URL(string: imageUrl) {
-            AsyncImage(url: url) { phase in
-                switch phase {
-                case .success(let image):
-                    image
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                case .failure, .empty:
-                    placeholderGradient
-                @unknown default:
-                    placeholderGradient
-                }
+            CachedAsyncImage(url: url) { image in
+                image
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+            } placeholder: {
+                ShimmerPlaceholder()
             }
         } else {
             placeholderGradient
@@ -85,7 +80,7 @@ struct HighlightCard: View {
                     .fontWeight(.semibold)
                     .padding(.horizontal, MadiniaSpacing.xs)
                     .padding(.vertical, MadiniaSpacing.xxs)
-                    .background(MadiniaColors.gold)
+                    .background(MadiniaColors.accent)
                     .foregroundStyle(MadiniaColors.darkGray)
                     .clipShape(Capsule())
             }
@@ -125,7 +120,7 @@ struct HighlightCard: View {
                         Text("Certifiante")
                             .font(MadiniaTypography.caption)
                     }
-                    .foregroundStyle(MadiniaColors.gold)
+                    .foregroundStyle(MadiniaColors.accent)
                 }
             }
         }

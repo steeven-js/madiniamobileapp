@@ -20,6 +20,9 @@ struct MadiniaApp: App {
     @State private var deepLinkFormationSlug: String?
     @State private var deepLinkArticleSlug: String?
 
+    /// What's New modal presentation
+    @State private var showWhatsNew = false
+
     /// Deep link service
     private let deepLinkService = DeepLinkService.shared
 
@@ -31,12 +34,28 @@ struct MadiniaApp: App {
                 .preferredColorScheme(themeManager.colorScheme)
                 .onAppear {
                     setupDeepLinkHandler()
+                    checkForWhatsNew()
                 }
                 .onOpenURL { url in
                     handleUniversalLink(url)
                 }
+                .fullScreenCover(isPresented: $showWhatsNew) {
+                    WhatsNewView(isModal: true)
+                }
         }
         .modelContainer(for: [])
+    }
+
+    // MARK: - What's New
+
+    /// Checks if we should show the What's New screen after app update
+    private func checkForWhatsNew() {
+        // Slight delay to let the app finish launching
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            if WhatsNewService.shared.shouldShowWhatsNew {
+                showWhatsNew = true
+            }
+        }
     }
 
     // MARK: - Universal Links

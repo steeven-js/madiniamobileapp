@@ -7,7 +7,8 @@
 
 import SwiftUI
 
-/// View for selecting app appearance theme (Light/Dark/System)
+/// View for selecting app appearance theme (Light/Dark)
+/// Dark mode is the default for Madin.IA
 struct AppearanceSettingsView: View {
     @Bindable private var themeManager = ThemeManager.shared
 
@@ -20,7 +21,7 @@ struct AppearanceSettingsView: View {
             } header: {
                 Text("Thème de l'application")
             } footer: {
-                Text("Le mode automatique suit les réglages de votre appareil.")
+                Text("Le mode sombre est recommandé pour une meilleure expérience.")
             }
         }
         .navigationTitle("Apparence")
@@ -36,7 +37,7 @@ struct AppearanceSettingsView: View {
             HStack(spacing: MadiniaSpacing.md) {
                 Image(systemName: theme.icon)
                     .font(.title3)
-                    .foregroundStyle(themeManager.currentTheme == theme ? MadiniaColors.gold : .secondary)
+                    .foregroundStyle(themeManager.currentTheme == theme ? MadiniaColors.accent : .secondary)
                     .frame(width: 28)
 
                 Text(theme.title)
@@ -47,7 +48,7 @@ struct AppearanceSettingsView: View {
                 if themeManager.currentTheme == theme {
                     Image(systemName: "checkmark")
                         .font(.body.weight(.semibold))
-                        .foregroundStyle(MadiniaColors.gold)
+                        .foregroundStyle(MadiniaColors.accent)
                 }
             }
             .contentShape(Rectangle())

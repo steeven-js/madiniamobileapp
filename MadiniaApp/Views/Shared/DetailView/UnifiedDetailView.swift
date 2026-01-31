@@ -514,12 +514,12 @@ struct UnifiedDetailView: View {
                 .foregroundStyle(MadiniaColors.darkGrayFixed)
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 16)
-                .background(MadiniaColors.gold)
+                .background(MadiniaColors.accent)
                 .clipShape(RoundedRectangle(cornerRadius: 12))
         }
         .padding(.leading, 20)
         .padding(.trailing, 88) // Leave space for Madi FAB on the right
-        .padding(.bottom, 100) // Account for custom tab bar height
+        .tabBarSafeArea() // Adaptive bottom padding for tab bar
         .background(
             LinearGradient(
                 colors: [Color(.systemBackground).opacity(0), Color(.systemBackground)],

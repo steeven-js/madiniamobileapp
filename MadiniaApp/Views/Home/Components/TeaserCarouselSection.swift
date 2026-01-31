@@ -80,7 +80,7 @@ struct TeaserCarouselSection: View {
                     Button(action: onTap) {
                         Text("Voir tout")
                             .font(MadiniaTypography.subheadline)
-                            .foregroundStyle(MadiniaColors.gold)
+                            .foregroundStyle(MadiniaColors.accent)
                     }
                 }
             }
@@ -156,7 +156,7 @@ extension TeaserItem {
             description: "Rencontrez la communauté Madin.IA lors de nos événements.",
             icon: "person.3.fill",
             gradient: LinearGradient(
-                colors: [MadiniaColors.violetFixed, MadiniaColors.gold.opacity(0.8)],
+                colors: [MadiniaColors.violetFixed, MadiniaColors.accent.opacity(0.8)],
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
             )

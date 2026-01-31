@@ -119,7 +119,7 @@ struct ProgressPath: View {
     /// Connector line between steps (gold)
     private var connectorLine: some View {
         Rectangle()
-            .fill(MadiniaColors.gold.opacity(0.6))
+            .fill(MadiniaColors.accent.opacity(0.6))
             .frame(height: 2)
             .frame(maxWidth: 24)
             .padding(.bottom, 40) // Align with circles

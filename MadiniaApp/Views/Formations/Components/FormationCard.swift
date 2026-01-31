@@ -9,7 +9,7 @@ import SwiftUI
 
 /// Card component displaying a formation in the grid.
 /// Vertical layout with hero image, category badge, title, and metadata.
-/// Designed for 2-column grid display (Nuton-style).
+/// Designed for adaptive grid display - works on iPhone and iPad.
 struct FormationCard: View {
     /// The formation to display
     let formation: Formation
@@ -17,10 +17,8 @@ struct FormationCard: View {
     /// Action when card is tapped
     var onTap: (() -> Void)?
 
-    /// Card dimensions
-    private let cardWidth: CGFloat = 170
-    private let cardHeight: CGFloat = 240
-    private let heroHeight: CGFloat = 120
+    /// Hero image aspect ratio (width / height)
+    private let heroAspectRatio: CGFloat = 170 / 120
 
     /// Check if formation is favorited
     private var isFavorite: Bool {
@@ -38,7 +36,6 @@ struct FormationCard: View {
                 // Content: title and metadata
                 contentSection
             }
-            .frame(width: cardWidth, height: cardHeight)
             .background(MadiniaColors.cardBackground)
             .clipShape(RoundedRectangle(cornerRadius: MadiniaRadius.lg))
             .shadow(color: .black.opacity(0.1), radius: 4, x: 0, y: 2)
@@ -56,17 +53,12 @@ struct FormationCard: View {
         ZStack {
             // Image or gradient placeholder
             if let imageUrl = formation.imageUrl, let url = URL(string: imageUrl) {
-                AsyncImage(url: url) { phase in
-                    switch phase {
-                    case .success(let image):
-                        image
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                    case .failure, .empty:
-                        placeholderGradient
-                    @unknown default:
-                        placeholderGradient
-                    }
+                CachedAsyncImage(url: url) { image in
+                    image
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                } placeholder: {
+                    ShimmerPlaceholder()
                 }
             } else {
                 placeholderGradient
@@ -82,7 +74,7 @@ struct FormationCard: View {
                             .fontWeight(.semibold)
                             .padding(.horizontal, MadiniaSpacing.xs)
                             .padding(.vertical, MadiniaSpacing.xxs)
-                            .background(MadiniaColors.gold)
+                            .background(MadiniaColors.accent)
                             .foregroundStyle(MadiniaColors.darkGray)
                             .clipShape(Capsule())
                     }
@@ -110,7 +102,7 @@ struct FormationCard: View {
                 Spacer()
             }
         }
-        .frame(width: cardWidth, height: heroHeight)
+        .aspectRatio(heroAspectRatio, contentMode: .fit)
         .clipped()
     }
 
@@ -135,13 +127,13 @@ struct FormationCard: View {
                 .lineLimit(2)
                 .multilineTextAlignment(.leading)
 
-            Spacer()
+            Spacer(minLength: MadiniaSpacing.xs)
 
             // Bottom row: Duration + Level + Certification
             metadataRow
         }
         .padding(MadiniaSpacing.sm)
-        .frame(maxWidth: .infinity, alignment: .leading)
+        .frame(maxWidth: .infinity, minHeight: 100, alignment: .leading)
     }
 
     private var metadataRow: some View {
@@ -162,7 +154,7 @@ struct FormationCard: View {
             if formation.certification == true {
                 Image(systemName: "checkmark.seal.fill")
                     .font(.caption2)
-                    .foregroundStyle(MadiniaColors.gold)
+                    .foregroundStyle(MadiniaColors.accent)
             }
         }
     }
@@ -189,10 +181,10 @@ struct FormationCard: View {
 
 #Preview("Grid Layout") {
     ScrollView {
-        LazyVGrid(columns: [
-            GridItem(.flexible(), spacing: MadiniaSpacing.md),
-            GridItem(.flexible(), spacing: MadiniaSpacing.md)
-        ], spacing: MadiniaSpacing.md) {
+        LazyVGrid(
+            columns: [GridItem(.adaptive(minimum: 160, maximum: 220), spacing: MadiniaSpacing.md)],
+            spacing: MadiniaSpacing.md
+        ) {
             ForEach(Formation.samples) { formation in
                 FormationCard(formation: formation) {
                     print("Tapped: \(formation.title)")

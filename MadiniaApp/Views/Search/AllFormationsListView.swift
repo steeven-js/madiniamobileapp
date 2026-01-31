@@ -27,7 +27,7 @@ struct AllFormationsListView: View {
                 }
             }
             .padding(MadiniaSpacing.md)
-            .padding(.bottom, 100) // Space for tab bar
+            .tabBarSafeArea()
         }
         .navigationTitle("Toutes les formations")
         .navigationBarTitleDisplayMode(.large)

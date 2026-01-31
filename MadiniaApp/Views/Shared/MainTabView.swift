@@ -41,7 +41,7 @@ enum MainTab: Int, CaseIterable {
 }
 
 /// Main tab navigation view providing access to the primary sections of the app.
-/// Uses a custom App Store-style tab bar with grouped tabs.
+/// Uses a custom App Store-style tab bar on iPhone and a sidebar on iPad.
 /// Includes the Madi FAB overlay for AI coach access.
 struct MainTabView: View {
     /// Selected tab, persisted across app launches
@@ -69,6 +69,9 @@ struct MainTabView: View {
     @Environment(\.deepLinkFormationSlug) private var deepLinkFormationSlug
     @Environment(\.deepLinkArticleSlug) private var deepLinkArticleSlug
 
+    /// Horizontal size class for iPad detection
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+
     /// Push notification service
     @State private var pushService = PushNotificationService.shared
 
@@ -78,61 +81,17 @@ struct MainTabView: View {
     /// API service for fetching formation details
     private let apiService: APIServiceProtocol = APIService.shared
 
+    /// Whether we're on iPad (regular width)
+    private var isIPad: Bool {
+        horizontalSizeClass == .regular
+    }
+
     var body: some View {
-        ZStack {
-            // Content based on selected tab
-            Group {
-                switch selectedTab {
-                case .home:
-                    NavigationStack {
-                        HomeView(selectedTab: .constant(0))
-                    }
-                case .madinia:
-                    MadiniaHubView()
-                case .userSpace:
-                    UserSpaceView()
-                case .search:
-                    SearchTab(selectedFormationSlug: $selectedFormationSlug)
-                }
-            }
-
-            // Custom Tab Bar
-            VStack {
-                Spacer()
-                customTabBar
-            }
-
-            // Settings button overlay (top-right)
-            VStack {
-                HStack {
-                    Spacer()
-                    Button {
-                        isShowingSettings = true
-                    } label: {
-                        Image(systemName: "gearshape.fill")
-                            .font(.title3)
-                            .foregroundStyle(MadiniaColors.gold)
-                            .padding(MadiniaSpacing.sm)
-                            .background(.ultraThinMaterial)
-                            .clipShape(Circle())
-                            .shadow(color: .black.opacity(0.1), radius: 4, y: 2)
-                    }
-                    .accessibilityLabel("Paramètres")
-                    .padding(.trailing, MadiniaSpacing.md)
-                    .padding(.top, 4)
-                }
-                Spacer()
-            }
-
-            // Madi FAB overlay (bottom-right)
-            VStack {
-                Spacer()
-                HStack {
-                    Spacer()
-                    MadiFAB(isShowingChat: $isShowingMadiChat)
-                        .padding(.trailing, MadiniaSpacing.md)
-                        .padding(.bottom, 100) // Above custom tab bar
-                }
+        Group {
+            if isIPad {
+                iPadLayout
+            } else {
+                iPhoneLayout
             }
         }
         .sheet(isPresented: $isShowingMadiChat) {
@@ -189,7 +148,157 @@ struct MainTabView: View {
         }
     }
 
-    // MARK: - Custom Tab Bar (App Store Style)
+    // MARK: - iPhone Layout
+
+    private var iPhoneLayout: some View {
+        ZStack {
+            // Content based on selected tab
+            Group {
+                switch selectedTab {
+                case .home:
+                    NavigationStack {
+                        HomeView(selectedTab: .constant(0))
+                    }
+                case .madinia:
+                    MadiniaHubView()
+                case .userSpace:
+                    UserSpaceView()
+                case .search:
+                    SearchTab(selectedFormationSlug: $selectedFormationSlug)
+                }
+            }
+
+            // Custom Tab Bar
+            VStack {
+                Spacer()
+                customTabBar
+            }
+
+            // Settings button overlay (top-right)
+            settingsButtonOverlay
+
+            // Madi FAB overlay (bottom-right)
+            VStack {
+                Spacer()
+                HStack {
+                    Spacer()
+                    MadiFAB(isShowingChat: $isShowingMadiChat)
+                        .padding(.trailing, MadiniaSpacing.md)
+                        .padding(.bottom, 100) // Above custom tab bar
+                }
+            }
+        }
+    }
+
+    // MARK: - iPad Layout
+
+    private var iPadLayout: some View {
+        NavigationSplitView {
+            // Sidebar
+            List {
+                ForEach(MainTab.allCases, id: \.self) { tab in
+                    Button {
+                        withAnimation(.easeInOut(duration: 0.2)) {
+                            selectedTab = tab
+                        }
+                    } label: {
+                        HStack(spacing: MadiniaSpacing.sm) {
+                            if tab.isSystemIcon {
+                                Image(systemName: tab.icon)
+                                    .font(.title3)
+                                    .frame(width: 24)
+                            } else {
+                                Image(tab.icon)
+                                    .renderingMode(.template)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 24, height: 24)
+                            }
+                            Text(tab.title)
+                                .font(MadiniaTypography.body)
+                        }
+                        .foregroundStyle(selectedTab == tab ? MadiniaColors.accent : .primary)
+                        .padding(.vertical, MadiniaSpacing.xs)
+                    }
+                    .listRowBackground(
+                        selectedTab == tab
+                            ? MadiniaColors.accent.opacity(0.1)
+                            : Color.clear
+                    )
+                }
+            }
+            .listStyle(.sidebar)
+            .navigationTitle("Madin.IA")
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        isShowingSettings = true
+                    } label: {
+                        Image(systemName: "gearshape.fill")
+                            .foregroundStyle(MadiniaColors.accent)
+                    }
+                    .accessibilityLabel("Paramètres")
+                }
+            }
+        } detail: {
+            // Detail content
+            ZStack {
+                Group {
+                    switch selectedTab {
+                    case .home:
+                        NavigationStack {
+                            HomeView(selectedTab: .constant(0))
+                        }
+                    case .madinia:
+                        MadiniaHubView()
+                    case .userSpace:
+                        UserSpaceView()
+                    case .search:
+                        SearchTab(selectedFormationSlug: $selectedFormationSlug)
+                    }
+                }
+
+                // Madi FAB overlay (bottom-right)
+                VStack {
+                    Spacer()
+                    HStack {
+                        Spacer()
+                        MadiFAB(isShowingChat: $isShowingMadiChat)
+                            .padding(.trailing, MadiniaSpacing.lg)
+                            .padding(.bottom, MadiniaSpacing.lg)
+                    }
+                }
+            }
+        }
+        .navigationSplitViewStyle(.balanced)
+    }
+
+    // MARK: - Settings Button Overlay
+
+    private var settingsButtonOverlay: some View {
+        VStack {
+            HStack {
+                Spacer()
+                Button {
+                    isShowingSettings = true
+                } label: {
+                    Image(systemName: "gearshape.fill")
+                        .font(.title3)
+                        .foregroundStyle(MadiniaColors.accent)
+                        .padding(MadiniaSpacing.sm)
+                        .background(.ultraThinMaterial)
+                        .clipShape(Circle())
+                        .shadow(color: .black.opacity(0.1), radius: 4, y: 2)
+                }
+                .accessibilityLabel("Paramètres")
+                .padding(.trailing, MadiniaSpacing.md)
+                .padding(.top, 4)
+            }
+            Spacer()
+        }
+    }
+
+    // MARK: - Custom Tab Bar (Liquid Glass Style)
 
     private var customTabBar: some View {
         HStack(spacing: MadiniaSpacing.sm) {
@@ -201,15 +310,13 @@ struct MainTabView: View {
             }
             .padding(.horizontal, MadiniaSpacing.xs)
             .padding(.vertical, MadiniaSpacing.xs)
-            .background(.ultraThinMaterial)
-            .clipShape(RoundedRectangle(cornerRadius: 25))
+            .modifier(LiquidGlassModifier())
 
             // Right group: Recherche
             tabButton(for: .search)
                 .padding(.horizontal, MadiniaSpacing.sm)
                 .padding(.vertical, MadiniaSpacing.xs)
-                .background(.ultraThinMaterial)
-                .clipShape(RoundedRectangle(cornerRadius: 25))
+                .modifier(LiquidGlassModifier())
         }
         .padding(.horizontal, MadiniaSpacing.md)
         .padding(.bottom, MadiniaSpacing.sm)
@@ -235,10 +342,10 @@ struct MainTabView: View {
                 }
 
                 Text(tab.title)
-                    .font(.caption2)
-                    .fontWeight(selectedTab == tab ? .semibold : .regular)
+                    .font(.caption)
+                    .fontWeight(selectedTab == tab ? .semibold : .medium)
             }
-            .foregroundStyle(selectedTab == tab ? MadiniaColors.gold : .secondary)
+            .foregroundStyle(selectedTab == tab ? MadiniaColors.accent : .secondary)
             .frame(minWidth: 70)
             .padding(.vertical, MadiniaSpacing.xs)
         }
@@ -286,6 +393,22 @@ private struct SearchTab: View {
             selectedFormationSlug = nil
         } catch {
             selectedFormationSlug = nil
+        }
+    }
+}
+
+// MARK: - Liquid Glass Modifier
+
+/// ViewModifier that applies liquid glass effect on iOS 26+ with fallback for older versions
+private struct LiquidGlassModifier: ViewModifier {
+    func body(content: Content) -> some View {
+        if #available(iOS 26.0, *) {
+            content
+                .glassEffect(.regular.interactive())
+        } else {
+            content
+                .background(.ultraThinMaterial)
+                .clipShape(RoundedRectangle(cornerRadius: 25))
         }
     }
 }

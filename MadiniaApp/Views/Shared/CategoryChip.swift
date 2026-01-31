@@ -45,7 +45,7 @@ struct CategoryChip: View {
     private var chipBackground: Color {
         if isSelected {
             // Selected: gold background
-            return MadiniaColors.gold
+            return MadiniaColors.accent
         } else {
             // Unselected: violet 15% opacity background
             return MadiniaColors.violet.opacity(0.15)

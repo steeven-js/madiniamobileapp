@@ -70,6 +70,11 @@ final class NavigationContext {
         shouldNavigateToContact = true
     }
 
+    /// Triggers navigation to contact screen (keeps current context)
+    func triggerContactNavigation() {
+        shouldNavigateToContact = true
+    }
+
     /// Clears the current context (after successful contact submission)
     func clear() {
         currentContext = nil
