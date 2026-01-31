@@ -65,6 +65,7 @@ struct TeaserCarouselSection: View {
     let title: String
     let items: [TeaserItem]
     var onTap: (() -> Void)? = nil
+    var onItemTap: (() -> Void)? = nil
 
     var body: some View {
         VStack(alignment: .leading, spacing: MadiniaSpacing.sm) {
@@ -89,7 +90,14 @@ struct TeaserCarouselSection: View {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: MadiniaSpacing.md) {
                     ForEach(items) { item in
-                        TeaserCard(item: item)
+                        if let onItemTap = onItemTap {
+                            Button(action: onItemTap) {
+                                TeaserCard(item: item)
+                            }
+                            .buttonStyle(.plain)
+                        } else {
+                            TeaserCard(item: item)
+                        }
                     }
                 }
             }
@@ -100,11 +108,11 @@ struct TeaserCarouselSection: View {
 // MARK: - Predefined Teaser Items
 
 extension TeaserItem {
-    /// News teaser items
+    /// News teaser items - redirects to Blog
     static let newsItems: [TeaserItem] = [
         TeaserItem(
             title: "Actualités IA",
-            subtitle: "Bientôt disponible",
+            subtitle: "Blog",
             description: "Suivez les dernières tendances et innovations en Intelligence Artificielle.",
             icon: "newspaper.fill",
             gradient: LinearGradient(
@@ -115,7 +123,7 @@ extension TeaserItem {
         ),
         TeaserItem(
             title: "Conseils d'experts",
-            subtitle: "En préparation",
+            subtitle: "Blog",
             description: "Des articles rédigés par nos formateurs pour vous accompagner.",
             icon: "lightbulb.fill",
             gradient: LinearGradient(

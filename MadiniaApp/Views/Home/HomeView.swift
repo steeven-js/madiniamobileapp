@@ -44,6 +44,10 @@ struct HomeView: View {
                         onTap: {
                             navigationContext.triggerBlogNavigation()
                             selectedTab = 1 // Navigate to Madin.IA tab
+                        },
+                        onItemTap: {
+                            navigationContext.triggerBlogNavigation()
+                            selectedTab = 1 // Navigate to Madin.IA tab
                         }
                     )
 
