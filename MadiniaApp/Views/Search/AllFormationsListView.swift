@@ -12,15 +12,15 @@ struct AllFormationsListView: View {
     /// All formations to display
     let formations: [Formation]
 
+    @State private var selectedFormation: Formation?
+
     var body: some View {
         ScrollView {
             LazyVStack(spacing: MadiniaSpacing.sm) {
                 ForEach(formations) { formation in
-                    NavigationLink(value: formation) {
-                        FormationRowCard(formation: formation)
-                            .contentShape(Rectangle())
+                    FormationRowCard(formation: formation) {
+                        selectedFormation = formation
                     }
-                    .buttonStyle(PlainNavigationButtonStyle())
                 }
 
                 if formations.isEmpty {
@@ -32,6 +32,11 @@ struct AllFormationsListView: View {
         }
         .navigationTitle("Toutes les formations")
         .navigationBarTitleDisplayMode(.large)
+        .sheet(item: $selectedFormation) { formation in
+            NavigationStack {
+                FormationDetailView(formation: formation)
+            }
+        }
     }
 
     // MARK: - Empty State
@@ -49,16 +54,6 @@ struct AllFormationsListView: View {
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, MadiniaSpacing.xxl)
-    }
-}
-
-// MARK: - Plain Navigation Button Style
-
-/// Custom button style that removes default styling but preserves tap area
-private struct PlainNavigationButtonStyle: ButtonStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .opacity(configuration.isPressed ? 0.7 : 1.0)
     }
 }
 
