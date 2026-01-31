@@ -16,6 +16,9 @@ struct HomeView: View {
     /// Selected tab binding for navigation
     @Binding var selectedTab: Int
 
+    /// Navigation context for triggering blog navigation
+    @Environment(\.navigationContext) private var navigationContext
+
     /// Navigation state for categories grid
     @State private var showCategoriesGrid = false
 
@@ -34,10 +37,14 @@ struct HomeView: View {
                     LoadingView(message: "Chargement des formations...")
 
                 case .loaded:
-                    // News teaser carousel
+                    // News teaser carousel - redirects to Blog
                     TeaserCarouselSection(
                         title: "Actualités",
-                        items: TeaserItem.newsItems
+                        items: TeaserItem.newsItems,
+                        onTap: {
+                            navigationContext.triggerBlogNavigation()
+                            selectedTab = 1 // Navigate to Madin.IA tab
+                        }
                     )
 
                     // Events teaser carousel

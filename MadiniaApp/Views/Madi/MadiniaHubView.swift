@@ -35,11 +35,24 @@ struct MadiniaHubView: View {
                 navigationContext.clearNavigationFlag()
             }
         }
+        .onChange(of: navigationContext.shouldNavigateToBlog) { _, shouldNavigate in
+            if shouldNavigate {
+                withAnimation(.easeInOut(duration: 0.2)) {
+                    selectedTab = .blog
+                }
+                navigationContext.clearBlogNavigationFlag()
+            }
+        }
         .onAppear {
             // Check if we should navigate to contact on appear (handles timing issue)
             if navigationContext.shouldNavigateToContact {
                 selectedTab = .contact
                 navigationContext.clearNavigationFlag()
+            }
+            // Check if we should navigate to blog on appear
+            if navigationContext.shouldNavigateToBlog {
+                selectedTab = .blog
+                navigationContext.clearBlogNavigationFlag()
             }
         }
     }
@@ -89,8 +102,6 @@ struct MadiniaHubView: View {
             aboutContent
         case .blog:
             blogContent
-        case .news:
-            newsContent
         case .events:
             eventsContent
         case .contact:
@@ -193,23 +204,6 @@ struct MadiniaHubView: View {
         .shadow(color: .black.opacity(0.05), radius: 4, y: 2)
     }
 
-    // MARK: - News Content
-
-    private var newsContent: some View {
-        ScrollView {
-            VStack(spacing: MadiniaSpacing.lg) {
-                ContentUnavailableView {
-                    Label("Actualités", systemImage: "newspaper.fill")
-                } description: {
-                    Text("Les actualités Madin.IA arrivent bientôt !\n\nSuivez nos dernières nouvelles, événements et annonces ici.")
-                }
-                .padding(.top, MadiniaSpacing.xl)
-            }
-            .padding(MadiniaSpacing.md)
-            .tabBarSafeArea()
-        }
-    }
-
     // MARK: - Events Content
 
     private var eventsContent: some View {
@@ -233,7 +227,6 @@ struct MadiniaHubView: View {
 enum HubTab: String, CaseIterable {
     case about
     case blog
-    case news
     case events
     case contact
 
@@ -241,7 +234,6 @@ enum HubTab: String, CaseIterable {
         switch self {
         case .about: return "À propos"
         case .blog: return "Blog"
-        case .news: return "Actualités"
         case .events: return "Événements"
         case .contact: return "Contact"
         }
@@ -251,7 +243,6 @@ enum HubTab: String, CaseIterable {
         switch self {
         case .about: return "info.circle"
         case .blog: return "doc.richtext"
-        case .news: return "newspaper"
         case .events: return "calendar"
         case .contact: return "envelope"
         }

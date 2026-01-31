@@ -33,6 +33,9 @@ final class NavigationContext {
     /// Flag to trigger navigation to the Contact screen
     var shouldNavigateToContact = false
 
+    /// Flag to trigger navigation to the Blog screen
+    var shouldNavigateToBlog = false
+
     private init() {}
 
     // MARK: - Actions
@@ -75,14 +78,24 @@ final class NavigationContext {
         shouldNavigateToContact = true
     }
 
+    /// Triggers navigation to blog screen
+    func triggerBlogNavigation() {
+        shouldNavigateToBlog = true
+    }
+
     /// Clears the current context (after successful contact submission)
     func clear() {
         currentContext = nil
     }
 
-    /// Clears navigation flag after navigation is complete
+    /// Clears contact navigation flag after navigation is complete
     func clearNavigationFlag() {
         shouldNavigateToContact = false
+    }
+
+    /// Clears blog navigation flag after navigation is complete
+    func clearBlogNavigationFlag() {
+        shouldNavigateToBlog = false
     }
 
     // MARK: - Computed Properties
