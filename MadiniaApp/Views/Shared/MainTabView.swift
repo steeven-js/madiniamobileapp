@@ -44,8 +44,14 @@ enum MainTab: Int, CaseIterable {
 /// Uses a custom App Store-style tab bar on iPhone and a sidebar on iPad.
 /// Includes the Madi FAB overlay for AI coach access.
 struct MainTabView: View {
-    /// Selected tab, persisted across app launches
-    @AppStorage("selectedTab") private var selectedTab: MainTab = .home
+    /// Selected tab - using @State for immediate responsiveness
+    @State private var selectedTab: MainTab = {
+        if let rawValue = UserDefaults.standard.object(forKey: "selectedTab") as? Int,
+           let tab = MainTab(rawValue: rawValue) {
+            return tab
+        }
+        return .home
+    }()
 
     /// Controls the Madi chat sheet presentation
     @State private var isShowingMadiChat = false
@@ -141,10 +147,12 @@ struct MainTabView: View {
         }
         .onChange(of: navigationContext.shouldNavigateToContact) { _, shouldNavigate in
             if shouldNavigate {
-                withAnimation(.easeInOut(duration: 0.2)) {
-                    selectedTab = .madinia
-                }
+                selectedTab = .madinia
             }
+        }
+        .onChange(of: selectedTab) { _, newTab in
+            // Persist tab selection in background
+            UserDefaults.standard.set(newTab.rawValue, forKey: "selectedTab")
         }
     }
 
@@ -168,12 +176,6 @@ struct MainTabView: View {
                 }
             }
 
-            // Custom Tab Bar
-            VStack {
-                Spacer()
-                customTabBar
-            }
-
             // Settings button overlay (top-right)
             settingsButtonOverlay
 
@@ -183,10 +185,16 @@ struct MainTabView: View {
                 HStack {
                     Spacer()
                     MadiFAB(isShowingChat: $isShowingMadiChat)
-                        .padding(.trailing, MadiniaSpacing.md)
-                        .padding(.bottom, 100) // Above custom tab bar
+                        .padding(.trailing, MadiniaSpacing.lg)
+                        .padding(.bottom, 16) // Just above custom tab bar
                 }
             }
+            .allowsHitTesting(true)
+        }
+        // Custom Tab Bar - using safeAreaInset ensures proper hit testing
+        .safeAreaInset(edge: .bottom) {
+            customTabBar
+                .padding(.bottom, MadiniaSpacing.sm)
         }
     }
 
@@ -198,9 +206,7 @@ struct MainTabView: View {
             List {
                 ForEach(MainTab.allCases, id: \.self) { tab in
                     Button {
-                        withAnimation(.easeInOut(duration: 0.2)) {
-                            selectedTab = tab
-                        }
+                        selectedTab = tab
                     } label: {
                         HStack(spacing: MadiniaSpacing.sm) {
                             if tab.isSystemIcon {
@@ -319,14 +325,11 @@ struct MainTabView: View {
                 .modifier(LiquidGlassModifier())
         }
         .padding(.horizontal, MadiniaSpacing.md)
-        .padding(.bottom, MadiniaSpacing.sm)
     }
 
     private func tabButton(for tab: MainTab) -> some View {
         Button {
-            withAnimation(.easeInOut(duration: 0.2)) {
-                selectedTab = tab
-            }
+            selectedTab = tab
         } label: {
             VStack(spacing: 4) {
                 if tab.isSystemIcon {
@@ -348,8 +351,9 @@ struct MainTabView: View {
             .foregroundStyle(selectedTab == tab ? MadiniaColors.accent : .secondary)
             .frame(minWidth: 70)
             .padding(.vertical, MadiniaSpacing.xs)
+            .contentShape(Rectangle())
         }
-        .buttonStyle(.plain)
+        .buttonStyle(TabButtonStyle())
         .accessibilityLabel(tab.title)
         .accessibilityAddTraits(selectedTab == tab ? .isSelected : [])
     }
@@ -397,6 +401,18 @@ private struct SearchTab: View {
     }
 }
 
+// MARK: - Tab Button Style
+
+/// Custom button style for tab buttons with immediate response
+private struct TabButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .opacity(configuration.isPressed ? 0.6 : 1.0)
+            .scaleEffect(configuration.isPressed ? 0.95 : 1.0)
+            .animation(.easeOut(duration: 0.1), value: configuration.isPressed)
+    }
+}
+
 // MARK: - Liquid Glass Modifier
 
 /// ViewModifier that applies liquid glass effect on iOS 26+ with fallback for older versions
@@ -404,7 +420,7 @@ private struct LiquidGlassModifier: ViewModifier {
     func body(content: Content) -> some View {
         if #available(iOS 26.0, *) {
             content
-                .glassEffect(.regular.interactive())
+                .glassEffect(.regular)
         } else {
             content
                 .background(.ultraThinMaterial)

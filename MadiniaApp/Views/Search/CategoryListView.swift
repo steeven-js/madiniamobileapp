@@ -21,14 +21,15 @@ struct CategoryListView: View {
         formations.filter { $0.category?.id == category.id }
     }
 
+    @State private var selectedFormation: Formation?
+    
     var body: some View {
         ScrollView {
             LazyVStack(spacing: MadiniaSpacing.sm) {
                 ForEach(categoryFormations) { formation in
-                    NavigationLink(value: formation) {
-                        FormationRowCard(formation: formation)
+                    FormationRowCard(formation: formation) {
+                        selectedFormation = formation
                     }
-                    .buttonStyle(.plain)
                 }
 
                 if categoryFormations.isEmpty {
@@ -40,6 +41,11 @@ struct CategoryListView: View {
         }
         .navigationTitle(category.name)
         .navigationBarTitleDisplayMode(.large)
+        .sheet(item: $selectedFormation) { formation in
+            NavigationStack {
+                FormationDetailView(formation: formation)
+            }
+        }
     }
 
     // MARK: - Empty State

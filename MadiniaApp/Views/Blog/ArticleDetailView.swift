@@ -15,9 +15,8 @@ struct ArticleDetailView: View {
     /// ViewModel for loading full article and managing like state
     @State private var viewModel: ArticleDetailViewModel
 
-    /// Navigation context for contact form pre-fill
-    @Environment(\.navigationContext) private var navigationContext
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.navigationContext) private var navigationContext
 
     init(article: Article) {
         self.article = article
@@ -70,9 +69,6 @@ struct ArticleDetailView: View {
         .background(Color(.systemBackground))
         .task {
             await viewModel.loadFullArticle()
-        }
-        .onAppear {
-            navigationContext.setArticle(viewModel.displayArticle)
         }
     }
 

@@ -84,8 +84,9 @@ struct FormationsView: View {
                         ForEach(viewModel.filteredFormations) { formation in
                             NavigationLink(value: formation) {
                                 FormationCard(formation: formation)
+                                    .contentShape(Rectangle())
                             }
-                            .buttonStyle(.plain)
+                            .buttonStyle(PlainNavigationButtonStyle())
                         }
                     }
                     .padding(.horizontal, MadiniaSpacing.md)
@@ -152,6 +153,16 @@ struct FormationsView: View {
         .frame(maxWidth: .infinity)
         .padding(.vertical, MadiniaSpacing.xxl)
         .accessibilityElement(children: .combine)
+    }
+}
+
+// MARK: - Plain Navigation Button Style
+
+/// Custom button style that removes default styling but preserves tap area
+private struct PlainNavigationButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .opacity(configuration.isPressed ? 0.7 : 1.0)
     }
 }
 

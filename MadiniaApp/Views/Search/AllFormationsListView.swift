@@ -18,8 +18,9 @@ struct AllFormationsListView: View {
                 ForEach(formations) { formation in
                     NavigationLink(value: formation) {
                         FormationRowCard(formation: formation)
+                            .contentShape(Rectangle())
                     }
-                    .buttonStyle(.plain)
+                    .buttonStyle(PlainNavigationButtonStyle())
                 }
 
                 if formations.isEmpty {
@@ -48,6 +49,16 @@ struct AllFormationsListView: View {
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, MadiniaSpacing.xxl)
+    }
+}
+
+// MARK: - Plain Navigation Button Style
+
+/// Custom button style that removes default styling but preserves tap area
+private struct PlainNavigationButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .opacity(configuration.isPressed ? 0.7 : 1.0)
     }
 }
 

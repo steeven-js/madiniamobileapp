@@ -53,9 +53,6 @@ struct FormationDetailView: View {
     /// Optional callback for related formation tap (used in sheet mode)
     var onRelatedFormationTap: ((Formation) -> Void)?
 
-    /// Navigation context for contact form pre-fill
-    @Environment(\.navigationContext) private var navigationContext
-
     /// Full formation data loaded from API
     @State private var fullFormation: Formation?
 
@@ -101,9 +98,6 @@ struct FormationDetailView: View {
             fullFormation = nil
             relatedFormations = []
             isLoading = true
-        }
-        .onAppear {
-            navigationContext.setFormation(formation)
         }
     }
 

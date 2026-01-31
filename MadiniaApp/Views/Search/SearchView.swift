@@ -12,6 +12,9 @@ struct AllFormationsDestination: Hashable {
     let formations: [Formation]
 }
 
+/// Navigation destination for categories grid
+struct CategoriesGridDestination: Hashable {}
+
 /// Main search screen centralizing services, formations, and categories.
 /// Replaces the old Formations tab with a unified search experience.
 /// Based on Figma mockup "16 Search".
@@ -31,9 +34,6 @@ struct SearchView: View {
     /// Controls navigation to all services
     @State private var showAllServices = false
 
-    /// Controls navigation to categories grid
-    @State private var showCategoriesGrid = false
-
     var body: some View {
         NavigationStack(path: $navigationPath) {
             content
@@ -43,7 +43,10 @@ struct SearchView: View {
                     FormationDetailView(formation: formation)
                 }
                 .navigationDestination(for: FormationCategory.self) { category in
-                    CategoryListView(category: category, formations: viewModel.formations)
+                    CategoryListView(
+                        category: category,
+                        formations: viewModel.formations
+                    )
                 }
                 .navigationDestination(isPresented: $showAllFormations) {
                     AllFormationsListView(formations: viewModel.formations)
@@ -51,7 +54,7 @@ struct SearchView: View {
                 .navigationDestination(isPresented: $showAllServices) {
                     AllServicesListView(services: viewModel.services)
                 }
-                .navigationDestination(isPresented: $showCategoriesGrid) {
+                .navigationDestination(for: CategoriesGridDestination.self) { _ in
                     CategoriesGridView { category in
                         navigationPath.append(category)
                     }
@@ -131,7 +134,7 @@ struct SearchView: View {
     private var categoriesSection: some View {
         VStack(alignment: .leading, spacing: MadiniaSpacing.sm) {
             SectionHeader(title: "Catégories") {
-                showCategoriesGrid = true
+                navigationPath.append(CategoriesGridDestination())
             }
 
             ScrollView(.horizontal, showsIndicators: false) {
