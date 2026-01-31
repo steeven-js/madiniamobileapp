@@ -91,10 +91,11 @@ struct TeaserCarouselSection: View {
                 HStack(spacing: MadiniaSpacing.md) {
                     ForEach(items) { item in
                         if let onItemTap = onItemTap {
-                            Button(action: onItemTap) {
-                                TeaserCard(item: item)
-                            }
-                            .buttonStyle(.plain)
+                            TeaserCard(item: item)
+                                .contentShape(Rectangle())
+                                .onTapGesture {
+                                    onItemTap()
+                                }
                         } else {
                             TeaserCard(item: item)
                         }
@@ -108,7 +109,7 @@ struct TeaserCarouselSection: View {
 // MARK: - Predefined Teaser Items
 
 extension TeaserItem {
-    /// News teaser items - redirects to Blog
+    /// News teaser items - first one redirects to Blog
     static let newsItems: [TeaserItem] = [
         TeaserItem(
             title: "Actualités IA",
@@ -123,7 +124,7 @@ extension TeaserItem {
         ),
         TeaserItem(
             title: "Conseils d'experts",
-            subtitle: "Blog",
+            subtitle: "Bientôt disponible",
             description: "Des articles rédigés par nos formateurs pour vous accompagner.",
             icon: "lightbulb.fill",
             gradient: LinearGradient(
