@@ -54,7 +54,11 @@ struct HomeView: View {
                     // Events teaser carousel
                     TeaserCarouselSection(
                         title: "Événements",
-                        items: TeaserItem.eventsItems
+                        items: TeaserItem.eventsItems,
+                        onTap: {
+                            navigationContext.triggerEventsNavigation()
+                            selectedTab = 1 // Navigate to Madin.IA tab
+                        }
                     )
 
                     // Categories section

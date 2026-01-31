@@ -12,7 +12,7 @@ import SwiftUI
 struct MyPreRegistrationsView: View {
     @State private var viewModel = MyPreRegistrationsViewModel()
     @Environment(\.dismiss) private var dismiss
-    @AppStorage("selectedTab") private var selectedTab: MainTab = .home
+    @Environment(\.navigationContext) private var navigationContext
 
     var body: some View {
         Group {
@@ -78,7 +78,7 @@ struct MyPreRegistrationsView: View {
             // Search button
             Button {
                 dismiss()
-                selectedTab = .search
+                navigationContext.triggerSearchNavigation()
             } label: {
                 HStack(spacing: MadiniaSpacing.sm) {
                     Image(systemName: "magnifyingglass")
@@ -197,7 +197,7 @@ struct MyPreRegistrationsView: View {
             // Search button
             Button {
                 dismiss()
-                selectedTab = .search
+                navigationContext.triggerSearchNavigation()
             } label: {
                 HStack(spacing: MadiniaSpacing.sm) {
                     Image(systemName: "magnifyingglass")

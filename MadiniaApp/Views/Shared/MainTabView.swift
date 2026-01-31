@@ -162,6 +162,12 @@ struct MainTabView: View {
                 selectedTab = .madinia
             }
         }
+        .onChange(of: navigationContext.shouldNavigateToSearch) { _, shouldNavigate in
+            if shouldNavigate {
+                selectedTab = .search
+                navigationContext.clearSearchNavigationFlag()
+            }
+        }
         .onChange(of: selectedTab) { _, newTab in
             // Persist tab selection in background
             UserDefaults.standard.set(newTab.rawValue, forKey: "selectedTab")

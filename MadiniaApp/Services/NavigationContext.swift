@@ -36,6 +36,12 @@ final class NavigationContext {
     /// Flag to trigger navigation to the Blog screen
     var shouldNavigateToBlog = false
 
+    /// Flag to trigger navigation to the Search screen
+    var shouldNavigateToSearch = false
+
+    /// Flag to trigger navigation to the Events screen
+    var shouldNavigateToEvents = false
+
     private init() {}
 
     // MARK: - Actions
@@ -83,6 +89,16 @@ final class NavigationContext {
         shouldNavigateToBlog = true
     }
 
+    /// Triggers navigation to search screen
+    func triggerSearchNavigation() {
+        shouldNavigateToSearch = true
+    }
+
+    /// Triggers navigation to events screen
+    func triggerEventsNavigation() {
+        shouldNavigateToEvents = true
+    }
+
     /// Clears the current context (after successful contact submission)
     func clear() {
         currentContext = nil
@@ -96,6 +112,16 @@ final class NavigationContext {
     /// Clears blog navigation flag after navigation is complete
     func clearBlogNavigationFlag() {
         shouldNavigateToBlog = false
+    }
+
+    /// Clears search navigation flag after navigation is complete
+    func clearSearchNavigationFlag() {
+        shouldNavigateToSearch = false
+    }
+
+    /// Clears events navigation flag after navigation is complete
+    func clearEventsNavigationFlag() {
+        shouldNavigateToEvents = false
     }
 
     // MARK: - Computed Properties

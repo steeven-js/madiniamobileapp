@@ -6,9 +6,26 @@
 //
 
 import SwiftUI
+import UIKit
 
 /// Main settings hub view with navigation to sub-settings
 struct SettingsView: View {
+    /// Device UUID for debugging
+    private var deviceUUID: String {
+        UIDevice.current.identifierForVendor?.uuidString ?? "Non disponible"
+    }
+    
+    /// Truncated UUID for display
+    private var truncatedUUID: String {
+        let uuid = deviceUUID
+        if uuid.count > 12 {
+            let start = uuid.prefix(6)
+            let end = uuid.suffix(6)
+            return "\(start)...\(end)"
+        }
+        return uuid
+    }
+    
     var body: some View {
         List {
             Section {
@@ -48,6 +65,97 @@ struct SettingsView: View {
             } header: {
                 Text("À propos")
             }
+            
+            #if DEBUG
+            Section {
+                // Device UUID
+                HStack {
+                    Image(systemName: "number")
+                        .font(.title3)
+                        .foregroundStyle(.orange)
+                        .frame(width: 28)
+                    
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("Device UUID")
+                            .font(MadiniaTypography.body)
+                        
+                        Text(deviceUUID)
+                            .font(.system(.caption, design: .monospaced))
+                            .foregroundStyle(.secondary)
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.7)
+                    }
+                    
+                    Spacer()
+                    
+                    Button {
+                        UIPasteboard.general.string = deviceUUID
+                    } label: {
+                        Image(systemName: "doc.on.doc")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                    .buttonStyle(.plain)
+                }
+                .padding(.vertical, MadiniaSpacing.xxs)
+                
+                // APNs Token (if available)
+                if let token = PushNotificationService.shared.deviceToken {
+                    HStack {
+                        Image(systemName: "bell.badge")
+                            .font(.title3)
+                            .foregroundStyle(.orange)
+                            .frame(width: 28)
+                        
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text("APNs Token")
+                                .font(MadiniaTypography.body)
+                            
+                            Text(token.prefix(20) + "...")
+                                .font(.system(.caption, design: .monospaced))
+                                .foregroundStyle(.secondary)
+                                .lineLimit(1)
+                        }
+                        
+                        Spacer()
+                        
+                        Button {
+                            UIPasteboard.general.string = token
+                        } label: {
+                            Image(systemName: "doc.on.doc")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
+                        .buttonStyle(.plain)
+                    }
+                    .padding(.vertical, MadiniaSpacing.xxs)
+                }
+                
+                // Environment
+                HStack {
+                    Image(systemName: "hammer")
+                        .font(.title3)
+                        .foregroundStyle(.orange)
+                        .frame(width: 28)
+                    
+                    Text("Environnement")
+                        .font(MadiniaTypography.body)
+                    
+                    Spacer()
+                    
+                    Text("DEBUG")
+                        .font(.system(.caption, design: .monospaced))
+                        .foregroundStyle(.white)
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 2)
+                        .background(.orange)
+                        .clipShape(Capsule())
+                }
+                .padding(.vertical, MadiniaSpacing.xxs)
+            } header: {
+                Text("Debug")
+            }
+            #endif
         }
         .navigationTitle("Paramètres")
         .navigationBarTitleDisplayMode(.inline)

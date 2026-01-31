@@ -20,12 +20,20 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
         // Set notification delegate
         UNUserNotificationCenter.current().delegate = self
 
+        // Clear badge on launch
+        clearBadge()
+
         // Check for notification that launched the app
         if let notification = launchOptions?[.remoteNotification] as? [AnyHashable: Any] {
             handleNotification(userInfo: notification)
         }
 
         return true
+    }
+
+    func applicationDidBecomeActive(_ application: UIApplication) {
+        // Clear badge when app becomes active (from background or launch)
+        clearBadge()
     }
 
     // MARK: - Remote Notifications
@@ -62,6 +70,9 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
         didReceive response: UNNotificationResponse,
         withCompletionHandler completionHandler: @escaping () -> Void
     ) {
+        // Clear badge when user interacts with notification
+        clearBadge()
+
         let userInfo = response.notification.request.content.userInfo
         handleNotification(userInfo: userInfo)
         completionHandler()
@@ -72,6 +83,22 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
     private func handleNotification(userInfo: [AnyHashable: Any]) {
         if let payload = PushNotificationService.shared.parseNotification(userInfo: userInfo) {
             onDeepLink?(payload)
+        }
+    }
+
+    // MARK: - Badge Management
+
+    /// Clears the app icon badge
+    private func clearBadge() {
+        Task {
+            do {
+                try await UNUserNotificationCenter.current().setBadgeCount(0)
+            } catch {
+                // Fallback for older iOS versions or errors
+                await MainActor.run {
+                    UIApplication.shared.applicationIconBadgeNumber = 0
+                }
+            }
         }
     }
 }

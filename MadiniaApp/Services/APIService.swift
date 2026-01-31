@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 // MARK: - API Response Wrappers
 
@@ -83,14 +84,18 @@ struct ContactResponse: Decodable {
 
 /// Request payload for device token registration
 struct DeviceTokenRequest: Encodable {
+    let deviceUUID: String
     let deviceToken: String
     let platform: String
+    let environment: String
     let appVersion: String
     let preferences: NotificationPreferences
 
     enum CodingKeys: String, CodingKey {
+        case deviceUUID = "device_uuid"
         case deviceToken = "device_token"
         case platform
+        case environment
         case appVersion = "app_version"
         case preferences
     }
@@ -328,12 +333,26 @@ final class APIService: APIServiceProtocol {
     }
 
     /// Registers a device token for push notifications
+    /// - Parameters:
+    ///   - token: The APNs device token
+    ///   - preferences: Notification preferences
     /// - Throws: APIError if the request fails
     func registerDeviceToken(token: String, preferences: NotificationPreferences) async throws {
         let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0"
+        let deviceUUID = UIDevice.current.identifierForVendor?.uuidString ?? UUID().uuidString
+        
+        // Determine environment based on build configuration
+        #if DEBUG
+        let environment = "sandbox"
+        #else
+        let environment = "production"
+        #endif
+        
         let body = DeviceTokenRequest(
+            deviceUUID: deviceUUID,
             deviceToken: token,
             platform: "ios",
+            environment: environment,
             appVersion: appVersion,
             preferences: preferences
         )

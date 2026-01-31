@@ -43,6 +43,14 @@ struct MadiniaHubView: View {
                 navigationContext.clearBlogNavigationFlag()
             }
         }
+        .onChange(of: navigationContext.shouldNavigateToEvents) { _, shouldNavigate in
+            if shouldNavigate {
+                withAnimation(.easeInOut(duration: 0.2)) {
+                    selectedTab = .events
+                }
+                navigationContext.clearEventsNavigationFlag()
+            }
+        }
         .onAppear {
             // Check if we should navigate to contact on appear (handles timing issue)
             if navigationContext.shouldNavigateToContact {
@@ -53,6 +61,11 @@ struct MadiniaHubView: View {
             if navigationContext.shouldNavigateToBlog {
                 selectedTab = .blog
                 navigationContext.clearBlogNavigationFlag()
+            }
+            // Check if we should navigate to events on appear
+            if navigationContext.shouldNavigateToEvents {
+                selectedTab = .events
+                navigationContext.clearEventsNavigationFlag()
             }
         }
     }

@@ -13,7 +13,7 @@ struct SavedFormationsView: View {
     @State private var viewModel = SavedFormationsViewModel()
     @State private var selectedFormation: Formation?
     @Environment(\.dismiss) private var dismiss
-    @AppStorage("selectedTab") private var selectedTab: MainTab = .home
+    @Environment(\.navigationContext) private var navigationContext
 
     var body: some View {
         Group {
@@ -79,7 +79,7 @@ struct SavedFormationsView: View {
             // Search button
             Button {
                 dismiss()
-                selectedTab = .search
+                navigationContext.triggerSearchNavigation()
             } label: {
                 HStack(spacing: MadiniaSpacing.sm) {
                     Image(systemName: "magnifyingglass")
