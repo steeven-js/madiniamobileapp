@@ -92,6 +92,18 @@ struct MainTabView: View {
         horizontalSizeClass == .regular
     }
 
+    /// Binding to convert MainTab to Int for HomeView
+    private var selectedTabBinding: Binding<Int> {
+        Binding(
+            get: { selectedTab.rawValue },
+            set: { newValue in
+                if let tab = MainTab(rawValue: newValue) {
+                    selectedTab = tab
+                }
+            }
+        )
+    }
+
     var body: some View {
         Group {
             if isIPad {
@@ -165,7 +177,7 @@ struct MainTabView: View {
                 switch selectedTab {
                 case .home:
                     NavigationStack {
-                        HomeView(selectedTab: .constant(0))
+                        HomeView(selectedTab: selectedTabBinding)
                     }
                 case .madinia:
                     MadiniaHubView()
@@ -253,7 +265,7 @@ struct MainTabView: View {
                     switch selectedTab {
                     case .home:
                         NavigationStack {
-                            HomeView(selectedTab: .constant(0))
+                            HomeView(selectedTab: selectedTabBinding)
                         }
                     case .madinia:
                         MadiniaHubView()
