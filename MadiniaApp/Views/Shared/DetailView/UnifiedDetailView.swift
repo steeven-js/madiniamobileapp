@@ -416,10 +416,7 @@ struct UnifiedDetailView: View {
                 Text("Description")
                     .font(.system(size: 18, weight: .bold))
 
-                Text(stripHTML(from: description))
-                    .font(.system(size: 15))
-                    .foregroundStyle(.primary)
-                    .lineSpacing(4)
+                htmlContent(description)
             }
 
             // Objectives
@@ -428,10 +425,7 @@ struct UnifiedDetailView: View {
                     .font(.system(size: 18, weight: .bold))
                     .padding(.top, 8)
 
-                Text(stripHTML(from: objectives))
-                    .font(.system(size: 15))
-                    .foregroundStyle(.primary)
-                    .lineSpacing(4)
+                htmlContent(objectives)
             }
 
             // Target Audience
@@ -440,10 +434,7 @@ struct UnifiedDetailView: View {
                     .font(.system(size: 18, weight: .bold))
                     .padding(.top, 8)
 
-                Text(stripHTML(from: targetAudience))
-                    .font(.system(size: 15))
-                    .foregroundStyle(.primary)
-                    .lineSpacing(4)
+                htmlContent(targetAudience)
             }
         }
     }
@@ -456,10 +447,7 @@ struct UnifiedDetailView: View {
                 Text("Prérequis")
                     .font(.system(size: 18, weight: .bold))
 
-                Text(stripHTML(from: prerequisites))
-                    .font(.system(size: 15))
-                    .foregroundStyle(.primary)
-                    .lineSpacing(4)
+                htmlContent(prerequisites)
             } else {
                 Text("Prérequis")
                     .font(.system(size: 18, weight: .bold))
@@ -475,10 +463,7 @@ struct UnifiedDetailView: View {
                     .font(.system(size: 18, weight: .bold))
                     .padding(.top, 8)
 
-                Text(stripHTML(from: trainingMethods))
-                    .font(.system(size: 15))
-                    .foregroundStyle(.primary)
-                    .lineSpacing(4)
+                htmlContent(trainingMethods)
             }
         }
     }
@@ -532,6 +517,21 @@ struct UnifiedDetailView: View {
 
     // MARK: - Helpers
 
+    /// Renders HTML content as a proper AttributedString or falls back to stripped text
+    @ViewBuilder
+    private func htmlContent(_ content: String) -> some View {
+        if let attributedString = content.htmlToAttributedString() {
+            Text(attributedString)
+                .font(.system(size: 15))
+                .lineSpacing(4)
+        } else {
+            Text(stripHTML(from: content))
+                .font(.system(size: 15))
+                .foregroundStyle(.primary)
+                .lineSpacing(4)
+        }
+    }
+
     private func stripHTML(from content: String) -> String {
         var result = content
         let patterns = ["<[^>]+>", "&nbsp;", "&amp;", "&lt;", "&gt;", "&quot;", "&#039;"]
@@ -546,6 +546,67 @@ struct UnifiedDetailView: View {
 
         result = result.replacingOccurrences(of: "\\s+", with: " ", options: .regularExpression)
         return result.trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+}
+
+// MARK: - HTML to AttributedString Extension
+
+extension String {
+    /// Converts HTML string to SwiftUI AttributedString with proper styling
+    func htmlToAttributedString() -> AttributedString? {
+        // Wrap content in styled HTML for consistent rendering
+        let styledHTML = """
+        <html>
+        <head>
+        <style>
+            body {
+                font-family: -apple-system, system-ui;
+                font-size: 15px;
+                line-height: 1.5;
+            }
+            h5, h6 {
+                font-size: 17px;
+                font-weight: 600;
+                margin-top: 16px;
+                margin-bottom: 8px;
+            }
+            p {
+                margin-bottom: 12px;
+            }
+            ul, ol {
+                padding-left: 20px;
+                margin-bottom: 12px;
+            }
+            li {
+                margin-bottom: 6px;
+            }
+            strong {
+                font-weight: 600;
+            }
+        </style>
+        </head>
+        <body>\(self)</body>
+        </html>
+        """
+
+        guard let data = styledHTML.data(using: .utf8) else { return nil }
+
+        let options: [NSAttributedString.DocumentReadingOptionKey: Any] = [
+            .documentType: NSAttributedString.DocumentType.html,
+            .characterEncoding: String.Encoding.utf8.rawValue
+        ]
+
+        guard let nsAttributedString = try? NSAttributedString(data: data, options: options, documentAttributes: nil) else {
+            return nil
+        }
+
+        // Convert to SwiftUI AttributedString
+        var attributedString = AttributedString(nsAttributedString)
+
+        // Apply foreground color to adapt to light/dark mode
+        attributedString.foregroundColor = .primary
+
+        return attributedString
     }
 }
 
