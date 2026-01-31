@@ -42,9 +42,7 @@ struct CategoryListView: View {
         .navigationTitle(category.name)
         .navigationBarTitleDisplayMode(.large)
         .sheet(item: $selectedFormation) { formation in
-            NavigationStack {
-                FormationDetailView(formation: formation)
-            }
+            FormationDetailSheetView(formation: formation)
         }
     }
 

@@ -33,9 +33,7 @@ struct AllFormationsListView: View {
         .navigationTitle("Toutes les formations")
         .navigationBarTitleDisplayMode(.large)
         .sheet(item: $selectedFormation) { formation in
-            NavigationStack {
-                FormationDetailView(formation: formation)
-            }
+            FormationDetailSheetView(formation: formation)
         }
     }
 
