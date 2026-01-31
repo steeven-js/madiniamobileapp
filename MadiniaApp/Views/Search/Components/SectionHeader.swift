@@ -37,7 +37,7 @@ struct SectionHeader: View {
                         Image(systemName: "chevron.right")
                             .font(.caption)
                     }
-                    .foregroundStyle(MadiniaColors.violet)
+                    .foregroundStyle(MadiniaColors.accent)
                 }
                 .accessibilityLabel("Voir tout \(title)")
             }
