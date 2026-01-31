@@ -15,6 +15,8 @@ struct TeaserItem: Identifiable {
     let description: String
     let icon: String
     let gradient: LinearGradient
+    /// Whether this item is tappable (has content available)
+    var isAvailable: Bool = false
 }
 
 /// Large App Store-style teaser card
@@ -90,7 +92,7 @@ struct TeaserCarouselSection: View {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: MadiniaSpacing.md) {
                     ForEach(items) { item in
-                        if let onItemTap = onItemTap {
+                        if let onItemTap = onItemTap, item.isAvailable {
                             TeaserCard(item: item)
                                 .contentShape(Rectangle())
                                 .onTapGesture {
@@ -120,7 +122,8 @@ extension TeaserItem {
                 colors: [Color(red: 0.2, green: 0.4, blue: 0.8), Color(red: 0.4, green: 0.2, blue: 0.7)],
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
-            )
+            ),
+            isAvailable: true
         ),
         TeaserItem(
             title: "Conseils d'experts",
@@ -131,7 +134,8 @@ extension TeaserItem {
                 colors: [Color(red: 0.8, green: 0.3, blue: 0.3), Color(red: 0.6, green: 0.2, blue: 0.4)],
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
-            )
+            ),
+            isAvailable: false
         )
     ]
 
