@@ -9,6 +9,9 @@ import SwiftUI
 
 /// Contact form view allowing users to send messages to Madinia.
 struct ContactView: View {
+    /// Whether this view is embedded in another NavigationStack
+    var embedded: Bool = false
+
     @Environment(\.navigationContext) private var navigationContext
     @State private var viewModel = ContactViewModel()
     @FocusState private var focusedField: Field?
@@ -18,9 +21,16 @@ struct ContactView: View {
     }
 
     var body: some View {
-        NavigationStack {
-            content
-                .navigationTitle("Contact")
+        Group {
+            if embedded {
+                content
+                    .navigationTitle("Contact")
+            } else {
+                NavigationStack {
+                    content
+                        .navigationTitle("Contact")
+                }
+            }
         }
         .onAppear {
             viewModel.setupWithContext(navigationContext)
