@@ -517,96 +517,61 @@ struct UnifiedDetailView: View {
 
     // MARK: - Helpers
 
-    /// Renders HTML content as a proper AttributedString or falls back to stripped text
+    /// Renders HTML content with proper formatting
     @ViewBuilder
     private func htmlContent(_ content: String) -> some View {
-        if let attributedString = content.htmlToAttributedString() {
-            Text(attributedString)
-                .font(.system(size: 15))
-                .lineSpacing(4)
-        } else {
-            Text(stripHTML(from: content))
-                .font(.system(size: 15))
-                .foregroundStyle(.primary)
-                .lineSpacing(4)
-        }
+        Text(formatHTML(content))
+            .font(.system(size: 15))
+            .foregroundStyle(.primary)
+            .lineSpacing(4)
     }
 
-    private func stripHTML(from content: String) -> String {
+    /// Formats HTML to readable plain text with proper line breaks
+    private func formatHTML(_ content: String) -> String {
         var result = content
-        let patterns = ["<[^>]+>", "&nbsp;", "&amp;", "&lt;", "&gt;", "&quot;", "&#039;"]
-        let replacements = ["", " ", "&", "<", ">", "\"", "'"]
 
-        for (pattern, replacement) in zip(patterns, replacements) {
-            if let regex = try? NSRegularExpression(pattern: pattern, options: .caseInsensitive) {
-                let range = NSRange(result.startIndex..., in: result)
-                result = regex.stringByReplacingMatches(in: result, options: [], range: range, withTemplate: replacement)
-            }
+        // Add line breaks before headings
+        result = result.replacingOccurrences(of: "<h5>", with: "\n\n", options: .caseInsensitive)
+        result = result.replacingOccurrences(of: "<h6>", with: "\n\n", options: .caseInsensitive)
+        result = result.replacingOccurrences(of: "</h5>", with: "\n", options: .caseInsensitive)
+        result = result.replacingOccurrences(of: "</h6>", with: "\n", options: .caseInsensitive)
+
+        // Handle paragraphs
+        result = result.replacingOccurrences(of: "</p>", with: "\n\n", options: .caseInsensitive)
+        result = result.replacingOccurrences(of: "<p>", with: "", options: .caseInsensitive)
+
+        // Handle lists
+        result = result.replacingOccurrences(of: "<ul>", with: "\n", options: .caseInsensitive)
+        result = result.replacingOccurrences(of: "</ul>", with: "\n", options: .caseInsensitive)
+        result = result.replacingOccurrences(of: "<ol>", with: "\n", options: .caseInsensitive)
+        result = result.replacingOccurrences(of: "</ol>", with: "\n", options: .caseInsensitive)
+        result = result.replacingOccurrences(of: "<li>", with: "• ", options: .caseInsensitive)
+        result = result.replacingOccurrences(of: "</li>", with: "\n", options: .caseInsensitive)
+
+        // Handle line breaks
+        result = result.replacingOccurrences(of: "<br>", with: "\n", options: .caseInsensitive)
+        result = result.replacingOccurrences(of: "<br/>", with: "\n", options: .caseInsensitive)
+        result = result.replacingOccurrences(of: "<br />", with: "\n", options: .caseInsensitive)
+
+        // Remove remaining HTML tags
+        if let regex = try? NSRegularExpression(pattern: "<[^>]+>", options: .caseInsensitive) {
+            let range = NSRange(result.startIndex..., in: result)
+            result = regex.stringByReplacingMatches(in: result, options: [], range: range, withTemplate: "")
         }
 
-        result = result.replacingOccurrences(of: "\\s+", with: " ", options: .regularExpression)
+        // Decode HTML entities
+        result = result.replacingOccurrences(of: "&nbsp;", with: " ")
+        result = result.replacingOccurrences(of: "&amp;", with: "&")
+        result = result.replacingOccurrences(of: "&lt;", with: "<")
+        result = result.replacingOccurrences(of: "&gt;", with: ">")
+        result = result.replacingOccurrences(of: "&quot;", with: "\"")
+        result = result.replacingOccurrences(of: "&#039;", with: "'")
+
+        // Clean up excessive whitespace while preserving intentional line breaks
+        result = result.replacingOccurrences(of: "\n{3,}", with: "\n\n", options: .regularExpression)
+        result = result.replacingOccurrences(of: " {2,}", with: " ", options: .regularExpression)
+
         return result.trimmingCharacters(in: .whitespacesAndNewlines)
-    }
-}
-
-// MARK: - HTML to AttributedString Extension
-
-extension String {
-    /// Converts HTML string to SwiftUI AttributedString with proper styling
-    func htmlToAttributedString() -> AttributedString? {
-        // Wrap content in styled HTML for consistent rendering
-        let styledHTML = """
-        <html>
-        <head>
-        <style>
-            body {
-                font-family: -apple-system, system-ui;
-                font-size: 15px;
-                line-height: 1.5;
-            }
-            h5, h6 {
-                font-size: 17px;
-                font-weight: 600;
-                margin-top: 16px;
-                margin-bottom: 8px;
-            }
-            p {
-                margin-bottom: 12px;
-            }
-            ul, ol {
-                padding-left: 20px;
-                margin-bottom: 12px;
-            }
-            li {
-                margin-bottom: 6px;
-            }
-            strong {
-                font-weight: 600;
-            }
-        </style>
-        </head>
-        <body>\(self)</body>
-        </html>
-        """
-
-        guard let data = styledHTML.data(using: .utf8) else { return nil }
-
-        let options: [NSAttributedString.DocumentReadingOptionKey: Any] = [
-            .documentType: NSAttributedString.DocumentType.html,
-            .characterEncoding: String.Encoding.utf8.rawValue
-        ]
-
-        guard let nsAttributedString = try? NSAttributedString(data: data, options: options, documentAttributes: nil) else {
-            return nil
-        }
-
-        // Convert to SwiftUI AttributedString
-        var attributedString = AttributedString(nsAttributedString)
-
-        // Apply foreground color to adapt to light/dark mode
-        attributedString.foregroundColor = .primary
-
-        return attributedString
     }
 }
 

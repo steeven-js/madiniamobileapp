@@ -19,16 +19,7 @@ struct ServiceDetailView: View {
     @Environment(\.navigationContext) private var navigationContext
 
     var body: some View {
-        NavigationStack {
-            UnifiedDetailView(config: configuration)
-                .toolbar {
-                    ToolbarItem(placement: .cancellationAction) {
-                        Button("Fermer") {
-                            dismiss()
-                        }
-                    }
-                }
-        }
+        UnifiedDetailView(config: configuration)
     }
 
     // MARK: - Configuration
