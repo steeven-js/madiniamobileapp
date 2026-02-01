@@ -11,7 +11,19 @@ import UserNotifications
 /// App Delegate for handling push notifications and deep links.
 class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate {
     /// Deep link handler callback
-    var onDeepLink: ((PushNotificationService.NotificationPayload) -> Void)?
+    var onDeepLink: ((PushNotificationService.NotificationPayload) -> Void)? {
+        didSet {
+            // Process pending payload when handler is set
+            if let payload = pendingNotificationPayload {
+                pendingNotificationPayload = nil
+                onDeepLink?(payload)
+            }
+        }
+    }
+
+    /// Stores notification payload when app is launched from notification
+    /// (before onDeepLink handler is configured)
+    private var pendingNotificationPayload: PushNotificationService.NotificationPayload?
 
     func application(
         _ application: UIApplication,
@@ -81,8 +93,16 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
     // MARK: - Deep Link Handling
 
     private func handleNotification(userInfo: [AnyHashable: Any]) {
-        if let payload = PushNotificationService.shared.parseNotification(userInfo: userInfo) {
-            onDeepLink?(payload)
+        guard let payload = PushNotificationService.shared.parseNotification(userInfo: userInfo) else {
+            return
+        }
+
+        if let handler = onDeepLink {
+            // Handler is ready, process immediately
+            handler(payload)
+        } else {
+            // Handler not ready yet (app launching), store for later
+            pendingNotificationPayload = payload
         }
     }
 

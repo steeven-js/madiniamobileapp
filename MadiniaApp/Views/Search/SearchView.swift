@@ -34,6 +34,22 @@ struct SearchView: View {
     /// Controls navigation to all services
     @State private var showAllServices = false
 
+    /// Deep link formation slug binding (optional)
+    @Binding var deepLinkFormationSlug: String?
+
+    /// API service for fetching formation details
+    private let apiService: APIServiceProtocol = APIService.shared
+
+    /// Default initializer without deep link
+    init() {
+        self._deepLinkFormationSlug = .constant(nil)
+    }
+
+    /// Initializer with deep link support
+    init(deepLinkFormationSlug: Binding<String?>) {
+        self._deepLinkFormationSlug = deepLinkFormationSlug
+    }
+
     var body: some View {
         NavigationStack(path: $navigationPath) {
             content
@@ -62,6 +78,30 @@ struct SearchView: View {
         }
         .sheet(item: $selectedService) { service in
             ServiceDetailView(service: service)
+        }
+        .onChange(of: deepLinkFormationSlug) { _, newSlug in
+            guard let slug = newSlug else { return }
+            Task {
+                await navigateToFormation(slug: slug)
+            }
+        }
+        .task(id: deepLinkFormationSlug) {
+            // Handle initial value when view appears with a slug already set
+            guard let slug = deepLinkFormationSlug else { return }
+            await navigateToFormation(slug: slug)
+        }
+    }
+
+    /// Navigate to a formation by fetching it from the API
+    @MainActor
+    private func navigateToFormation(slug: String) async {
+        do {
+            let formation = try await apiService.fetchFormation(slug: slug)
+            navigationPath.append(formation)
+            deepLinkFormationSlug = nil
+        } catch {
+            print("Failed to fetch formation for deep link: \(error)")
+            deepLinkFormationSlug = nil
         }
     }
 

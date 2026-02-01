@@ -84,9 +84,6 @@ struct MainTabView: View {
     /// Navigation context for handling contact navigation
     private var navigationContext = NavigationContext.shared
 
-    /// API service for fetching formation details
-    private let apiService: APIServiceProtocol = APIService.shared
-
     /// Whether we're on iPad (regular width)
     private var isIPad: Bool {
         horizontalSizeClass == .regular
@@ -394,28 +391,9 @@ struct MainTabView: View {
 
 private struct SearchTab: View {
     @Binding var selectedFormationSlug: String?
-    @State private var navigationPath = NavigationPath()
-
-    private let apiService: APIServiceProtocol = APIService.shared
 
     var body: some View {
-        SearchView()
-            .onChange(of: selectedFormationSlug) { _, newSlug in
-                guard let slug = newSlug else { return }
-                Task {
-                    await loadAndNavigateToFormation(slug: slug)
-                }
-            }
-    }
-
-    @MainActor
-    private func loadAndNavigateToFormation(slug: String) async {
-        do {
-            let formation = try await apiService.fetchFormation(slug: slug)
-            selectedFormationSlug = nil
-        } catch {
-            selectedFormationSlug = nil
-        }
+        SearchView(deepLinkFormationSlug: $selectedFormationSlug)
     }
 }
 
