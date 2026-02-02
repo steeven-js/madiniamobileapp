@@ -473,15 +473,21 @@ final class ArticleDetailViewModel {
 
     @MainActor
     func loadFullArticle() async {
-        guard loadingState != .loading else { return }
-
-        // If we already have content, no need to reload
+        // If we have cached content, show it immediately
         if initialArticle.content != nil {
             fullArticle = initialArticle
             loadingState = .loaded(initialArticle)
+
+            // Fire-and-forget API call to track view (don't await, don't block UI)
+            Task.detached { [apiService, initialArticle] in
+                // Just call the API to increment view count, ignore result
+                _ = try? await apiService.fetchArticle(slug: initialArticle.slug)
+            }
             return
         }
 
+        // No cached content - need to load from API
+        guard loadingState != .loading else { return }
         loadingState = .loading
 
         do {
