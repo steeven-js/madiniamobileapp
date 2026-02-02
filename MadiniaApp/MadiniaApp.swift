@@ -19,6 +19,7 @@ struct MadiniaApp: App {
     /// Deep link state for navigation
     @State private var deepLinkFormationSlug: String?
     @State private var deepLinkArticleSlug: String?
+    @State private var deepLinkServiceSlug: String?
 
     /// What's New modal presentation
     @State private var showWhatsNew = false
@@ -31,6 +32,7 @@ struct MadiniaApp: App {
             ContentView()
                 .environment(\.deepLinkFormationSlug, $deepLinkFormationSlug)
                 .environment(\.deepLinkArticleSlug, $deepLinkArticleSlug)
+                .environment(\.deepLinkServiceSlug, $deepLinkServiceSlug)
                 .preferredColorScheme(themeManager.colorScheme)
                 .onAppear {
                     setupDeepLinkHandler()
@@ -85,6 +87,10 @@ struct MadiniaApp: App {
                 if let slug = payload.slug {
                     deepLinkArticleSlug = slug
                 }
+            case .service:
+                if let slug = payload.slug {
+                    deepLinkServiceSlug = slug
+                }
             case .home:
                 // Already on home, nothing to do
                 break
@@ -103,6 +109,10 @@ private struct DeepLinkArticleSlugKey: EnvironmentKey {
     static let defaultValue: Binding<String?> = .constant(nil)
 }
 
+private struct DeepLinkServiceSlugKey: EnvironmentKey {
+    static let defaultValue: Binding<String?> = .constant(nil)
+}
+
 extension EnvironmentValues {
     var deepLinkFormationSlug: Binding<String?> {
         get { self[DeepLinkFormationSlugKey.self] }
@@ -112,5 +122,10 @@ extension EnvironmentValues {
     var deepLinkArticleSlug: Binding<String?> {
         get { self[DeepLinkArticleSlugKey.self] }
         set { self[DeepLinkArticleSlugKey.self] = newValue }
+    }
+
+    var deepLinkServiceSlug: Binding<String?> {
+        get { self[DeepLinkServiceSlugKey.self] }
+        set { self[DeepLinkServiceSlugKey.self] = newValue }
     }
 }

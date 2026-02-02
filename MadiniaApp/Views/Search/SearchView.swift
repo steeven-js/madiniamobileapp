@@ -37,17 +37,22 @@ struct SearchView: View {
     /// Deep link formation slug binding (optional)
     @Binding var deepLinkFormationSlug: String?
 
+    /// Deep link service slug binding (optional)
+    @Binding var deepLinkServiceSlug: String?
+
     /// API service for fetching formation details
     private let apiService: APIServiceProtocol = APIService.shared
 
     /// Default initializer without deep link
     init() {
         self._deepLinkFormationSlug = .constant(nil)
+        self._deepLinkServiceSlug = .constant(nil)
     }
 
     /// Initializer with deep link support
-    init(deepLinkFormationSlug: Binding<String?>) {
+    init(deepLinkFormationSlug: Binding<String?>, deepLinkServiceSlug: Binding<String?> = .constant(nil)) {
         self._deepLinkFormationSlug = deepLinkFormationSlug
+        self._deepLinkServiceSlug = deepLinkServiceSlug
     }
 
     var body: some View {
@@ -85,10 +90,21 @@ struct SearchView: View {
                 await navigateToFormation(slug: slug)
             }
         }
+        .onChange(of: deepLinkServiceSlug) { _, newSlug in
+            guard let slug = newSlug else { return }
+            Task {
+                await navigateToService(slug: slug)
+            }
+        }
         .task(id: deepLinkFormationSlug) {
             // Handle initial value when view appears with a slug already set
             guard let slug = deepLinkFormationSlug else { return }
             await navigateToFormation(slug: slug)
+        }
+        .task(id: deepLinkServiceSlug) {
+            // Handle initial value when view appears with a slug already set
+            guard let slug = deepLinkServiceSlug else { return }
+            await navigateToService(slug: slug)
         }
     }
 
@@ -103,6 +119,20 @@ struct SearchView: View {
             print("Failed to fetch formation for deep link: \(error)")
             deepLinkFormationSlug = nil
         }
+    }
+
+    /// Navigate to a service by finding it in the viewModel
+    @MainActor
+    private func navigateToService(slug: String) async {
+        // Wait for data to load if needed
+        if viewModel.services.isEmpty {
+            try? await Task.sleep(nanoseconds: 500_000_000) // 0.5 second
+        }
+
+        if let service = viewModel.services.first(where: { $0.slug == slug }) {
+            selectedService = service
+        }
+        deepLinkServiceSlug = nil
     }
 
     // MARK: - Content View

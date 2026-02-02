@@ -68,12 +68,16 @@ struct MainTabView: View {
     /// Article to navigate to from deep link
     @State private var selectedArticleSlug: String?
 
+    /// Service to navigate to from deep link
+    @State private var selectedServiceSlug: String?
+
     /// Controls the permission prompt sheet
     @State private var isShowingPermissionPrompt = false
 
     /// Deep link bindings from app
     @Environment(\.deepLinkFormationSlug) private var deepLinkFormationSlug
     @Environment(\.deepLinkArticleSlug) private var deepLinkArticleSlug
+    @Environment(\.deepLinkServiceSlug) private var deepLinkServiceSlug
 
     /// Horizontal size class for iPad detection
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
@@ -154,6 +158,12 @@ struct MainTabView: View {
                 deepLinkArticleSlug.wrappedValue = nil
             }
         }
+        .onChange(of: deepLinkServiceSlug.wrappedValue) { _, newSlug in
+            if let slug = newSlug {
+                navigateToService(slug: slug)
+                deepLinkServiceSlug.wrappedValue = nil
+            }
+        }
         .onChange(of: navigationContext.shouldNavigateToContact) { _, shouldNavigate in
             if shouldNavigate {
                 selectedTab = .madinia
@@ -187,7 +197,10 @@ struct MainTabView: View {
                 case .userSpace:
                     UserSpaceView()
                 case .search:
-                    SearchTab(selectedFormationSlug: $selectedFormationSlug)
+                    SearchTab(
+                        selectedFormationSlug: $selectedFormationSlug,
+                        selectedServiceSlug: $selectedServiceSlug
+                    )
                 }
             }
 
@@ -275,7 +288,10 @@ struct MainTabView: View {
                     case .userSpace:
                         UserSpaceView()
                     case .search:
-                        SearchTab(selectedFormationSlug: $selectedFormationSlug)
+                        SearchTab(
+                            selectedFormationSlug: $selectedFormationSlug,
+                            selectedServiceSlug: $selectedServiceSlug
+                        )
                     }
                 }
 
@@ -380,6 +396,11 @@ struct MainTabView: View {
         selectedTab = .search
     }
 
+    private func navigateToService(slug: String) {
+        selectedServiceSlug = slug
+        selectedTab = .search
+    }
+
     func showPermissionPromptIfNeeded() {
         if pushService.shouldPromptForPermission {
             isShowingPermissionPrompt = true
@@ -391,9 +412,13 @@ struct MainTabView: View {
 
 private struct SearchTab: View {
     @Binding var selectedFormationSlug: String?
+    @Binding var selectedServiceSlug: String?
 
     var body: some View {
-        SearchView(deepLinkFormationSlug: $selectedFormationSlug)
+        SearchView(
+            deepLinkFormationSlug: $selectedFormationSlug,
+            deepLinkServiceSlug: $selectedServiceSlug
+        )
     }
 }
 

@@ -202,6 +202,7 @@ extension PushNotificationService {
         enum ContentType: String {
             case formation
             case article
+            case service
             case home
         }
 
