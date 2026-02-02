@@ -49,6 +49,11 @@ final class HomeViewModel {
         dataRepository.categories
     }
 
+    /// Returns recent articles sorted by publication date (most recent first)
+    var recentArticles: [Article] {
+        dataRepository.recentArticles
+    }
+
     // MARK: - Initialization
 
     /// Creates a HomeViewModel with the specified repository

@@ -306,22 +306,53 @@ struct ArticleDetailView: View {
                 Spacer()
             }
 
-        case .error(let message):
-            VStack(spacing: MadiniaSpacing.md) {
-                Image(systemName: "exclamationmark.triangle")
-                    .font(.largeTitle)
-                    .foregroundStyle(.secondary)
-                Text(message)
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
-                    .multilineTextAlignment(.center)
-                Button("Réessayer") {
-                    Task { await viewModel.loadFullArticle() }
+        case .error:
+            // Show description as fallback when content fails to load
+            if let description = viewModel.displayArticle.description {
+                VStack(alignment: .leading, spacing: MadiniaSpacing.md) {
+                    Text(description)
+                        .font(.system(size: 16))
+                        .foregroundStyle(.primary)
+                        .lineSpacing(6)
+
+                    // Subtle error indicator with retry
+                    HStack(spacing: MadiniaSpacing.sm) {
+                        Image(systemName: "exclamationmark.triangle.fill")
+                            .font(.caption)
+                            .foregroundStyle(.orange)
+                        Text("Contenu complet non disponible")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                        Spacer()
+                        Button("Réessayer") {
+                            Task { await viewModel.loadFullArticle() }
+                        }
+                        .font(.caption)
+                        .buttonStyle(.bordered)
+                        .controlSize(.small)
+                    }
+                    .padding(MadiniaSpacing.sm)
+                    .background(Color(.secondarySystemBackground))
+                    .clipShape(RoundedRectangle(cornerRadius: MadiniaRadius.sm))
                 }
-                .buttonStyle(.bordered)
+            } else {
+                // No description available - show error
+                VStack(spacing: MadiniaSpacing.md) {
+                    Image(systemName: "exclamationmark.triangle")
+                        .font(.largeTitle)
+                        .foregroundStyle(.secondary)
+                    Text("Impossible de charger l'article")
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                        .multilineTextAlignment(.center)
+                    Button("Réessayer") {
+                        Task { await viewModel.loadFullArticle() }
+                    }
+                    .buttonStyle(.bordered)
+                }
+                .frame(maxWidth: .infinity)
+                .padding()
             }
-            .frame(maxWidth: .infinity)
-            .padding()
 
         case .loaded, .idle:
             if let content = viewModel.displayArticle.content {

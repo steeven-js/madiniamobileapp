@@ -417,7 +417,7 @@ final class APIService: APIServiceProtocol {
                 if attempt < maxRetries - 1 {
                     let delay = baseRetryDelay * pow(2.0, Double(attempt))
                     #if DEBUG
-                    print("Request failed (attempt \(attempt + 1)/\(maxRetries)). Retrying in \(delay)s...")
+                    print("Request failed (attempt \(attempt + 1)/\(maxRetries)) for \(endpoint): \(error.localizedDescription). Retrying in \(delay)s...")
                     #endif
                     try await Task.sleep(for: .seconds(delay))
                 }
@@ -472,7 +472,7 @@ final class APIService: APIServiceProtocol {
                 if attempt < maxRetries - 1 {
                     let delay = baseRetryDelay * pow(2.0, Double(attempt))
                     #if DEBUG
-                    print("POST request failed (attempt \(attempt + 1)/\(maxRetries)). Retrying in \(delay)s...")
+                    print("POST request failed (attempt \(attempt + 1)/\(maxRetries)) for \(endpoint): \(error.localizedDescription). Retrying in \(delay)s...")
                     #endif
                     try await Task.sleep(for: .seconds(delay))
                 }

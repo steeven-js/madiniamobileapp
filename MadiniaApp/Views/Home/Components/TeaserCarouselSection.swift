@@ -62,12 +62,116 @@ struct TeaserCard: View {
     }
 }
 
+/// Article card in teaser style for the carousel
+struct ArticleTeaserCard: View {
+    let article: Article
+
+    /// Gradient based on article category
+    private var gradient: LinearGradient {
+        LinearGradient(
+            colors: [MadiniaColors.accent, MadiniaColors.violetFixed],
+            startPoint: .topLeading,
+            endPoint: .bottomTrailing
+        )
+    }
+
+    var body: some View {
+        ZStack(alignment: .bottomLeading) {
+            // Background image or gradient
+            if let coverUrl = article.coverUrl, let url = URL(string: coverUrl) {
+                CachedAsyncImage(url: url) { image in
+                    image
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                } placeholder: {
+                    gradient
+                }
+                .frame(width: 320, height: 200)
+                .clipped()
+                .overlay {
+                    // Dark gradient overlay for text readability
+                    LinearGradient(
+                        colors: [.clear, .black.opacity(0.7)],
+                        startPoint: .top,
+                        endPoint: .bottom
+                    )
+                }
+            } else {
+                gradient
+            }
+
+            // Content overlay
+            VStack(alignment: .leading, spacing: MadiniaSpacing.md) {
+                // Top section with category and reading time in pills
+                HStack {
+                    // Category pill
+                    HStack(spacing: MadiniaSpacing.xxs) {
+                        Image(systemName: "newspaper.fill")
+                            .font(.caption)
+                            .foregroundStyle(.white)
+
+                        Text((article.category ?? "Article").uppercased())
+                            .font(MadiniaTypography.caption)
+                            .fontWeight(.semibold)
+                            .foregroundStyle(.white)
+                            .tracking(0.5)
+                    }
+                    .padding(.horizontal, MadiniaSpacing.sm)
+                    .padding(.vertical, MadiniaSpacing.xxs)
+                    .background(.black.opacity(0.5))
+                    .clipShape(Capsule())
+
+                    Spacer()
+
+                    // Reading time pill
+                    if let readingTime = article.readingTime {
+                        Text(readingTime)
+                            .font(MadiniaTypography.caption)
+                            .fontWeight(.medium)
+                            .foregroundStyle(.white)
+                            .padding(.horizontal, MadiniaSpacing.sm)
+                            .padding(.vertical, MadiniaSpacing.xxs)
+                            .background(.black.opacity(0.5))
+                            .clipShape(Capsule())
+                    }
+                }
+
+                Spacer()
+
+                // Bottom section with title and description in pill
+                VStack(alignment: .leading, spacing: MadiniaSpacing.xs) {
+                    Text(article.title)
+                        .font(.system(size: 20, weight: .bold))
+                        .foregroundStyle(.white)
+                        .lineLimit(2)
+
+                    if let description = article.description {
+                        Text(description)
+                            .font(MadiniaTypography.subheadline)
+                            .foregroundStyle(.white.opacity(0.9))
+                            .lineLimit(2)
+                    }
+                }
+                .padding(MadiniaSpacing.sm)
+                .background(.black.opacity(0.5))
+                .clipShape(RoundedRectangle(cornerRadius: MadiniaRadius.md))
+            }
+            .padding(MadiniaSpacing.md)
+        }
+        .frame(width: 320, height: 200)
+        .clipShape(RoundedRectangle(cornerRadius: MadiniaRadius.xl))
+        .shadow(color: .black.opacity(0.15), radius: 10, y: 5)
+    }
+}
+
 /// Horizontal carousel section for teaser content
 struct TeaserCarouselSection: View {
     let title: String
     let items: [TeaserItem]
+    var articles: [Article] = []
     var onTap: (() -> Void)? = nil
     var onItemTap: (() -> Void)? = nil
+    var onArticleTap: ((Article) -> Void)? = nil
 
     var body: some View {
         VStack(alignment: .leading, spacing: MadiniaSpacing.sm) {
@@ -91,8 +195,18 @@ struct TeaserCarouselSection: View {
             // Horizontal carousel
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: MadiniaSpacing.md) {
+                    // Real articles first (from API)
+                    ForEach(articles) { article in
+                        ArticleTeaserCard(article: article)
+                            .contentShape(Rectangle())
+                            .onTapGesture {
+                                onArticleTap?(article)
+                            }
+                    }
+
+                    // Then teaser placeholder items
                     ForEach(items) { item in
-                        if let onItemTap = onItemTap, item.isAvailable {
+                        if let onItemTap = onItemTap {
                             TeaserCard(item: item)
                                 .contentShape(Rectangle())
                                 .onTapGesture {
@@ -125,6 +239,22 @@ extension TeaserItem {
             ),
             isAvailable: true
         ),
+        TeaserItem(
+            title: "Conseils d'experts",
+            subtitle: "Bientôt disponible",
+            description: "Des articles rédigés par nos formateurs pour vous accompagner.",
+            icon: "lightbulb.fill",
+            gradient: LinearGradient(
+                colors: [Color(red: 0.8, green: 0.3, blue: 0.3), Color(red: 0.6, green: 0.2, blue: 0.4)],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            ),
+            isAvailable: false
+        )
+    ]
+
+    /// News placeholder items (shown after real articles)
+    static let newsPlaceholders: [TeaserItem] = [
         TeaserItem(
             title: "Conseils d'experts",
             subtitle: "Bientôt disponible",

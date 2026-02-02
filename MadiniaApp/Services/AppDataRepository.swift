@@ -63,6 +63,30 @@ final class AppDataRepository {
         return Array(sorted.prefix(5))
     }
 
+    /// Recent articles sorted by publication date (most recent first)
+    var recentArticles: [Article] {
+        articles.sorted { article1, article2 in
+            guard let date1 = parseDate(article1.publishedAt),
+                  let date2 = parseDate(article2.publishedAt) else {
+                return false
+            }
+            return date1 > date2
+        }
+    }
+
+    /// Parses an ISO 8601 date string
+    private func parseDate(_ dateString: String?) -> Date? {
+        guard let dateString = dateString else { return nil }
+        let formatter = ISO8601DateFormatter()
+        formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        if let date = formatter.date(from: dateString) {
+            return date
+        }
+        // Try without fractional seconds
+        formatter.formatOptions = [.withInternetDateTime]
+        return formatter.date(from: dateString)
+    }
+
     // MARK: - Initialization
 
     private init(

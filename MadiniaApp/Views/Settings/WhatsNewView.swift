@@ -20,30 +20,39 @@ struct WhatsNewView: View {
     @State private var viewModel = WhatsNewViewModel()
 
     var body: some View {
-        NavigationStack {
-            content
-                .navigationTitle("Nouveautés")
-                .navigationBarTitleDisplayMode(.inline)
-                .toolbar {
-                    if isModal {
-                        ToolbarItem(placement: .topBarTrailing) {
-                            Button("Fermer") {
-                                WhatsNewService.shared.markAsSeen()
-                                dismiss()
+        Group {
+            if isModal {
+                // Modal presentation needs its own NavigationStack
+                NavigationStack {
+                    contentView
+                        .toolbar {
+                            ToolbarItem(placement: .topBarTrailing) {
+                                Button("Fermer") {
+                                    WhatsNewService.shared.markAsSeen()
+                                    dismiss()
+                                }
+                                .fontWeight(.semibold)
                             }
-                            .fontWeight(.semibold)
                         }
-                    }
                 }
+                .onDisappear {
+                    WhatsNewService.shared.markAsSeen()
+                }
+            } else {
+                // Pushed from Settings - use parent's NavigationStack
+                contentView
+            }
         }
         .task {
             await viewModel.loadArticles()
         }
-        .onDisappear {
-            if isModal {
-                WhatsNewService.shared.markAsSeen()
-            }
-        }
+    }
+
+    /// Main content view with navigation
+    private var contentView: some View {
+        content
+            .navigationTitle("Nouveautés")
+            .navigationBarTitleDisplayMode(.inline)
     }
 
     // MARK: - Content
@@ -120,7 +129,12 @@ struct WhatsNewView: View {
 
                 // Articles list
                 ForEach(viewModel.articles) { article in
-                    articleCard(article)
+                    NavigationLink {
+                        ArticleDetailView(article: article)
+                    } label: {
+                        articleCard(article)
+                    }
+                    .buttonStyle(.plain)
                 }
 
                 // Continue button for modal
@@ -346,33 +360,34 @@ struct WhatsNewView: View {
 
 @Observable
 final class WhatsNewViewModel {
-    private(set) var loadingState: LoadingState<[Article]> = .idle
-    private let apiService: APIServiceProtocol
+    /// Centralized data repository (preloaded during splash)
+    private let dataRepository: AppDataRepository
 
-    var articles: [Article] {
-        loadingState.value ?? []
+    /// Current loading state based on repository
+    var loadingState: LoadingState<[Article]> {
+        if dataRepository.isLoading && dataRepository.articles.isEmpty {
+            return .loading
+        } else if let error = dataRepository.errorMessage, dataRepository.articles.isEmpty {
+            return .error(error)
+        } else {
+            return .loaded(dataRepository.recentArticles)
+        }
     }
 
-    init(apiService: APIServiceProtocol = APIService.shared) {
-        self.apiService = apiService
+    /// Recent articles (max 3, sorted by publication date)
+    var articles: [Article] {
+        Array(dataRepository.recentArticles.prefix(3))
+    }
+
+    init(dataRepository: AppDataRepository = .shared) {
+        self.dataRepository = dataRepository
     }
 
     @MainActor
     func loadArticles() async {
-        guard !loadingState.isLoading else { return }
-
-        loadingState = .loading
-
-        do {
-            let articles = try await apiService.fetchArticles()
-            // Show only the most recent articles (e.g., last 3)
-            let recentArticles = Array(articles.prefix(3))
-            loadingState = .loaded(recentArticles)
-        } catch let error as APIError {
-            loadingState = .error(error.errorDescription ?? "Erreur inconnue")
-        } catch {
-            loadingState = .error("Erreur de chargement")
-        }
+        // Data is already preloaded by AppDataRepository during splash
+        // Only load if needed (fallback)
+        await dataRepository.loadArticlesIfNeeded()
     }
 }
 

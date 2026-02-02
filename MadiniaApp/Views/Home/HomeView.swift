@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-/// Home screen view displaying welcome section, categories, and most viewed formations.
+/// Home screen view displaying welcome section, articles, events and most viewed formations.
 /// Handles loading, error, and loaded states for formation data.
 struct HomeView: View {
     /// ViewModel managing home screen state and data
@@ -19,11 +19,11 @@ struct HomeView: View {
     /// Navigation context for triggering blog navigation
     @Environment(\.navigationContext) private var navigationContext
 
-    /// Navigation state for categories grid
-    @State private var showCategoriesGrid = false
-
     /// Navigation state for formation detail
     @State private var selectedFormation: Formation?
+
+    /// Navigation state for article detail
+    @State private var selectedArticle: Article?
 
     var body: some View {
         ScrollView(.vertical, showsIndicators: true) {
@@ -37,17 +37,21 @@ struct HomeView: View {
                     LoadingView(message: "Chargement des formations...")
 
                 case .loaded:
-                    // News teaser carousel - redirects to Blog
+                    // News carousel - real articles first, then teaser placeholders
                     TeaserCarouselSection(
                         title: "Actualités",
-                        items: TeaserItem.newsItems,
+                        items: TeaserItem.newsPlaceholders,
+                        articles: viewModel.recentArticles,
                         onTap: {
                             navigationContext.triggerBlogNavigation()
-                            selectedTab = 1 // Navigate to Madin.IA tab
+                            selectedTab = 1 // Navigate to Madin.IA tab (Blog)
                         },
                         onItemTap: {
                             navigationContext.triggerBlogNavigation()
-                            selectedTab = 1 // Navigate to Madin.IA tab
+                            selectedTab = 1
+                        },
+                        onArticleTap: { article in
+                            selectedArticle = article
                         }
                     )
 
@@ -58,16 +62,10 @@ struct HomeView: View {
                         onTap: {
                             navigationContext.triggerEventsNavigation()
                             selectedTab = 1 // Navigate to Madin.IA tab
-                        }
-                    )
-
-                    // Categories section
-                    CategoriesSection(
-                        categories: viewModel.categories,
-                        onViewAllTap: { showCategoriesGrid = true },
-                        onCategoryTap: { category in
-                            FormationsRepository.shared.setSelectedCategory(category)
-                            selectedTab = 1
+                        },
+                        onItemTap: {
+                            navigationContext.triggerEventsNavigation()
+                            selectedTab = 1 // Navigate to Madin.IA tab
                         }
                     )
 
@@ -95,16 +93,11 @@ struct HomeView: View {
             .tabBarSafeArea()
         }
         .navigationTitle("Accueil")
-        .navigationDestination(isPresented: $showCategoriesGrid) {
-            CategoriesGridView { category in
-                // Set category filter and navigate to formations tab
-                FormationsRepository.shared.setSelectedCategory(category)
-                showCategoriesGrid = false
-                selectedTab = 1
-            }
-        }
         .navigationDestination(item: $selectedFormation) { formation in
             FormationDetailView(formation: formation)
+        }
+        .navigationDestination(item: $selectedArticle) { article in
+            ArticleDetailView(article: article)
         }
         .task {
             await viewModel.loadFormations()
