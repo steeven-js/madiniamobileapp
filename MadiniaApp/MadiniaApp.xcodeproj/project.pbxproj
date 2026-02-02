@@ -52,6 +52,8 @@
 		'COLORHEXBUILD00000000' = {isa = PBXBuildFile; fileRef = COLORHEXFILE000000000; };
 		'CONTACTVMBUILD000000' = {isa = PBXBuildFile; fileRef = CONTACTVMFILE0000000; };
 		'CONTVIEWBUILD0000000000' = {isa = PBXBuildFile; fileRef = CONTVIEWFILE00000000000; };
+		'CALENDLYVIEWBUILD00' = {isa = PBXBuildFile; fileRef = CALENDLYVIEWFILE0000; };
+		'CONTACTHUBBUILD0000' = {isa = PBXBuildFile; fileRef = CONTACTHUBVIEWFILE0; };
 		D148476D9791FA5CB58144EE /* WhatsNewService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90D64EDFBEA83B2F3D432B44 /* WhatsNewService.swift */; };
 		'DEEPLINKSERVBUILD00' = {isa = PBXBuildFile; fileRef = DEEPLINKSERVFILE000; };
 		'DESIGNSYSTEMBUILD00' = {isa = PBXBuildFile; fileRef = DESIGNSYSTEMFILE000; };
@@ -73,6 +75,7 @@
 		'HOMEVMTESTBUILD0000000' = {isa = PBXBuildFile; fileRef = HOMEVMTESTFILE00000000; };
 		'INFOBADGEBUILD0000000' = {isa = PBXBuildFile; fileRef = INFOBADGEFILE00000000; };
 		'LOADINGVIEWBUILD000000' = {isa = PBXBuildFile; fileRef = LOADINGVIEWFILE0000000; };
+		'BOOKINGCTABUILD000000' = {isa = PBXBuildFile; fileRef = BOOKINGCTAFILE0000000; };
 		'LOADSTATEBUILD000000000' = {isa = PBXBuildFile; fileRef = LOADSTATEFILE0000000000; };
 		'MADICHATVIEWBUILD00' = {isa = PBXBuildFile; fileRef = MADICHATVIEWFILE0000; };
 		'MADICHATVMBUILD00000' = {isa = PBXBuildFile; fileRef = MADICHATVMFILE000000; };
@@ -158,7 +161,9 @@
 		'CATGRIDVIEWFILE000' = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesGridView.swift; sourceTree = "<group>"; };
 		'COLORHEXFILE000000000' = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Hex.swift"; sourceTree = "<group>"; };
 		'CONTACTVMFILE0000000' = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactViewModel.swift; sourceTree = "<group>"; };
-		'CONTVIEWFILE00000000000' = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactView.swift; sourceTree = "<group>"; };
+		'CONTVIEWFILE00000000000' = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactFormView.swift; sourceTree = "<group>"; };
+		'CALENDLYVIEWFILE0000' = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendlyView.swift; sourceTree = "<group>"; };
+		'CONTACTHUBVIEWFILE0' = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactHubView.swift; sourceTree = "<group>"; };
 		D27672990C3B42CCB1D283F0 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 		'DEEPLINKSERVFILE000' = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLinkService.swift; sourceTree = "<group>"; };
 		'DESIGNSYSTEMFILE000' = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSystem.swift; sourceTree = "<group>"; };
@@ -181,6 +186,7 @@
 		'HOMEVMTESTFILE00000000' = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModelTests.swift; sourceTree = "<group>"; };
 		'INFOBADGEFILE00000000' = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoBadge.swift; sourceTree = "<group>"; };
 		'LOADINGVIEWFILE0000000' = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
+		'BOOKINGCTAFILE0000000' = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookingCTACard.swift; sourceTree = "<group>"; };
 		'LOADSTATEFILE0000000000' = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingState.swift; sourceTree = "<group>"; };
 		'MADICHATVIEWFILE0000' = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MadiChatView.swift; sourceTree = "<group>"; };
 		'MADICHATVMFILE000000' = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MadiChatViewModel.swift; sourceTree = "<group>"; };
@@ -421,6 +427,8 @@
 		'VIEWSCONTACT000000000' = {
 			isa = PBXGroup;
 			children = (
+				CALENDLYVIEWFILE0000,
+				CONTACTHUBVIEWFILE0,
 				CONTVIEWFILE00000000000,
 				CONTACTVMFILE0000000,
 			);
@@ -513,6 +521,7 @@
 				DETAILVIEWGROUP000000,
 				MAINTABFILE000000000000,
 				LOADINGVIEWFILE0000000,
+				BOOKINGCTAFILE0000000,
 				'CACHEDIMGFILE00000',
 				ERRORVIEWFILE0000000000,
 				COLORHEXFILE000000000,
@@ -651,11 +660,14 @@
 				HIGHLIGHTCARDBUILD0000,
 				QUICKACCESSBUILD000000,
 				LOADINGVIEWBUILD000000,
+				BOOKINGCTABUILD000000,
 				'CACHEDIMGBUILD0000',
 				ERRORVIEWBUILD000000000,
 				FORMVIEWBUILD0000000000,
 				BLOGVIEWBUILD0000000000,
 				CONTVIEWBUILD0000000000,
+				CALENDLYVIEWBUILD00,
+				CONTACTHUBBUILD0000,
 				MAINTABBUILD00000000000,
 				FORMATIONBUILD000000000,
 				LOADSTATEBUILD000000000,

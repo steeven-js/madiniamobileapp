@@ -10,12 +10,20 @@ import SwiftUI
 /// User space view - "L'IA&Vous" section for personalized user experience.
 /// This will serve as the user's personal dashboard for their AI learning journey.
 struct UserSpaceView: View {
+    /// Navigation state for Calendly booking
+    @State private var showCalendly = false
+
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: MadiniaSpacing.xl) {
                     // Hero section
                     heroSection
+
+                    // Booking CTA
+                    BookingCTACard {
+                        showCalendly = true
+                    }
 
                     // Available features (saved formations)
                     availableFeaturesSection
@@ -28,6 +36,9 @@ struct UserSpaceView: View {
             }
             .navigationTitle("L'IA&Vous")
             .navigationBarTitleDisplayMode(.large)
+            .navigationDestination(isPresented: $showCalendly) {
+                CalendlyView(embedded: true)
+            }
         }
     }
 

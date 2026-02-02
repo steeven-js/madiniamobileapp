@@ -118,7 +118,7 @@ struct MadiniaHubView: View {
         case .events:
             eventsContent
         case .contact:
-            ContactView(embedded: true)
+            ContactHubView(embedded: true)
         }
     }
 

@@ -25,6 +25,9 @@ struct HomeView: View {
     /// Navigation state for article detail
     @State private var selectedArticle: Article?
 
+    /// Navigation state for Calendly booking
+    @State private var showCalendly = false
+
     var body: some View {
         ScrollView(.vertical, showsIndicators: true) {
             VStack(spacing: MadiniaSpacing.lg) {
@@ -69,6 +72,11 @@ struct HomeView: View {
                         }
                     )
 
+                    // Booking CTA
+                    BookingCTACard {
+                        showCalendly = true
+                    }
+
                     // Most viewed formations section
                     TopRatedSection(
                         formations: viewModel.mostViewedFormations,
@@ -98,6 +106,9 @@ struct HomeView: View {
         }
         .navigationDestination(item: $selectedArticle) { article in
             ArticleDetailView(article: article)
+        }
+        .navigationDestination(isPresented: $showCalendly) {
+            CalendlyView(embedded: true)
         }
         .task {
             await viewModel.loadFormations()

@@ -1,5 +1,5 @@
 //
-//  ContactView.swift
+//  ContactFormView.swift
 //  MadiniaApp
 //
 //  Created by Madinia on 2026-01-23.
@@ -8,7 +8,7 @@
 import SwiftUI
 
 /// Contact form view allowing users to send messages to Madinia.
-struct ContactView: View {
+struct ContactFormView: View {
     /// Whether this view is embedded in another NavigationStack
     var embedded: Bool = false
 
@@ -355,12 +355,12 @@ private struct FormTextField: View {
 // MARK: - Previews
 
 #Preview("Contact Form") {
-    ContactView()
+    ContactFormView()
 }
 
 #Preview("With Context") {
     let context = NavigationContext.shared
     context.setFormation(Formation.sample)
-    return ContactView()
+    return ContactFormView()
         .environment(\.navigationContext, context)
 }
