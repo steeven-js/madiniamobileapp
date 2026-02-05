@@ -8,6 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		'CACHEDIMGBUILD0000' = {isa = PBXBuildFile; fileRef = 'CACHEDIMGFILE00000'; };
+		'ONBOARDINGSERVBUILD0' = {isa = PBXBuildFile; fileRef = 'ONBOARDINGSERVFILE00'; };
+		'PROGRESSDOTSBUILD000' = {isa = PBXBuildFile; fileRef = 'PROGRESSDOTSFILE0000'; };
+		'INTERESTCHIPBUILD000' = {isa = PBXBuildFile; fileRef = 'INTERESTCHIPFILE0000'; };
+		'ONBWELCOMEBUILD00000' = {isa = PBXBuildFile; fileRef = 'ONBWELCOMEFILE000000'; };
+		'ONBINTERESTSBUILD000' = {isa = PBXBuildFile; fileRef = 'ONBINTERESTSFILE0000'; };
+		'ONBNOTIFSBUILD000000' = {isa = PBXBuildFile; fileRef = 'ONBNOTIFSFILE0000000'; };
+		'ONBCOMPLETEBUILD0000' = {isa = PBXBuildFile; fileRef = 'ONBCOMPLETEFILE00000'; };
+		'ONBFLOWVIEWBUILD0000' = {isa = PBXBuildFile; fileRef = 'ONBFLOWVIEWFILE00000'; };
 		'SECRETSMANAGERBUILD000' /* SecretsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 'SECRETSMANAGERFILE0000' /* SecretsManager.swift */; };
 		120D914AC37DA0B3BB2093EA /* MadiniaHubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C111D8DAAA40A220EC343BF /* MadiniaHubView.swift */; };
 		217C8F16F8C246BD992013C2 /* SavedFormationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEEF31CFE1B54B64B1C9632B /* SavedFormationsView.swift */; };
@@ -215,6 +223,14 @@
 		'UNIFIEDDETAILFILE0000' = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnifiedDetailView.swift; sourceTree = "<group>"; };
 		'USERSPACEVIEWFILE000' = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSpaceView.swift; sourceTree = "<group>"; };
 		'WELCOMESECTIONFILE000' = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeSection.swift; sourceTree = "<group>"; };
+		'ONBOARDINGSERVFILE00' = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingService.swift; sourceTree = "<group>"; };
+		'PROGRESSDOTSFILE0000' = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressDots.swift; sourceTree = "<group>"; };
+		'INTERESTCHIPFILE0000' = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterestChip.swift; sourceTree = "<group>"; };
+		'ONBWELCOMEFILE000000' = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingWelcomeView.swift; sourceTree = "<group>"; };
+		'ONBINTERESTSFILE0000' = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingInterestsView.swift; sourceTree = "<group>"; };
+		'ONBNOTIFSFILE0000000' = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingNotificationsView.swift; sourceTree = "<group>"; };
+		'ONBCOMPLETEFILE00000' = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingCompleteView.swift; sourceTree = "<group>"; };
+		'ONBFLOWVIEWFILE00000' = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingFlowView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -356,6 +372,7 @@
 				FORMREPOFILE0000000,
 				THEMEMANAGERFILE0000,
 				90D64EDFBEA83B2F3D432B44 /* WhatsNewService.swift */,
+				ONBOARDINGSERVFILE00,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -401,8 +418,31 @@
 				VIEWSUSERSPACE00000000,
 				VIEWSSETTINGS0000000,
 				VIEWSSHARED00000000000,
+				VIEWSONBOARDING000000,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		'VIEWSONBOARDING000000' = {
+			isa = PBXGroup;
+			children = (
+				ONBFLOWVIEWFILE00000,
+				ONBWELCOMEFILE000000,
+				ONBINTERESTSFILE0000,
+				ONBNOTIFSFILE0000000,
+				ONBCOMPLETEFILE00000,
+				VIEWSONBCOMPONENTS00,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		'VIEWSONBCOMPONENTS00' = {
+			isa = PBXGroup;
+			children = (
+				PROGRESSDOTSFILE0000,
+				INTERESTCHIPFILE0000,
+			);
+			path = Components;
 			sourceTree = "<group>";
 		};
 		'VIEWSBLOG0000000000000' = {
@@ -733,6 +773,14 @@
 				USERSPACEVIEWBUILD00,
 				D148476D9791FA5CB58144EE /* WhatsNewService.swift in Sources */,
 				87314FFCBC84AAFE8F8CAD68 /* WhatsNewView.swift in Sources */,
+				ONBOARDINGSERVBUILD0,
+				PROGRESSDOTSBUILD000,
+				INTERESTCHIPBUILD000,
+				ONBWELCOMEBUILD00000,
+				ONBINTERESTSBUILD000,
+				ONBNOTIFSBUILD000000,
+				ONBCOMPLETEBUILD0000,
+				ONBFLOWVIEWBUILD0000,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -886,7 +934,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = MadiniaApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = 7Q6MN7W987;
 				ENABLE_PREVIEWS = YES;
@@ -922,7 +970,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = MadiniaApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = 7Q6MN7W987;
 				ENABLE_PREVIEWS = YES;
@@ -956,7 +1004,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 4;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MARKETING_VERSION = 1.0;
@@ -974,7 +1022,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 4;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MARKETING_VERSION = 1.0;

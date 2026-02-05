@@ -10,6 +10,9 @@ import UIKit
 
 /// Main settings hub view with navigation to sub-settings
 struct SettingsView: View {
+    /// State for showing onboarding
+    @State private var showOnboarding = false
+
     /// Device UUID for debugging
     private var deviceUUID: String {
         UIDevice.current.identifierForVendor?.uuidString ?? "Non disponible"
@@ -57,6 +60,36 @@ struct SettingsView: View {
                         title: "Nouveautés",
                         subtitle: "Découvrir les dernières mises à jour"
                     )
+                }
+            }
+
+            Section {
+                Button {
+                    showOnboarding = true
+                } label: {
+                    HStack(spacing: MadiniaSpacing.md) {
+                        Image(systemName: "arrow.counterclockwise")
+                            .font(.title3)
+                            .foregroundStyle(MadiniaColors.accent)
+                            .frame(width: 28)
+
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text("Revoir la présentation")
+                                .font(MadiniaTypography.body)
+                                .foregroundStyle(.primary)
+
+                            Text("Personnaliser vos centres d'intérêt")
+                                .font(MadiniaTypography.caption)
+                                .foregroundStyle(.secondary)
+                        }
+
+                        Spacer()
+
+                        Image(systemName: "chevron.right")
+                            .font(.caption)
+                            .foregroundStyle(.tertiary)
+                    }
+                    .padding(.vertical, MadiniaSpacing.xxs)
                 }
             }
 
@@ -159,6 +192,9 @@ struct SettingsView: View {
         }
         .navigationTitle("Paramètres")
         .navigationBarTitleDisplayMode(.inline)
+        .fullScreenCover(isPresented: $showOnboarding) {
+            OnboardingReplayView()
+        }
     }
 
     private func settingsRow(icon: String, title: String, subtitle: String) -> some View {

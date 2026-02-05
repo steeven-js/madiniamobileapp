@@ -7,11 +7,14 @@
 
 import SwiftUI
 
-/// Root view managing splash screen and main content transition.
-/// Preloads all app data during splash before showing main content.
+/// Root view managing splash screen, onboarding, and main content transition.
+/// Preloads all app data during splash before showing main content or onboarding.
 struct AppRootView: View {
     /// App launch state
     @State private var appState = AppLaunchState()
+
+    /// Whether onboarding has been completed (local state for reactivity)
+    @State private var hasCompletedOnboarding = OnboardingService.shared.hasCompletedOnboarding
 
     /// Centralized data repository for preloading
     private let dataRepository = AppDataRepository.shared
@@ -21,9 +24,16 @@ struct AppRootView: View {
 
     var body: some View {
         ZStack {
-            // Main content (always present but potentially hidden)
-            MainTabView()
+            // Main content: either onboarding or main tab view
+            if hasCompletedOnboarding {
+                MainTabView()
+                    .opacity(appState.showMainContent ? 1 : 0)
+            } else {
+                OnboardingFlowView(onComplete: {
+                    hasCompletedOnboarding = true
+                })
                 .opacity(appState.showMainContent ? 1 : 0)
+            }
 
             // Splash screen overlay
             if appState.showSplash {
@@ -33,6 +43,7 @@ struct AppRootView: View {
             }
         }
         .animation(reduceMotion ? .none : .easeInOut(duration: 0.4), value: appState.showSplash)
+        .animation(.easeInOut(duration: 0.3), value: hasCompletedOnboarding)
         .task {
             await performInitialLoad()
         }
