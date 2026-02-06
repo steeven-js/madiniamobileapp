@@ -221,11 +221,9 @@ final class MadiContextService {
         UserDefaults.standard.set(data, forKey: conversationHistoryKey)
         cachedConversation = messagesToSave
 
-        // Sync to server in background (debounced - only every 5 messages or on clear)
-        if messagesToSave.count % 5 == 0 || messagesToSave.count <= 1 {
-            Task {
-                await saveHistoryToServer()
-            }
+        // Sync to server in background after each save
+        Task {
+            await saveHistoryToServer()
         }
     }
 
