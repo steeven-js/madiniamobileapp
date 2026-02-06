@@ -65,7 +65,7 @@ struct EventDetailView: View {
                         descriptionSection
                     }
                     .padding(MadiniaSpacing.md)
-                    .padding(.bottom, 120)
+                    .padding(.bottom, 180)
                 }
             }
             .ignoresSafeArea(edges: .top)
@@ -370,9 +370,7 @@ struct EventDetailView: View {
                         .clipShape(Capsule())
                 }
             } else {
-                Spacer()
-
-                // Register button
+                // Register button - aligned left to avoid Madi FAB
                 Button {
                     showRegistrationSheet = true
                 } label: {
@@ -389,6 +387,8 @@ struct EventDetailView: View {
                 }
                 .disabled(viewModel.displayEvent.isFull == true || viewModel.displayEvent.isPast)
                 .opacity((viewModel.displayEvent.isFull == true || viewModel.displayEvent.isPast) ? 0.5 : 1)
+
+                Spacer()
             }
         }
         .padding(.horizontal, MadiniaSpacing.md)
