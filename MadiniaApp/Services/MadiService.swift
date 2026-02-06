@@ -34,8 +34,40 @@ enum MadiError: Error, LocalizedError {
     }
 }
 
+// MARK: - ChatGPT API Response Types
+
+/// Response from ChatGPT backend API
+struct ChatGPTResponse: Codable {
+    let success: Bool
+    let data: ChatGPTResponseData?
+}
+
+/// ChatGPT response data payload
+struct ChatGPTResponseData: Codable {
+    let content: String
+    let formationRecommendation: ChatGPTFormationRec?
+
+    enum CodingKeys: String, CodingKey {
+        case content
+        case formationRecommendation = "formation_recommendation"
+    }
+}
+
+/// Formation recommendation from ChatGPT
+struct ChatGPTFormationRec: Codable {
+    let formationId: Int
+    let formationSlug: String
+    let formationTitle: String
+
+    enum CodingKeys: String, CodingKey {
+        case formationId = "formation_id"
+        case formationSlug = "formation_slug"
+        case formationTitle = "formation_title"
+    }
+}
+
 /// Service for Madi AI coach conversations.
-/// Uses a local response system with optional AI backend integration.
+/// Uses ChatGPT backend via API proxy with local fallback.
 final class MadiService: MadiServiceProtocol {
     /// Shared singleton instance
     static let shared = MadiService()
@@ -43,19 +75,128 @@ final class MadiService: MadiServiceProtocol {
     /// Context service for user behavior tracking
     private let contextService = MadiContextService.shared
 
-    private init() {}
+    /// API configuration
+    private let baseURL = "https://madinia.fr/api/v1"
+    private var apiKey: String { SecretsManager.apiKey }
+    private let session: URLSession
+
+    /// Whether to use ChatGPT backend (can be disabled for testing)
+    var useChatGPTBackend = true
+
+    private init() {
+        self.session = .shared
+    }
 
     /// Sends a message to Madi and returns the AI response.
-    /// Currently uses local response logic with formation matching.
-    /// Can be extended to call an AI backend (OpenAI, Claude, etc.)
+    /// Tries ChatGPT backend first, falls back to local responses if unavailable.
     func sendMessage(_ message: String, formations: [Formation], favoriteIds: Set<Int> = []) async throws -> MadiMessage {
-        // Simulate network delay for natural conversation feel
-        try await Task.sleep(for: .milliseconds(800 + Int.random(in: 0...500)))
-
         let lowercaseMessage = message.lowercased()
 
+        // Handle special commands locally (quiz, etc.)
+        if let localResponse = handleLocalCommands(message: lowercaseMessage, formations: formations, favoriteIds: favoriteIds) {
+            return localResponse
+        }
+
+        // Try ChatGPT backend
+        if useChatGPTBackend {
+            do {
+                return try await sendMessageToBackend(message, formations: formations, favoriteIds: favoriteIds)
+            } catch {
+                #if DEBUG
+                print("ChatGPT backend error, using local fallback: \(error)")
+                #endif
+                // Fall through to local response
+            }
+        }
+
+        // Local fallback
+        return generateLocalResponse(for: lowercaseMessage, formations: formations, favoriteIds: favoriteIds)
+    }
+
+    // MARK: - ChatGPT Backend
+
+    private func sendMessageToBackend(_ message: String, formations: [Formation], favoriteIds: Set<Int>) async throws -> MadiMessage {
+        let url = URL(string: "\(baseURL)/madi/chat")!
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
+        request.setValue(apiKey, forHTTPHeaderField: "X-API-Key")
+        request.timeoutInterval = 30
+
+        // Build conversation history
+        let conversationHistory = contextService.loadConversation().suffix(10).map { msg in
+            ["content": msg.content, "isFromUser": msg.isFromUser] as [String: Any]
+        }
+
+        // Build user context
+        let viewedFormations = contextService.recentlyViewedFormations(limit: 5).map { viewed in
+            ["formation_title": viewed.formationTitle] as [String: Any]
+        }
+
+        let favoriteNames = formations.filter { favoriteIds.contains($0.id) }.map { $0.title }
+
+        let userContext: [String: Any] = [
+            "favorites": favoriteNames,
+            "viewed_formations": viewedFormations
+        ]
+
+        let body: [String: Any] = [
+            "device_uuid": contextService.deviceUUID,
+            "message": message,
+            "conversation_history": Array(conversationHistory),
+            "user_context": userContext
+        ]
+
+        request.httpBody = try JSONSerialization.data(withJSONObject: body)
+
+        let (data, response) = try await session.data(for: request)
+
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw MadiError.networkError
+        }
+
+        if httpResponse.statusCode == 503 {
+            throw MadiError.serviceUnavailable
+        }
+
+        if httpResponse.statusCode >= 400 {
+            throw MadiError.invalidResponse
+        }
+
+        // Parse response
+        let result = try JSONDecoder().decode(ChatGPTResponse.self, from: data)
+
+        guard result.success, let responseData = result.data else {
+            throw MadiError.invalidResponse
+        }
+
+        // Build formation recommendation if provided
+        var formationRecommendation: FormationRecommendation?
+        if let rec = responseData.formationRecommendation {
+            formationRecommendation = FormationRecommendation(
+                formationId: rec.formationId,
+                formationSlug: rec.formationSlug,
+                formationTitle: rec.formationTitle
+            )
+        }
+
+        return MadiMessage(
+            content: responseData.content,
+            isFromUser: false,
+            formationRecommendation: formationRecommendation,
+            quickActions: [
+                QuickAction(label: "Recommandations", icon: "sparkles", actionType: .showRecommendations),
+                QuickAction(label: "Quiz IA", icon: "brain.head.profile", actionType: .startQuiz)
+            ]
+        )
+    }
+
+    // MARK: - Local Commands
+
+    private func handleLocalCommands(message: String, formations: [Formation], favoriteIds: Set<Int>) -> MadiMessage? {
         // Check for quiz request
-        if lowercaseMessage.contains("quiz") || lowercaseMessage.contains("test") {
+        if message.contains("quiz") || message.contains("test") {
             return MadiMessage(
                 content: "Super ! Testons vos connaissances en IA. Appuyez sur le bouton ci-dessous pour démarrer le quiz.",
                 isFromUser: false,
@@ -67,17 +208,23 @@ final class MadiService: MadiServiceProtocol {
         }
 
         // Check for recommendations request
-        if lowercaseMessage.contains("recommand") || lowercaseMessage.contains("suggère") || lowercaseMessage.contains("conseil") {
+        if message.contains("recommand") || message.contains("suggère") || message.contains("conseil") {
             return generateRecommendationsMessage(formations: formations, favoriteIds: favoriteIds)
         }
 
         // Check for favorites request
-        if lowercaseMessage.contains("favoris") || lowercaseMessage.contains("sauvegardé") {
+        if message.contains("favoris") || message.contains("sauvegardé") {
             return generateFavoritesMessage(formations: formations, favoriteIds: favoriteIds)
         }
 
+        return nil
+    }
+
+    // MARK: - Local Fallback
+
+    private func generateLocalResponse(for message: String, formations: [Formation], favoriteIds: Set<Int>) -> MadiMessage {
         // Check for formation-related keywords and provide recommendations
-        if let recommendation = findFormationRecommendation(for: lowercaseMessage, in: formations, favoriteIds: favoriteIds) {
+        if let recommendation = findFormationRecommendation(for: message, in: formations, favoriteIds: favoriteIds) {
             return MadiMessage(
                 content: recommendation.response,
                 isFromUser: false,
@@ -87,13 +234,13 @@ final class MadiService: MadiServiceProtocol {
         }
 
         // Check for specific question patterns
-        if let response = handleSpecificQuestions(lowercaseMessage) {
+        if let response = handleSpecificQuestions(message) {
             return MadiMessage(content: response, isFromUser: false)
         }
 
         // Default helpful response with quick actions
         return MadiMessage(
-            content: generateDefaultResponse(for: lowercaseMessage),
+            content: generateDefaultResponse(for: message),
             isFromUser: false,
             quickActions: [
                 QuickAction(label: "Recommandations", icon: "sparkles", actionType: .showRecommendations),
