@@ -28,6 +28,9 @@ struct HomeView: View {
     /// Navigation state for Calendly booking
     @State private var showCalendly = false
 
+    /// Navigation state for event detail
+    @State private var selectedEvent: Event?
+
     var body: some View {
         ScrollView(.vertical, showsIndicators: true) {
             VStack(spacing: MadiniaSpacing.lg) {
@@ -58,19 +61,25 @@ struct HomeView: View {
                         }
                     )
 
-                    // Events teaser carousel
-                    TeaserCarouselSection(
-                        title: "Événements",
-                        items: TeaserItem.eventsItems,
-                        onTap: {
-                            navigationContext.triggerEventsNavigation()
-                            selectedTab = 1 // Navigate to Madin.IA tab
-                        },
-                        onItemTap: {
-                            navigationContext.triggerEventsNavigation()
-                            selectedTab = 1 // Navigate to Madin.IA tab
-                        }
-                    )
+                    // Events carousel with real events (only if events exist)
+                    if !viewModel.upcomingEvents.isEmpty {
+                        TeaserCarouselSection(
+                            title: "Événements",
+                            items: TeaserItem.eventsItems,
+                            events: viewModel.upcomingEvents,
+                            onTap: {
+                                navigationContext.triggerEventsNavigation()
+                                selectedTab = 1 // Navigate to Madin.IA tab
+                            },
+                            onItemTap: {
+                                navigationContext.triggerEventsNavigation()
+                                selectedTab = 1 // Navigate to Madin.IA tab
+                            },
+                            onEventTap: { event in
+                                selectedEvent = event
+                            }
+                        )
+                    }
 
                     // Booking CTA
                     BookingCTACard {
@@ -109,6 +118,9 @@ struct HomeView: View {
         }
         .navigationDestination(isPresented: $showCalendly) {
             CalendlyView(embedded: true)
+        }
+        .navigationDestination(item: $selectedEvent) { event in
+            EventDetailView(event: event)
         }
         .task {
             await viewModel.loadFormations()

@@ -62,6 +62,109 @@ struct TeaserCard: View {
     }
 }
 
+/// Event card in teaser style for the carousel
+struct EventTeaserCard: View {
+    let event: Event
+
+    var body: some View {
+        ZStack(alignment: .bottomLeading) {
+            // Background image or gradient
+            if let imageUrl = event.imageUrl, let url = URL(string: imageUrl) {
+                CachedAsyncImage(url: url) { image in
+                    image
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                } placeholder: {
+                    eventGradient
+                }
+                .frame(width: 320, height: 200)
+                .clipped()
+                .overlay {
+                    LinearGradient(
+                        colors: [.clear, .black.opacity(0.7)],
+                        startPoint: .top,
+                        endPoint: .bottom
+                    )
+                }
+            } else {
+                eventGradient
+                    .overlay {
+                        Image(systemName: event.eventType.icon)
+                            .font(.system(size: 50))
+                            .foregroundStyle(.white.opacity(0.3))
+                    }
+            }
+
+            // Content overlay
+            VStack(alignment: .leading, spacing: MadiniaSpacing.md) {
+                // Top section with event type and date
+                HStack {
+                    // Event type pill
+                    HStack(spacing: MadiniaSpacing.xxs) {
+                        Image(systemName: event.eventType.icon)
+                            .font(.caption)
+                            .foregroundStyle(.white)
+
+                        Text(event.eventType.displayName.uppercased())
+                            .font(MadiniaTypography.caption)
+                            .fontWeight(.semibold)
+                            .foregroundStyle(.white)
+                            .tracking(0.5)
+                    }
+                    .padding(.horizontal, MadiniaSpacing.sm)
+                    .padding(.vertical, MadiniaSpacing.xxs)
+                    .background(event.eventType.color.opacity(0.8))
+                    .clipShape(Capsule())
+
+                    Spacer()
+
+                    // Date pill
+                    Text(event.shortFormattedDate)
+                        .font(MadiniaTypography.caption)
+                        .fontWeight(.medium)
+                        .foregroundStyle(.white)
+                        .padding(.horizontal, MadiniaSpacing.sm)
+                        .padding(.vertical, MadiniaSpacing.xxs)
+                        .background(.black.opacity(0.5))
+                        .clipShape(Capsule())
+                }
+
+                Spacer()
+
+                // Bottom section with title
+                VStack(alignment: .leading, spacing: MadiniaSpacing.xs) {
+                    Text(event.title)
+                        .font(.system(size: 20, weight: .bold))
+                        .foregroundStyle(.white)
+                        .lineLimit(2)
+
+                    if let shortDesc = event.shortDescription {
+                        Text(shortDesc)
+                            .font(MadiniaTypography.subheadline)
+                            .foregroundStyle(.white.opacity(0.9))
+                            .lineLimit(2)
+                    }
+                }
+                .padding(MadiniaSpacing.sm)
+                .background(.black.opacity(0.5))
+                .clipShape(RoundedRectangle(cornerRadius: MadiniaRadius.md))
+            }
+            .padding(MadiniaSpacing.md)
+        }
+        .frame(width: 320, height: 200)
+        .clipShape(RoundedRectangle(cornerRadius: MadiniaRadius.xl))
+        .shadow(color: .black.opacity(0.15), radius: 10, y: 5)
+    }
+
+    private var eventGradient: some View {
+        LinearGradient(
+            colors: [event.eventType.color, event.eventType.color.opacity(0.6)],
+            startPoint: .topLeading,
+            endPoint: .bottomTrailing
+        )
+    }
+}
+
 /// Article card in teaser style for the carousel
 struct ArticleTeaserCard: View {
     let article: Article
@@ -169,9 +272,11 @@ struct TeaserCarouselSection: View {
     let title: String
     let items: [TeaserItem]
     var articles: [Article] = []
+    var events: [Event] = []
     var onTap: (() -> Void)? = nil
     var onItemTap: (() -> Void)? = nil
     var onArticleTap: ((Article) -> Void)? = nil
+    var onEventTap: ((Event) -> Void)? = nil
 
     var body: some View {
         VStack(alignment: .leading, spacing: MadiniaSpacing.sm) {
@@ -204,16 +309,27 @@ struct TeaserCarouselSection: View {
                             }
                     }
 
-                    // Then teaser placeholder items
-                    ForEach(items) { item in
-                        if let onItemTap = onItemTap {
-                            TeaserCard(item: item)
-                                .contentShape(Rectangle())
-                                .onTapGesture {
-                                    onItemTap()
-                                }
-                        } else {
-                            TeaserCard(item: item)
+                    // Real events (from API)
+                    ForEach(events) { event in
+                        EventTeaserCard(event: event)
+                            .contentShape(Rectangle())
+                            .onTapGesture {
+                                onEventTap?(event)
+                            }
+                    }
+
+                    // Then teaser placeholder items (only if no real content)
+                    if articles.isEmpty && events.isEmpty {
+                        ForEach(items) { item in
+                            if let onItemTap = onItemTap {
+                                TeaserCard(item: item)
+                                    .contentShape(Rectangle())
+                                    .onTapGesture {
+                                        onItemTap()
+                                    }
+                            } else {
+                                TeaserCard(item: item)
+                            }
                         }
                     }
                 }

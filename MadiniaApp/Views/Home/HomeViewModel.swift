@@ -16,6 +16,17 @@ final class HomeViewModel {
     /// Centralized data repository (preloaded during splash)
     private let dataRepository: AppDataRepository
 
+    /// Events service for loading upcoming events
+    private let eventsService: EventsService
+
+    // MARK: - Events State
+
+    /// Upcoming events for home display
+    private(set) var upcomingEvents: [Event] = []
+
+    /// Whether events are loading
+    private(set) var isLoadingEvents = false
+
     // MARK: - Computed Properties
 
     /// Current loading state based on repository
@@ -57,22 +68,35 @@ final class HomeViewModel {
     // MARK: - Initialization
 
     /// Creates a HomeViewModel with the specified repository
-    init(dataRepository: AppDataRepository = .shared) {
+    init(dataRepository: AppDataRepository = .shared, eventsService: EventsService = .shared) {
         self.dataRepository = dataRepository
+        self.eventsService = eventsService
     }
 
     // MARK: - Actions
 
-    /// Called when view appears - data is already preloaded, nothing to do
+    /// Called when view appears - loads formations and events
     @MainActor
     func loadFormations() async {
         // Data is already preloaded by AppDataRepository during splash
-        // This method exists for API compatibility but does nothing
+        // Load events separately
+        await loadEvents()
+    }
+
+    /// Loads upcoming events for home display
+    @MainActor
+    func loadEvents() async {
+        isLoadingEvents = true
+        await eventsService.fetchEvents()
+        // Get up to 5 upcoming events for home carousel
+        upcomingEvents = Array(eventsService.upcomingEvents.prefix(5))
+        isLoadingEvents = false
     }
 
     /// Refreshes data from API (pull-to-refresh)
     @MainActor
     func retry() async {
         await dataRepository.refresh()
+        await loadEvents()
     }
 }
