@@ -54,6 +54,7 @@
 		BLOGVIEWBUILD0000000000 /* BlogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BLOGVIEWFILE00000000000 /* BlogView.swift */; };
 		BLOGVMBUILD0000000000 /* BlogViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BLOGVMFILE0000000000 /* BlogViewModel.swift */; };
 		BOOKINGCTABUILD000000 /* BookingCTACard.swift in Sources */ = {isa = PBXBuildFile; fileRef = BOOKINGCTAFILE0000000 /* BookingCTACard.swift */; };
+		C18438BBCFC41ED1E04FDD8B /* DeviceRegistrationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF9FC3CAB7123EFF27445B60 /* DeviceRegistrationService.swift */; };
 		CACHEDIMGBUILD0000 /* CachedAsyncImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CACHEDIMGFILE00000 /* CachedAsyncImage.swift */; };
 		CACHESERVICEBUILD0000 /* CacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CACHESERVICEFILE00000 /* CacheService.swift */; };
 		CALENDLYVIEWBUILD00 /* CalendlyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CALENDLYVIEWFILE0000 /* CalendlyView.swift */; };
@@ -192,6 +193,7 @@
 		CATEGORYSECFILE0000 /* CategoriesSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesSection.swift; sourceTree = "<group>"; };
 		CATGRIDCARDFILE000 /* CategoryGridCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryGridCard.swift; sourceTree = "<group>"; };
 		CATGRIDVIEWFILE000 /* CategoriesGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesGridView.swift; sourceTree = "<group>"; };
+		CF9FC3CAB7123EFF27445B60 /* DeviceRegistrationService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DeviceRegistrationService.swift; sourceTree = "<group>"; };
 		COLORHEXFILE000000000 /* Color+Hex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Hex.swift"; sourceTree = "<group>"; };
 		CONTACTHUBVIEWFILE0 /* ContactHubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactHubView.swift; sourceTree = "<group>"; };
 		CONTACTVMFILE0000000 /* ContactViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactViewModel.swift; sourceTree = "<group>"; };
@@ -329,6 +331,7 @@
 				UTILS00000000000000000 /* Utils */,
 				RESOURCES0000000000000 /* Resources */,
 				6B69F05CB40D632777728972 /* CalendarService.swift */,
+				F53A3FAB8157C7CE99167A24 /* Services */,
 			);
 			name = MadiniaApp;
 			sourceTree = "<group>";
@@ -387,6 +390,15 @@
 			children = (
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		F53A3FAB8157C7CE99167A24 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				CF9FC3CAB7123EFF27445B60 /* DeviceRegistrationService.swift */,
+			);
+			name = Services;
+			path = Services;
 			sourceTree = "<group>";
 		};
 		MODELS0000000000000000 /* Models */ = {
@@ -855,6 +867,7 @@
 				B9B2D45D70C43FFE2C694118 /* EventCard.swift in Sources */,
 				6A85EE5CF94DA382E44F930D /* EventTypeFilter.swift in Sources */,
 				F7E3C4C45DB27B5FC9E66F49 /* CalendarService.swift in Sources */,
+				C18438BBCFC41ED1E04FDD8B /* DeviceRegistrationService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

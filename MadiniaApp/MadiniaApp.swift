@@ -37,6 +37,7 @@ struct MadiniaApp: App {
                 .onAppear {
                     setupDeepLinkHandler()
                     checkForWhatsNew()
+                    registerDevice()
                 }
                 .onOpenURL { url in
                     handleUniversalLink(url)
@@ -46,6 +47,15 @@ struct MadiniaApp: App {
                 }
         }
         .modelContainer(for: [])
+    }
+
+    // MARK: - Device Registration
+
+    /// Registers the device with the backend on app launch
+    private func registerDevice() {
+        Task {
+            await DeviceRegistrationService.shared.registerOnLaunch()
+        }
     }
 
     // MARK: - What's New
