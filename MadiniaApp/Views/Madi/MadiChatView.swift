@@ -23,6 +23,11 @@ struct MadiChatView: View {
 
                 Divider()
 
+                // Quick action chips
+                if !viewModel.quickActions.isEmpty && !viewModel.isTyping {
+                    quickActionsBar
+                }
+
                 // Input area
                 inputArea
             }
@@ -40,10 +45,16 @@ struct MadiChatView: View {
 
                 ToolbarItem(placement: .topBarTrailing) {
                     Menu {
-                        Button(role: .destructive) {
+                        Button {
                             viewModel.resetConversation()
                         } label: {
                             Label("Nouvelle conversation", systemImage: "arrow.counterclockwise")
+                        }
+
+                        Button(role: .destructive) {
+                            viewModel.clearHistory()
+                        } label: {
+                            Label("Effacer l'historique", systemImage: "trash")
                         }
                     } label: {
                         Image(systemName: "ellipsis.circle")
@@ -51,9 +62,29 @@ struct MadiChatView: View {
                 }
             }
         }
+        .sheet(isPresented: $viewModel.isQuizPresented) {
+            MadiQuizView(
+                questions: viewModel.currentQuizQuestions,
+                onComplete: { score, total in
+                    viewModel.handleQuizComplete(score: score, total: total)
+                }
+            )
+        }
         .task {
             await viewModel.loadFormations()
         }
+    }
+
+    // MARK: - Quick Actions Bar
+
+    private var quickActionsBar: some View {
+        QuickActionChips(actions: viewModel.quickActions) { action in
+            Task {
+                await viewModel.handleQuickAction(action)
+            }
+        }
+        .padding(.vertical, 8)
+        .background(Color(.systemBackground))
     }
 
     // MARK: - Messages View
@@ -62,16 +93,17 @@ struct MadiChatView: View {
         ScrollViewReader { proxy in
             ScrollView {
                 LazyVStack(spacing: 16) {
-                    // Coming soon teaser banner
-                    comingSoonBanner
-                        .id("teaser")
-
                     ForEach(viewModel.messages) { message in
                         MessageBubble(
                             message: message,
                             onFormationTap: { recommendation in
                                 dismiss()
                                 onFormationSelected?(recommendation)
+                            },
+                            onQuickActionTap: { action in
+                                Task {
+                                    await viewModel.handleQuickAction(action)
+                                }
                             }
                         )
                         .id(message.id)
@@ -92,72 +124,6 @@ struct MadiChatView: View {
                 scrollToBottom(proxy: proxy)
             }
         }
-    }
-
-    // MARK: - Coming Soon Banner
-
-    private var comingSoonBanner: some View {
-        VStack(spacing: 12) {
-            // Animated sparkles icon
-            Image(systemName: "wand.and.stars")
-                .font(.system(size: 32))
-                .foregroundStyle(
-                    LinearGradient(
-                        colors: [MadiniaColors.accent, MadiniaColors.violet],
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
-                )
-                .symbolEffect(.pulse.byLayer, options: .repeating)
-
-            VStack(spacing: 6) {
-                Text("Madi arrive bientôt !")
-                    .font(.headline)
-                    .foregroundStyle(.primary)
-
-                Text("Je suis en cours de développement pour devenir votre assistant IA personnalisé. Revenez vite pour découvrir toutes mes fonctionnalités !")
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
-                    .multilineTextAlignment(.center)
-            }
-
-            // Feature pills
-            HStack(spacing: 8) {
-                featurePill(icon: "brain.head.profile", text: "IA avancée")
-                featurePill(icon: "message.fill", text: "Chat intelligent")
-            }
-        }
-        .padding(16)
-        .background(
-            RoundedRectangle(cornerRadius: 16)
-                .fill(Color(.secondarySystemBackground))
-                .overlay(
-                    RoundedRectangle(cornerRadius: 16)
-                        .stroke(
-                            LinearGradient(
-                                colors: [MadiniaColors.accent.opacity(0.5), MadiniaColors.violet.opacity(0.5)],
-                                startPoint: .topLeading,
-                                endPoint: .bottomTrailing
-                            ),
-                            lineWidth: 1
-                        )
-                )
-        )
-        .padding(.bottom, 8)
-    }
-
-    private func featurePill(icon: String, text: String) -> some View {
-        HStack(spacing: 4) {
-            Image(systemName: icon)
-                .font(.caption)
-            Text(text)
-                .font(.caption)
-        }
-        .foregroundStyle(MadiniaColors.violet)
-        .padding(.horizontal, 10)
-        .padding(.vertical, 6)
-        .background(MadiniaColors.violet.opacity(0.15))
-        .clipShape(Capsule())
     }
 
     private func scrollToBottom(proxy: ScrollViewProxy) {
@@ -203,6 +169,7 @@ struct MadiChatView: View {
 private struct MessageBubble: View {
     let message: MadiMessage
     var onFormationTap: ((FormationRecommendation) -> Void)?
+    var onQuickActionTap: ((QuickAction) -> Void)?
 
     var body: some View {
         HStack {
@@ -212,37 +179,23 @@ private struct MessageBubble: View {
 
             VStack(alignment: message.isFromUser ? .trailing : .leading, spacing: 8) {
                 // Message content
-                Text(LocalizedStringKey(message.content))
-                    .padding(12)
-                    .background(message.isFromUser ? Color.accentColor : Color(.secondarySystemBackground))
-                    .foregroundStyle(message.isFromUser ? .white : .primary)
-                    .clipShape(RoundedRectangle(cornerRadius: 16))
+                messageContent
 
                 // Formation recommendation card
                 if let recommendation = message.formationRecommendation {
-                    Button {
-                        onFormationTap?(recommendation)
-                    } label: {
-                        HStack {
-                            Image(systemName: "book.fill")
-                                .foregroundStyle(Color.accentColor)
+                    formationCard(recommendation)
+                }
 
-                            Text(recommendation.formationTitle)
-                                .font(.subheadline)
-                                .fontWeight(.medium)
-                                .foregroundStyle(.primary)
-
-                            Spacer()
-
-                            Image(systemName: "chevron.right")
-                                .font(.caption)
-                                .foregroundStyle(.secondary)
-                        }
-                        .padding(12)
-                        .background(Color(.tertiarySystemBackground))
-                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                // Quick actions in message
+                if let actions = message.quickActions, !actions.isEmpty, !message.isFromUser {
+                    MessageQuickActions(actions: actions) { action in
+                        onQuickActionTap?(action)
                     }
-                    .accessibilityLabel("Voir la formation \(recommendation.formationTitle)")
+                }
+
+                // Quiz result badge
+                if case .quizResult(let score, let total) = message.messageType {
+                    quizResultBadge(score: score, total: total)
                 }
             }
 
@@ -250,6 +203,65 @@ private struct MessageBubble: View {
                 Spacer(minLength: 60)
             }
         }
+    }
+
+    private var messageContent: some View {
+        Text(LocalizedStringKey(message.content))
+            .padding(12)
+            .background(message.isFromUser ? Color.accentColor : Color(.secondarySystemBackground))
+            .foregroundStyle(message.isFromUser ? .white : .primary)
+            .clipShape(RoundedRectangle(cornerRadius: 16))
+    }
+
+    private func formationCard(_ recommendation: FormationRecommendation) -> some View {
+        Button {
+            onFormationTap?(recommendation)
+        } label: {
+            HStack {
+                Image(systemName: "book.fill")
+                    .foregroundStyle(Color.accentColor)
+
+                Text(recommendation.formationTitle)
+                    .font(.subheadline)
+                    .fontWeight(.medium)
+                    .foregroundStyle(.primary)
+
+                Spacer()
+
+                Image(systemName: "chevron.right")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+            .padding(12)
+            .background(Color(.tertiarySystemBackground))
+            .clipShape(RoundedRectangle(cornerRadius: 12))
+        }
+        .accessibilityLabel("Voir la formation \(recommendation.formationTitle)")
+    }
+
+    private func quizResultBadge(score: Int, total: Int) -> some View {
+        HStack(spacing: 8) {
+            Image(systemName: score >= total / 2 ? "star.fill" : "star")
+                .foregroundStyle(.yellow)
+
+            Text("\(score)/\(total)")
+                .font(.subheadline)
+                .fontWeight(.semibold)
+
+            Text("correct\(score > 1 ? "s" : "")")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+        }
+        .padding(.horizontal, 12)
+        .padding(.vertical, 8)
+        .background(
+            LinearGradient(
+                colors: [MadiniaColors.accent.opacity(0.1), MadiniaColors.violet.opacity(0.1)],
+                startPoint: .leading,
+                endPoint: .trailing
+            )
+        )
+        .clipShape(Capsule())
     }
 }
 

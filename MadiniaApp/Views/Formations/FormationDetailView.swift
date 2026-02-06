@@ -99,6 +99,10 @@ struct FormationDetailView: View {
             relatedFormations = []
             isLoading = true
         }
+        .onAppear {
+            // Track formation view for Madi context
+            MadiContextService.shared.trackFormationView(formation)
+        }
     }
 
     // MARK: - Views
