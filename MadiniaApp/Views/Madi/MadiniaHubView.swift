@@ -220,18 +220,7 @@ struct MadiniaHubView: View {
     // MARK: - Events Content
 
     private var eventsContent: some View {
-        ScrollView {
-            VStack(spacing: MadiniaSpacing.lg) {
-                ContentUnavailableView {
-                    Label("Événements", systemImage: "calendar.badge.clock")
-                } description: {
-                    Text("Les événements Madin.IA arrivent bientôt !\n\nRetrouvez ici nos webinaires, ateliers et rencontres à venir.")
-                }
-                .padding(.top, MadiniaSpacing.xl)
-            }
-            .padding(MadiniaSpacing.md)
-            .tabBarSafeArea()
-        }
+        EventsView(embedded: true)
     }
 }
 

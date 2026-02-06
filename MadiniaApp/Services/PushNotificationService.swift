@@ -176,6 +176,62 @@ final class PushNotificationService: NSObject {
             UIApplication.shared.open(url)
         }
     }
+
+    // MARK: - Event Reminders
+
+    /// Schedules a local notification reminder for an event
+    /// - Parameters:
+    ///   - event: The event to remind about
+    ///   - minutesBefore: Minutes before the event to send the reminder (default: 60)
+    func scheduleEventReminder(for event: Event, minutesBefore: Int = 60) async {
+        let center = UNUserNotificationCenter.current()
+
+        // Calculate reminder date
+        let reminderDate = Calendar.current.date(byAdding: .minute, value: -minutesBefore, to: event.startDate) ?? event.startDate
+
+        // Only schedule if in the future
+        guard reminderDate > Date() else { return }
+
+        let content = UNMutableNotificationContent()
+        content.title = "Rappel: \(event.title)"
+        content.body = minutesBefore >= 60
+            ? "L'événement commence dans \(minutesBefore / 60) heure\(minutesBefore >= 120 ? "s" : "")"
+            : "L'événement commence dans \(minutesBefore) minutes"
+        content.sound = .default
+        content.userInfo = [
+            "type": "event",
+            "eventId": event.id,
+            "slug": event.slug
+        ]
+
+        let triggerDate = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: reminderDate)
+        let trigger = UNCalendarNotificationTrigger(dateMatching: triggerDate, repeats: false)
+
+        let request = UNNotificationRequest(
+            identifier: "event_reminder_\(event.id)",
+            content: content,
+            trigger: trigger
+        )
+
+        do {
+            try await center.add(request)
+            #if DEBUG
+            print("Scheduled event reminder for \(event.title) at \(reminderDate)")
+            #endif
+        } catch {
+            print("Failed to schedule event reminder: \(error)")
+        }
+    }
+
+    /// Cancels a scheduled event reminder
+    /// - Parameter eventId: The event ID to cancel the reminder for
+    func cancelEventReminder(eventId: Int) {
+        let center = UNUserNotificationCenter.current()
+        center.removePendingNotificationRequests(withIdentifiers: ["event_reminder_\(eventId)"])
+        #if DEBUG
+        print("Cancelled event reminder for event \(eventId)")
+        #endif
+    }
 }
 
 // MARK: - Notification Preferences Model

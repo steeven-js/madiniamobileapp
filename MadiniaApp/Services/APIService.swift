@@ -158,6 +158,23 @@ protocol APIServiceProtocol {
 
     /// Registers a device token for push notifications
     func registerDeviceToken(token: String, preferences: NotificationPreferences) async throws
+
+    // MARK: - Events
+
+    /// Fetches all upcoming events
+    func fetchEvents() async throws -> (events: [Event], featured: [Event])
+
+    /// Fetches a single event by slug with registration status
+    func fetchEvent(slug: String, deviceUUID: String) async throws -> (event: Event, related: [Event], isRegistered: Bool)
+
+    /// Fetches event registrations for a device
+    func fetchEventRegistrations(deviceUUID: String) async throws -> [EventRegistration]
+
+    /// Registers for an event
+    func registerForEvent(_ registration: EventRegistrationRequest) async throws -> EventRegistration
+
+    /// Cancels an event registration
+    func cancelEventRegistration(registrationId: Int, deviceUUID: String) async throws
 }
 
 // MARK: - API Service Implementation
@@ -340,14 +357,14 @@ final class APIService: APIServiceProtocol {
     func registerDeviceToken(token: String, preferences: NotificationPreferences) async throws {
         let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0"
         let deviceUUID = UIDevice.current.identifierForVendor?.uuidString ?? UUID().uuidString
-        
+
         // Determine environment based on build configuration
         #if DEBUG
         let environment = "sandbox"
         #else
         let environment = "production"
         #endif
-        
+
         let body = DeviceTokenRequest(
             deviceUUID: deviceUUID,
             deviceToken: token,
@@ -357,6 +374,69 @@ final class APIService: APIServiceProtocol {
             preferences: preferences
         )
         let _: ContactResponse = try await postRequest(endpoint: "/devices", body: body)
+    }
+
+    // MARK: - Events API
+
+    /// Fetches all upcoming events from the API
+    /// - Returns: Tuple of (all events, featured events)
+    /// - Throws: APIError if the request fails
+    func fetchEvents() async throws -> (events: [Event], featured: [Event]) {
+        let response: EventsListResponse = try await request(endpoint: "/events")
+        return (response.data, response.featured ?? [])
+    }
+
+    /// Fetches a single event by its slug
+    /// - Parameters:
+    ///   - slug: The event's URL slug
+    ///   - deviceUUID: Device UUID to check registration status
+    /// - Returns: Tuple of (event, related events, is registered)
+    /// - Throws: APIError if the request fails
+    func fetchEvent(slug: String, deviceUUID: String) async throws -> (event: Event, related: [Event], isRegistered: Bool) {
+        let response: EventDetailResponse = try await request(
+            endpoint: "/events/\(slug)",
+            queryItems: [URLQueryItem(name: "device_uuid", value: deviceUUID)]
+        )
+        return (response.data, response.related ?? [], response.isRegistered ?? false)
+    }
+
+    /// Fetches event registrations for a device
+    /// - Parameter deviceUUID: The device UUID
+    /// - Returns: Array of EventRegistration objects
+    /// - Throws: APIError if the request fails
+    func fetchEventRegistrations(deviceUUID: String) async throws -> [EventRegistration] {
+        let response: EventRegistrationsListResponse = try await request(
+            endpoint: "/event-registrations",
+            queryItems: [URLQueryItem(name: "device_uuid", value: deviceUUID)]
+        )
+        return response.data
+    }
+
+    /// Registers for an event
+    /// - Parameter registration: The registration request
+    /// - Returns: The created registration
+    /// - Throws: APIError if the request fails
+    func registerForEvent(_ registration: EventRegistrationRequest) async throws -> EventRegistration {
+        let response: EventRegistrationResponse = try await postRequest(
+            endpoint: "/event-registrations",
+            body: registration
+        )
+        guard let data = response.data else {
+            throw APIError.decodingError("Registration data missing from response")
+        }
+        return data
+    }
+
+    /// Cancels an event registration
+    /// - Parameters:
+    ///   - registrationId: The registration ID
+    ///   - deviceUUID: The device UUID for authorization
+    /// - Throws: APIError if the request fails
+    func cancelEventRegistration(registrationId: Int, deviceUUID: String) async throws {
+        let _: ContactResponse = try await deleteRequest(
+            endpoint: "/event-registrations/\(registrationId)",
+            queryItems: [URLQueryItem(name: "device_uuid", value: deviceUUID)]
+        )
     }
 
     // MARK: - Private Helpers
@@ -473,6 +553,63 @@ final class APIService: APIServiceProtocol {
                     let delay = baseRetryDelay * pow(2.0, Double(attempt))
                     #if DEBUG
                     print("POST request failed (attempt \(attempt + 1)/\(maxRetries)) for \(endpoint): \(error.localizedDescription). Retrying in \(delay)s...")
+                    #endif
+                    try await Task.sleep(for: .seconds(delay))
+                }
+            }
+        }
+
+        throw lastError
+    }
+
+    /// Generic DELETE request method for API calls.
+    /// - Parameters:
+    ///   - endpoint: API endpoint path (e.g., "/event-registrations/1")
+    ///   - queryItems: Optional query parameters
+    /// - Returns: Decoded response of type T
+    /// - Throws: APIError if the request fails
+    private func deleteRequest<T: Decodable>(
+        endpoint: String,
+        queryItems: [URLQueryItem]? = nil
+    ) async throws -> T {
+        // Build URL with optional query items
+        guard var components = URLComponents(string: "\(baseURL)\(endpoint)") else {
+            throw APIError.invalidURL
+        }
+        if let queryItems = queryItems, !queryItems.isEmpty {
+            components.queryItems = queryItems
+        }
+        guard let url = components.url else {
+            throw APIError.invalidURL
+        }
+
+        // Configure request
+        var request = URLRequest(url: url)
+        request.httpMethod = "DELETE"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
+        request.setValue(apiKey, forHTTPHeaderField: "X-API-Key")
+        request.timeoutInterval = 30
+
+        var lastError: APIError = .networkError("Unknown error")
+
+        // Retry loop with exponential backoff
+        for attempt in 0..<maxRetries {
+            do {
+                return try await executeRequest(request)
+            } catch let error as APIError {
+                lastError = error
+
+                // Only retry on retryable errors (network, timeout, server errors)
+                guard error.isRetryable else {
+                    throw error
+                }
+
+                // Don't sleep after the last attempt
+                if attempt < maxRetries - 1 {
+                    let delay = baseRetryDelay * pow(2.0, Double(attempt))
+                    #if DEBUG
+                    print("DELETE request failed (attempt \(attempt + 1)/\(maxRetries)) for \(endpoint): \(error.localizedDescription). Retrying in \(delay)s...")
                     #endif
                     try await Task.sleep(for: .seconds(delay))
                 }
@@ -691,5 +828,37 @@ final class MockAPIService: APIServiceProtocol {
         }
 
         // Success - no return value needed
+    }
+
+    // MARK: - Events Mock
+
+    func fetchEvents() async throws -> (events: [Event], featured: [Event]) {
+        try await Task.sleep(for: .seconds(simulatedDelay))
+        if shouldFail { throw errorToThrow }
+        let featured = Event.samples.filter { $0.isFeatured }
+        return (Event.samples, featured)
+    }
+
+    func fetchEvent(slug: String, deviceUUID: String) async throws -> (event: Event, related: [Event], isRegistered: Bool) {
+        try await Task.sleep(for: .seconds(simulatedDelay))
+        if shouldFail { throw errorToThrow }
+        return (Event.sample, Array(Event.samples.prefix(2)), false)
+    }
+
+    func fetchEventRegistrations(deviceUUID: String) async throws -> [EventRegistration] {
+        try await Task.sleep(for: .seconds(simulatedDelay))
+        if shouldFail { throw errorToThrow }
+        return []
+    }
+
+    func registerForEvent(_ registration: EventRegistrationRequest) async throws -> EventRegistration {
+        try await Task.sleep(for: .seconds(simulatedDelay))
+        if shouldFail { throw errorToThrow }
+        return EventRegistration.sample
+    }
+
+    func cancelEventRegistration(registrationId: Int, deviceUUID: String) async throws {
+        try await Task.sleep(for: .seconds(simulatedDelay))
+        if shouldFail { throw errorToThrow }
     }
 }
