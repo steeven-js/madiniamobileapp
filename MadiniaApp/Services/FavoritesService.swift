@@ -48,11 +48,15 @@ final class FavoritesService {
 
     private let deviceUUIDKey = "device_uuid"
     private let favoriteIdsKey = "favorite_formation_ids"
+    private let favoriteServiceIdsKey = "favorite_service_ids"
 
     // MARK: - Public State
 
     /// Set of favorite formation IDs (observable)
     private(set) var favoriteFormationIds: Set<Int> = []
+
+    /// Set of favorite service IDs (observable)
+    private(set) var favoriteServiceIds: Set<Int> = []
 
     /// Whether a sync is in progress
     private(set) var isSyncing = false
@@ -78,6 +82,7 @@ final class FavoritesService {
 
         // Load from local storage
         loadFromLocal()
+        loadServicesFromLocal()
 
         // Sync with server in background
         Task {
@@ -108,6 +113,11 @@ final class FavoritesService {
         favoriteFormationIds.contains(formationId)
     }
 
+    /// Check if a service is favorited
+    func isServiceFavorite(serviceId: Int) -> Bool {
+        favoriteServiceIds.contains(serviceId)
+    }
+
     /// Toggle favorite status for a formation.
     /// Updates local storage immediately, then syncs with server.
     func toggleFavorite(formationId: Int) async {
@@ -115,6 +125,90 @@ final class FavoritesService {
             await removeFavorite(formationId: formationId)
         } else {
             await addFavorite(formationId: formationId)
+        }
+    }
+
+    /// Toggle favorite status for a service.
+    /// Updates local storage immediately.
+    func toggleServiceFavorite(serviceId: Int) async {
+        if isServiceFavorite(serviceId: serviceId) {
+            await removeServiceFavorite(serviceId: serviceId)
+        } else {
+            await addServiceFavorite(serviceId: serviceId)
+        }
+    }
+
+    /// Add a service to favorites
+    func addServiceFavorite(serviceId: Int) async {
+        await MainActor.run {
+            favoriteServiceIds.insert(serviceId)
+            saveServicesToLocal()
+        }
+
+        // Check network status - queue if offline
+        if !NetworkMonitorService.shared.isConnected {
+            SyncQueueService.shared.queueOperation(
+                type: .addServiceFavorite,
+                payload: ["serviceId": String(serviceId)]
+            )
+            return
+        }
+
+        // Sync with server
+        do {
+            try await addServiceFavoriteToServer(serviceId: serviceId)
+            await MainActor.run {
+                lastSyncError = nil
+            }
+        } catch {
+            #if DEBUG
+            print("Failed to add service favorite to server: \(error)")
+            #endif
+            await MainActor.run {
+                lastSyncError = error.localizedDescription
+            }
+            // Queue for retry when back online
+            SyncQueueService.shared.queueOperation(
+                type: .addServiceFavorite,
+                payload: ["serviceId": String(serviceId)]
+            )
+        }
+    }
+
+    /// Remove a service from favorites
+    func removeServiceFavorite(serviceId: Int) async {
+        await MainActor.run {
+            favoriteServiceIds.remove(serviceId)
+            saveServicesToLocal()
+        }
+
+        // Check network status - queue if offline
+        if !NetworkMonitorService.shared.isConnected {
+            SyncQueueService.shared.queueOperation(
+                type: .removeServiceFavorite,
+                payload: ["serviceId": String(serviceId)]
+            )
+            return
+        }
+
+        // Sync with server
+        do {
+            try await removeServiceFavoriteFromServer(serviceId: serviceId)
+            await MainActor.run {
+                lastSyncError = nil
+            }
+        } catch {
+            #if DEBUG
+            print("Failed to remove service favorite from server: \(error)")
+            #endif
+            await MainActor.run {
+                lastSyncError = error.localizedDescription
+            }
+            // Queue for retry when back online
+            SyncQueueService.shared.queueOperation(
+                type: .removeServiceFavorite,
+                payload: ["serviceId": String(serviceId)]
+            )
         }
     }
 
@@ -129,6 +223,15 @@ final class FavoritesService {
         // Check achievements for favorites
         ProgressTrackingService.shared.checkAndUnlockAchievements()
 
+        // Check network status - queue if offline
+        if !NetworkMonitorService.shared.isConnected {
+            SyncQueueService.shared.queueOperation(
+                type: .addFavorite,
+                payload: ["formationId": String(formationId)]
+            )
+            return
+        }
+
         // Sync with server
         do {
             try await addFavoriteToServer(formationId: formationId)
@@ -142,6 +245,11 @@ final class FavoritesService {
             await MainActor.run {
                 lastSyncError = error.localizedDescription
             }
+            // Queue for retry when back online
+            SyncQueueService.shared.queueOperation(
+                type: .addFavorite,
+                payload: ["formationId": String(formationId)]
+            )
         }
     }
 
@@ -151,6 +259,15 @@ final class FavoritesService {
         await MainActor.run {
             favoriteFormationIds.remove(formationId)
             saveToLocal()
+        }
+
+        // Check network status - queue if offline
+        if !NetworkMonitorService.shared.isConnected {
+            SyncQueueService.shared.queueOperation(
+                type: .removeFavorite,
+                payload: ["formationId": String(formationId)]
+            )
+            return
         }
 
         // Sync with server
@@ -166,6 +283,11 @@ final class FavoritesService {
             await MainActor.run {
                 lastSyncError = error.localizedDescription
             }
+            // Queue for retry when back online
+            SyncQueueService.shared.queueOperation(
+                type: .removeFavorite,
+                payload: ["formationId": String(formationId)]
+            )
         }
     }
 
@@ -236,6 +358,20 @@ final class FavoritesService {
         UserDefaults.standard.set(data, forKey: favoriteIdsKey)
     }
 
+    private func loadServicesFromLocal() {
+        guard let data = UserDefaults.standard.data(forKey: favoriteServiceIdsKey),
+              let ids = try? JSONDecoder().decode([Int].self, from: data) else {
+            favoriteServiceIds = []
+            return
+        }
+        favoriteServiceIds = Set(ids)
+    }
+
+    private func saveServicesToLocal() {
+        guard let data = try? JSONEncoder().encode(Array(favoriteServiceIds)) else { return }
+        UserDefaults.standard.set(data, forKey: favoriteServiceIdsKey)
+    }
+
     // MARK: - API Calls
 
     private func fetchFavoriteIdsFromServer() async throws -> [Int] {
@@ -290,6 +426,59 @@ final class FavoritesService {
 
     private func removeFavoriteFromServer(formationId: Int) async throws {
         let url = URL(string: "\(baseURL)/favorites/\(formationId)?device_uuid=\(deviceUUID)")!
+        var request = URLRequest(url: url)
+        request.httpMethod = "DELETE"
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
+        request.setValue(apiKey, forHTTPHeaderField: "X-API-Key")
+        request.timeoutInterval = 30
+
+        let (_, response) = try await session.data(for: request)
+
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw APIError.noData
+        }
+
+        // 404 is acceptable (already deleted)
+        if httpResponse.statusCode >= 400 && httpResponse.statusCode != 404 {
+            if let error = APIError.from(statusCode: httpResponse.statusCode) {
+                throw error
+            }
+        }
+    }
+
+    // MARK: - Service Favorites API Calls
+
+    private func addServiceFavoriteToServer(serviceId: Int) async throws {
+        let url = URL(string: "\(baseURL)/favorites/services")!
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
+        request.setValue(apiKey, forHTTPHeaderField: "X-API-Key")
+        request.timeoutInterval = 30
+
+        let body: [String: Any] = [
+            "device_uuid": deviceUUID,
+            "service_id": serviceId
+        ]
+        request.httpBody = try JSONSerialization.data(withJSONObject: body)
+
+        let (_, response) = try await session.data(for: request)
+
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw APIError.noData
+        }
+
+        // 201 Created or 200 OK are both acceptable
+        if httpResponse.statusCode >= 400 {
+            if let error = APIError.from(statusCode: httpResponse.statusCode) {
+                throw error
+            }
+        }
+    }
+
+    private func removeServiceFavoriteFromServer(serviceId: Int) async throws {
+        let url = URL(string: "\(baseURL)/favorites/services/\(serviceId)?device_uuid=\(deviceUUID)")!
         var request = URLRequest(url: url)
         request.httpMethod = "DELETE"
         request.setValue("application/json", forHTTPHeaderField: "Accept")

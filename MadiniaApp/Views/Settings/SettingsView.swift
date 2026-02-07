@@ -61,6 +61,16 @@ struct SettingsView: View {
                         subtitle: "Découvrir les dernières mises à jour"
                     )
                 }
+
+                NavigationLink {
+                    OfflineContentSettingsView()
+                } label: {
+                    settingsRow(
+                        icon: "arrow.down.circle.fill",
+                        title: "Contenu hors ligne",
+                        subtitle: "Gérer les formations téléchargées"
+                    )
+                }
             }
 
             Section {

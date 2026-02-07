@@ -67,6 +67,9 @@ struct FormationCard: View {
             // Overlays
             VStack {
                 HStack {
+                    // Offline badge - top left (before category)
+                    OfflineBadge(formationId: formation.id)
+
                     // Category badge overlay (gold pill) - top left
                     if let category = formation.category {
                         Text(category.name)

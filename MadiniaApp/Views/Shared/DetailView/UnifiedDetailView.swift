@@ -35,6 +35,7 @@ struct DetailViewConfiguration {
     let onRelatedFormationTap: ((Formation) -> Void)?
     let shareUrl: URL?
     let formationId: Int?
+    let formation: Formation?
 
     init(
         title: String,
@@ -55,7 +56,8 @@ struct DetailViewConfiguration {
         ctaAction: @escaping () -> Void = {},
         onRelatedFormationTap: ((Formation) -> Void)? = nil,
         shareUrl: URL? = nil,
-        formationId: Int? = nil
+        formationId: Int? = nil,
+        formation: Formation? = nil
     ) {
         self.title = title
         self.subtitle = subtitle
@@ -76,6 +78,7 @@ struct DetailViewConfiguration {
         self.onRelatedFormationTap = onRelatedFormationTap
         self.shareUrl = shareUrl
         self.formationId = formationId
+        self.formation = formation
     }
 }
 
@@ -188,25 +191,36 @@ struct UnifiedDetailView: View {
                     Spacer()
                 }
 
-                // Bottom buttons row (favorite left, share right)
+                // Bottom buttons row (favorite + download left, share right)
                 VStack {
                     Spacer()
                     HStack {
-                        // Favorite button (left) - only show for formations
+                        // Favorite and Download buttons (left) - only show for formations
                         if config.formationId != nil {
-                            Button {
-                                guard let formationId = config.formationId else { return }
-                                Task {
-                                    await FavoritesService.shared.toggleFavorite(formationId: formationId)
+                            HStack(spacing: MadiniaSpacing.sm) {
+                                // Favorite button
+                                Button {
+                                    guard let formationId = config.formationId else { return }
+                                    Task {
+                                        await FavoritesService.shared.toggleFavorite(formationId: formationId)
+                                    }
+                                } label: {
+                                    Image(systemName: isFavorite ? "heart.fill" : "heart")
+                                        .font(.system(size: 24, weight: .semibold))
+                                        .foregroundStyle(isFavorite ? .red : .white)
+                                        .frame(width: 56, height: 56)
+                                        .background(Color.black.opacity(0.4))
+                                        .clipShape(Circle())
+                                        .animation(.spring(response: 0.3), value: isFavorite)
                                 }
-                            } label: {
-                                Image(systemName: isFavorite ? "heart.fill" : "heart")
-                                    .font(.system(size: 24, weight: .semibold))
-                                    .foregroundStyle(isFavorite ? .red : .white)
-                                    .frame(width: 56, height: 56)
-                                    .background(Color.black.opacity(0.4))
-                                    .clipShape(Circle())
-                                    .animation(.spring(response: 0.3), value: isFavorite)
+
+                                // Download button for offline
+                                if let formation = config.formation {
+                                    OfflineDownloadButtonCompact(formation: formation)
+                                        .frame(width: 56, height: 56)
+                                        .background(Color.black.opacity(0.4))
+                                        .clipShape(Circle())
+                                }
                             }
                         }
 

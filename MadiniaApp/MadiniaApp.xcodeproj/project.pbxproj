@@ -57,6 +57,8 @@
 		B7CDF691054E454FA0AFA335 /* FavoritesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 466E55312EFD4331B801A836 /* FavoritesService.swift */; };
 		B9B2D45D70C43FFE2C694118 /* EventCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9673E11A3D89F841DBAA56D /* EventCard.swift */; };
 		BB7138A4957A4D56BA0AA952 /* SectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C253FBE3FF0F4042BFF8302C /* SectionHeader.swift */; };
+		SEARCHFILTERSBUILD00 /* SearchFiltersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = SEARCHFILTERSFILE000 /* SearchFiltersView.swift */; };
+		SERVICEROWCARDBUILD0 /* ServiceRowCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = SERVICEROWCARDFILE00 /* ServiceRowCard.swift */; };
 		BLOGVIEWBUILD0000000000 /* BlogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BLOGVIEWFILE00000000000 /* BlogView.swift */; };
 		BLOGVMBUILD0000000000 /* BlogViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BLOGVMFILE0000000000 /* BlogViewModel.swift */; };
 		BOOKINGCTABUILD000000 /* BookingCTACard.swift in Sources */ = {isa = PBXBuildFile; fileRef = BOOKINGCTAFILE0000000 /* BookingCTACard.swift */; };
@@ -133,6 +135,13 @@
 		UNIFIEDDETAILBUILD000 /* UnifiedDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = UNIFIEDDETAILFILE0000 /* UnifiedDetailView.swift */; };
 		USERSPACEVIEWBUILD00 /* UserSpaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = USERSPACEVIEWFILE000 /* UserSpaceView.swift */; };
 		WELCOMESECTIONBUILD00 /* WelcomeSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = WELCOMESECTIONFILE000 /* WelcomeSection.swift */; };
+		NETWORKMONBUILD00000 /* NetworkMonitorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = NETWORKMONFILE000000 /* NetworkMonitorService.swift */; };
+		SYNCQUEUEBUILD000000 /* SyncQueueService.swift in Sources */ = {isa = PBXBuildFile; fileRef = SYNCQUEUEFILE0000000 /* SyncQueueService.swift */; };
+		OFFLINECONTBUILD0000 /* OfflineContentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = OFFLINECONTFILE00000 /* OfflineContentService.swift */; };
+		OFFLINESTATUSBUILD00 /* OfflineStatusBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = OFFLINESTATUSFILE000 /* OfflineStatusBanner.swift */; };
+		OFFLINEBADGEBUILD000 /* OfflineBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = OFFLINEBADGEFILE0000 /* OfflineBadge.swift */; };
+		OFFLINEDLBTNBUILD00 /* OfflineDownloadButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = OFFLINEDLBTNFILE000 /* OfflineDownloadButton.swift */; };
+		OFFLINESETBUILD0000 /* OfflineContentSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = OFFLINESETFILE00000 /* OfflineContentSettingsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -197,6 +206,8 @@
 		BOOKINGCTAFILE0000000 /* BookingCTACard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookingCTACard.swift; sourceTree = "<group>"; };
 		C253FBE3FF0F4042BFF8302C /* SectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeader.swift; sourceTree = "<group>"; };
 		C9673E11A3D89F841DBAA56D /* EventCard.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = EventCard.swift; sourceTree = "<group>"; };
+		SEARCHFILTERSFILE000 /* SearchFiltersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFiltersView.swift; sourceTree = "<group>"; };
+		SERVICEROWCARDFILE00 /* ServiceRowCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceRowCard.swift; sourceTree = "<group>"; };
 		CACHEDIMGFILE00000 /* CachedAsyncImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachedAsyncImage.swift; sourceTree = "<group>"; };
 		CACHESERVICEFILE00000 /* CacheService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheService.swift; sourceTree = "<group>"; };
 		CALENDLYVIEWFILE0000 /* CalendlyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendlyView.swift; sourceTree = "<group>"; };
@@ -275,6 +286,13 @@
 		UNIFIEDDETAILFILE0000 /* UnifiedDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnifiedDetailView.swift; sourceTree = "<group>"; };
 		USERSPACEVIEWFILE000 /* UserSpaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSpaceView.swift; sourceTree = "<group>"; };
 		WELCOMESECTIONFILE000 /* WelcomeSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeSection.swift; sourceTree = "<group>"; };
+		NETWORKMONFILE000000 /* NetworkMonitorService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMonitorService.swift; sourceTree = "<group>"; };
+		SYNCQUEUEFILE0000000 /* SyncQueueService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncQueueService.swift; sourceTree = "<group>"; };
+		OFFLINECONTFILE00000 /* OfflineContentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineContentService.swift; sourceTree = "<group>"; };
+		OFFLINESTATUSFILE000 /* OfflineStatusBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineStatusBanner.swift; sourceTree = "<group>"; };
+		OFFLINEBADGEFILE0000 /* OfflineBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineBadge.swift; sourceTree = "<group>"; };
+		OFFLINEDLBTNFILE000 /* OfflineDownloadButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineDownloadButton.swift; sourceTree = "<group>"; };
+		OFFLINESETFILE00000 /* OfflineContentSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineContentSettingsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -404,6 +422,8 @@
 			children = (
 				7D014559F2844681BFBBA16E /* ServiceCard.swift */,
 				C253FBE3FF0F4042BFF8302C /* SectionHeader.swift */,
+				SEARCHFILTERSFILE000 /* SearchFiltersView.swift */,
+				SERVICEROWCARDFILE00 /* ServiceRowCard.swift */,
 				B1D3DCDFE34F48409F3F3A81 /* FormationRowCard.swift */,
 				D27672990C3B42CCB1D283F0 /* SearchBar.swift */,
 			);
@@ -469,6 +489,9 @@
 				AA96B0A0C6A0422D99DE54EC /* MadiContextService.swift */,
 				34D66D51D1313FD61C587AB0 /* EventsService.swift */,
 				CEEA8A942DE3AAD1619E9D8A /* ProgressTrackingService.swift */,
+				NETWORKMONFILE000000 /* NetworkMonitorService.swift */,
+				SYNCQUEUEFILE0000000 /* SyncQueueService.swift */,
+				OFFLINECONTFILE00000 /* OfflineContentService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -650,6 +673,7 @@
 				APPEARANCESETTFILE00 /* AppearanceSettingsView.swift */,
 				SETTINGSVIEWFILE0000 /* SettingsView.swift */,
 				78C74B18ADD267417F296DFF /* WhatsNewView.swift */,
+				OFFLINESETFILE00000 /* OfflineContentSettingsView.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -670,6 +694,9 @@
 				DESIGNSYSTEMFILE000 /* DesignSystem.swift */,
 				SPLASHVIEWFILE00000 /* SplashView.swift */,
 				APPROOTVIEWFILE000 /* AppRootView.swift */,
+				OFFLINESTATUSFILE000 /* OfflineStatusBanner.swift */,
+				OFFLINEBADGEFILE0000 /* OfflineBadge.swift */,
+				OFFLINEDLBTNFILE000 /* OfflineDownloadButton.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -863,6 +890,8 @@
 				36B78635747049BFA5AB1A9D /* ServiceDetailView.swift in Sources */,
 				9CDBDDF55D8D49A7B70A7FAB /* ServiceCard.swift in Sources */,
 				BB7138A4957A4D56BA0AA952 /* SectionHeader.swift in Sources */,
+				SEARCHFILTERSBUILD00 /* SearchFiltersView.swift in Sources */,
+				SERVICEROWCARDBUILD0 /* ServiceRowCard.swift in Sources */,
 				A8F7E8E079BF4CC1B341A115 /* FormationRowCard.swift in Sources */,
 				E938F1489C664B0886221C5D /* SearchBar.swift in Sources */,
 				UNIFIEDDETAILBUILD000 /* UnifiedDetailView.swift in Sources */,
@@ -905,6 +934,13 @@
 				0FF15E4AECF34660C48EFAB9 /* StatCard.swift in Sources */,
 				61F1F41984060E0C79421F63 /* AchievementBadge.swift in Sources */,
 				6E44259D1E6682BDCB92E1E3 /* WeeklyActivityChart.swift in Sources */,
+				NETWORKMONBUILD00000 /* NetworkMonitorService.swift in Sources */,
+				SYNCQUEUEBUILD000000 /* SyncQueueService.swift in Sources */,
+				OFFLINECONTBUILD0000 /* OfflineContentService.swift in Sources */,
+				OFFLINESTATUSBUILD00 /* OfflineStatusBanner.swift in Sources */,
+				OFFLINEBADGEBUILD000 /* OfflineBadge.swift in Sources */,
+				OFFLINEDLBTNBUILD00 /* OfflineDownloadButton.swift in Sources */,
+				OFFLINESETBUILD0000 /* OfflineContentSettingsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

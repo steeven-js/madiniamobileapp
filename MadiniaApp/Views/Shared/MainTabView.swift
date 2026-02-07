@@ -184,45 +184,51 @@ struct MainTabView: View {
     // MARK: - iPhone Layout
 
     private var iPhoneLayout: some View {
-        ZStack {
-            // Content based on selected tab
-            Group {
-                switch selectedTab {
-                case .home:
-                    NavigationStack {
-                        HomeView(selectedTab: selectedTabBinding)
+        VStack(spacing: 0) {
+            // Offline status banner at top
+            OfflineStatusBanner()
+                .animation(.spring(response: 0.3), value: NetworkMonitorService.shared.isConnected)
+
+            ZStack {
+                // Content based on selected tab
+                Group {
+                    switch selectedTab {
+                    case .home:
+                        NavigationStack {
+                            HomeView(selectedTab: selectedTabBinding)
+                        }
+                    case .madinia:
+                        MadiniaHubView()
+                    case .userSpace:
+                        UserSpaceView()
+                    case .search:
+                        SearchTab(
+                            selectedFormationSlug: $selectedFormationSlug,
+                            selectedServiceSlug: $selectedServiceSlug
+                        )
                     }
-                case .madinia:
-                    MadiniaHubView()
-                case .userSpace:
-                    UserSpaceView()
-                case .search:
-                    SearchTab(
-                        selectedFormationSlug: $selectedFormationSlug,
-                        selectedServiceSlug: $selectedServiceSlug
-                    )
                 }
-            }
 
-            // Settings button overlay (top-right)
-            settingsButtonOverlay
+                // Settings button overlay (top-right)
+                settingsButtonOverlay
 
-            // Madi FAB overlay (bottom-right)
-            VStack {
-                Spacer()
-                HStack {
+                // Madi FAB overlay (bottom-right)
+                VStack {
                     Spacer()
-                    MadiFAB(isShowingChat: $isShowingMadiChat)
-                        .padding(.trailing, MadiniaSpacing.lg)
-                        .padding(.bottom, 16) // Just above custom tab bar
+                    HStack {
+                        Spacer()
+                        MadiFAB(isShowingChat: $isShowingMadiChat)
+                            .padding(.trailing, MadiniaSpacing.lg)
+                            .padding(.bottom, 16) // Just above custom tab bar
+                    }
                 }
+                .allowsHitTesting(true)
             }
-            .allowsHitTesting(true)
-        }
-        // Custom Tab Bar - using safeAreaInset ensures proper hit testing
-        .safeAreaInset(edge: .bottom) {
-            customTabBar
-                .padding(.bottom, MadiniaSpacing.sm)
+            // Custom Tab Bar - using safeAreaInset ensures proper hit testing
+            .safeAreaInset(edge: .bottom) {
+                customTabBar
+                    .padding(.bottom, MadiniaSpacing.sm)
+            }
         }
     }
 
@@ -276,33 +282,39 @@ struct MainTabView: View {
             }
         } detail: {
             // Detail content
-            ZStack {
-                Group {
-                    switch selectedTab {
-                    case .home:
-                        NavigationStack {
-                            HomeView(selectedTab: selectedTabBinding)
-                        }
-                    case .madinia:
-                        MadiniaHubView()
-                    case .userSpace:
-                        UserSpaceView()
-                    case .search:
-                        SearchTab(
-                            selectedFormationSlug: $selectedFormationSlug,
-                            selectedServiceSlug: $selectedServiceSlug
-                        )
-                    }
-                }
+            VStack(spacing: 0) {
+                // Offline status banner at top
+                OfflineStatusBanner()
+                    .animation(.spring(response: 0.3), value: NetworkMonitorService.shared.isConnected)
 
-                // Madi FAB overlay (bottom-right)
-                VStack {
-                    Spacer()
-                    HStack {
+                ZStack {
+                    Group {
+                        switch selectedTab {
+                        case .home:
+                            NavigationStack {
+                                HomeView(selectedTab: selectedTabBinding)
+                            }
+                        case .madinia:
+                            MadiniaHubView()
+                        case .userSpace:
+                            UserSpaceView()
+                        case .search:
+                            SearchTab(
+                                selectedFormationSlug: $selectedFormationSlug,
+                                selectedServiceSlug: $selectedServiceSlug
+                            )
+                        }
+                    }
+
+                    // Madi FAB overlay (bottom-right)
+                    VStack {
                         Spacer()
-                        MadiFAB(isShowingChat: $isShowingMadiChat)
-                            .padding(.trailing, MadiniaSpacing.lg)
-                            .padding(.bottom, MadiniaSpacing.lg)
+                        HStack {
+                            Spacer()
+                            MadiFAB(isShowingChat: $isShowingMadiChat)
+                                .padding(.trailing, MadiniaSpacing.lg)
+                                .padding(.bottom, MadiniaSpacing.lg)
+                        }
                     }
                 }
             }

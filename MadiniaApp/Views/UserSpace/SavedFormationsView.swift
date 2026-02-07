@@ -32,6 +32,13 @@ struct SavedFormationsView: View {
         }
         .navigationTitle("Formations sauvegardées")
         .navigationBarTitleDisplayMode(.large)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                if case .loaded(let formations) = viewModel.loadingState, !formations.isEmpty {
+                    downloadAllButton
+                }
+            }
+        }
         .task {
             await viewModel.loadSavedFormations()
         }
@@ -41,6 +48,24 @@ struct SavedFormationsView: View {
         .sheet(item: $selectedFormation) { formation in
             FormationDetailSheetView(formation: formation)
         }
+    }
+
+    // MARK: - Download All Button
+
+    private var downloadAllButton: some View {
+        Button {
+            Task {
+                await OfflineContentService.shared.downloadAllFavorites()
+            }
+        } label: {
+            if OfflineContentService.shared.isDownloading {
+                ProgressView()
+                    .scaleEffect(0.8)
+            } else {
+                Label("Tout télécharger", systemImage: "arrow.down.circle")
+            }
+        }
+        .disabled(OfflineContentService.shared.isDownloading || !NetworkMonitorService.shared.isConnected)
     }
 
     // MARK: - Loading View
