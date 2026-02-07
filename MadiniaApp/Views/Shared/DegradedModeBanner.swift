@@ -2,72 +2,110 @@
 //  DegradedModeBanner.swift
 //  MadiniaApp
 //
-//  Bannière affichée lorsque l'app fonctionne en mode dégradé.
+//  Bannière affichée lorsque l'app fonctionne en mode dégradé ou avec des opérations en attente.
 //
 
 import SwiftUI
 
-/// Bannière indiquant le mode dégradé de l'application
+/// Mode d'affichage de la bannière
+private enum BannerMode: Equatable {
+    case degraded       // Mode dégradé (API indisponible)
+    case offline        // Mode hors ligne
+    case error(String)  // Erreur
+    case syncPending    // Opérations en attente de sync
+    case none           // Rien à afficher
+}
+
+/// Bannière indiquant le mode dégradé de l'application ou les opérations en attente
 struct DegradedModeBanner: View {
     private let errorService = ErrorHandlingService.shared
     private let networkService = NetworkMonitorService.shared
+    private let syncService = SyncQueueService.shared
 
     @State private var isExpanded = false
 
     var body: some View {
-        if shouldShowBanner {
+        if currentMode != .none {
             VStack(spacing: 0) {
-                bannerContent
-                    .onTapGesture {
-                        withAnimation(.spring(response: 0.3)) {
-                            isExpanded.toggle()
+                if case .syncPending = currentMode {
+                    syncPendingBanner
+                } else {
+                    bannerContent
+                        .onTapGesture {
+                            withAnimation(.spring(response: 0.3)) {
+                                isExpanded.toggle()
+                            }
+                            HapticManager.selection()
                         }
-                        HapticManager.selection()
-                    }
 
-                if isExpanded {
-                    expandedContent
-                        .transition(.opacity.combined(with: .move(edge: .top)))
+                    if isExpanded {
+                        expandedContent
+                            .transition(.opacity.combined(with: .move(edge: .top)))
+                    }
                 }
             }
             .animation(.spring(response: 0.3), value: isExpanded)
+            .animation(.spring(response: 0.3), value: syncService.pendingCount)
         }
     }
 
     // MARK: - Computed Properties
 
-    private var shouldShowBanner: Bool {
+    private var currentMode: BannerMode {
+        // First check health state
         switch errorService.healthState {
-        case .degraded, .offline, .error:
-            return true
+        case .degraded:
+            return .degraded
+        case .offline:
+            return .offline
+        case .error(let msg):
+            return .error(msg)
         case .healthy:
-            return false
+            // If healthy, check for pending sync operations
+            if syncService.pendingCount > 0 {
+                return .syncPending
+            }
+            return .none
         }
     }
 
+    private var shouldShowBanner: Bool {
+        currentMode != .none
+    }
+
     private var bannerColor: Color {
-        switch errorService.healthState {
-        case .healthy: return .green
+        switch currentMode {
         case .degraded: return .orange
         case .offline: return .gray
         case .error: return .red
+        case .syncPending: return MadiniaColors.violetFixed
+        case .none: return .green
         }
     }
 
     private var bannerIcon: String {
-        errorService.healthState.icon
+        switch currentMode {
+        case .degraded: return "exclamationmark.triangle.fill"
+        case .offline: return "wifi.slash"
+        case .error: return "xmark.circle.fill"
+        case .syncPending: return "arrow.triangle.2.circlepath"
+        case .none: return "checkmark.circle.fill"
+        }
     }
 
     private var bannerMessage: String {
-        switch errorService.healthState {
-        case .healthy:
-            return "Connecté"
+        switch currentMode {
         case .degraded:
             return "Mode dégradé - Données en cache"
         case .offline:
             return "Mode hors ligne"
         case .error(let msg):
             return msg
+        case .syncPending:
+            let count = syncService.pendingCount
+            return "\(count) opération\(count > 1 ? "s" : "") en attente"
+        case .none:
+            return "Connecté"
         }
     }
 
@@ -181,6 +219,51 @@ struct DegradedModeBanner: View {
                 .fontWeight(.medium)
                 .foregroundStyle(isOK ? Color.primary : Color.orange)
         }
+    }
+
+    // MARK: - Sync Pending Banner
+
+    private var syncPendingBanner: some View {
+        HStack(spacing: MadiniaSpacing.sm) {
+            if syncService.isSyncing {
+                ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                    .scaleEffect(0.8)
+            } else {
+                Image(systemName: "arrow.triangle.2.circlepath")
+                    .font(.system(size: 14, weight: .semibold))
+                    .foregroundStyle(.white)
+            }
+
+            Text(syncService.isSyncing ? "Synchronisation..." : bannerMessage)
+                .font(MadiniaTypography.caption)
+                .fontWeight(.medium)
+                .foregroundStyle(.white)
+
+            Spacer()
+
+            if !syncService.isSyncing {
+                Button {
+                    HapticManager.tap()
+                    Task {
+                        await syncService.syncPendingOperations()
+                    }
+                } label: {
+                    Text("Sync")
+                        .font(MadiniaTypography.caption)
+                        .fontWeight(.semibold)
+                        .foregroundStyle(.white)
+                        .padding(.horizontal, MadiniaSpacing.sm)
+                        .padding(.vertical, MadiniaSpacing.xxs)
+                        .background(.white.opacity(0.2))
+                        .clipShape(Capsule())
+                }
+            }
+        }
+        .padding(.horizontal, MadiniaSpacing.md)
+        .padding(.vertical, MadiniaSpacing.sm)
+        .background(MadiniaColors.violetFixed)
+        .transition(.move(edge: .top).combined(with: .opacity))
     }
 }
 
