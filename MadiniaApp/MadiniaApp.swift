@@ -101,6 +101,10 @@ struct MadiniaApp: App {
                 if let slug = payload.slug {
                     deepLinkServiceSlug = slug
                 }
+            case .event:
+                // Events are handled through the events list/calendar
+                // Could add deepLinkEventSlug if needed for direct navigation
+                break
             case .home:
                 // Already on home, nothing to do
                 break

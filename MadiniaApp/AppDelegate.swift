@@ -25,12 +25,18 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
     /// (before onDeepLink handler is configured)
     private var pendingNotificationPayload: PushNotificationService.NotificationPayload?
 
+    /// Push notification service
+    private let pushService = PushNotificationService.shared
+
     func application(
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
     ) -> Bool {
         // Set notification delegate
         UNUserNotificationCenter.current().delegate = self
+
+        // Register notification categories for quick actions
+        pushService.registerNotificationCategories()
 
         // Clear badge on launch
         clearBadge()
@@ -76,7 +82,7 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
         completionHandler([.banner, .sound, .badge])
     }
 
-    /// Called when user taps on a notification
+    /// Called when user taps on a notification or an action button
     func userNotificationCenter(
         _ center: UNUserNotificationCenter,
         didReceive response: UNNotificationResponse,
@@ -85,18 +91,33 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
         // Clear badge when user interacts with notification
         clearBadge()
 
-        let userInfo = response.notification.request.content.userInfo
-        handleNotification(userInfo: userInfo)
+        // Parse the notification response (includes action info)
+        guard let payload = pushService.parseNotificationResponse(response) else {
+            completionHandler()
+            return
+        }
+
+        // Handle quick action if present
+        if let action = payload.action {
+            handleQuickAction(action, payload: payload)
+        } else {
+            // Default tap - navigate to content
+            handleNotificationPayload(payload)
+        }
+
         completionHandler()
     }
 
     // MARK: - Deep Link Handling
 
     private func handleNotification(userInfo: [AnyHashable: Any]) {
-        guard let payload = PushNotificationService.shared.parseNotification(userInfo: userInfo) else {
+        guard let payload = pushService.parseNotification(userInfo: userInfo) else {
             return
         }
+        handleNotificationPayload(payload)
+    }
 
+    private func handleNotificationPayload(_ payload: PushNotificationService.NotificationPayload) {
         if let handler = onDeepLink {
             // Handler is ready, process immediately
             handler(payload)
@@ -104,6 +125,51 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
             // Handler not ready yet (app launching), store for later
             pendingNotificationPayload = payload
         }
+    }
+
+    // MARK: - Quick Action Handling
+
+    private func handleQuickAction(_ action: NotificationAction, payload: PushNotificationService.NotificationPayload) {
+        switch action {
+        case .addToFavorites:
+            // Add to favorites without opening app
+            if let id = payload.id {
+                Task {
+                    await FavoritesService.shared.addFavorite(formationId: id)
+                    HapticManager.favoriteAdded()
+
+                    // Show local notification to confirm
+                    await showActionConfirmation(
+                        title: "Ajouté aux favoris",
+                        body: "La formation a été ajoutée à vos favoris."
+                    )
+                }
+            }
+
+        case .shareArticle:
+            // Sharing requires opening the app to show share sheet
+            handleNotificationPayload(payload)
+
+        default:
+            // Other actions open the app and navigate to content
+            handleNotificationPayload(payload)
+        }
+    }
+
+    /// Shows a brief confirmation notification for background actions
+    private func showActionConfirmation(title: String, body: String) async {
+        let content = UNMutableNotificationContent()
+        content.title = title
+        content.body = body
+        content.sound = nil
+
+        let request = UNNotificationRequest(
+            identifier: "action_confirmation_\(UUID().uuidString)",
+            content: content,
+            trigger: nil
+        )
+
+        try? await UNUserNotificationCenter.current().add(request)
     }
 
     // MARK: - Badge Management

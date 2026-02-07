@@ -55,6 +55,15 @@ struct NotificationSettingsView: View {
                         }
                     ))
                 }
+
+                // Rich notifications info
+                Section {
+                    richNotificationsInfo
+                } header: {
+                    Text("Notifications enrichies")
+                } footer: {
+                    Text("Les notifications sont groupées par catégorie et peuvent inclure des images et des actions rapides.")
+                }
             }
 
             // System settings link
@@ -78,6 +87,67 @@ struct NotificationSettingsView: View {
         .task {
             await pushService.checkAuthorizationStatus()
         }
+    }
+
+    // MARK: - Rich Notifications Info
+
+    private var richNotificationsInfo: some View {
+        VStack(alignment: .leading, spacing: MadiniaSpacing.md) {
+            // Categories
+            HStack(spacing: MadiniaSpacing.sm) {
+                Image(systemName: "square.stack.3d.up.fill")
+                    .font(.title3)
+                    .foregroundStyle(MadiniaColors.accent)
+                    .frame(width: 28)
+
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Groupement intelligent")
+                        .font(.subheadline)
+                        .fontWeight(.medium)
+
+                    Text("Formations, articles, événements")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+            }
+
+            // Quick actions
+            HStack(spacing: MadiniaSpacing.sm) {
+                Image(systemName: "hand.tap.fill")
+                    .font(.title3)
+                    .foregroundStyle(MadiniaColors.accent)
+                    .frame(width: 28)
+
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Actions rapides")
+                        .font(.subheadline)
+                        .fontWeight(.medium)
+
+                    Text("Voir, ajouter aux favoris, s'inscrire")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+            }
+
+            // Rich media
+            HStack(spacing: MadiniaSpacing.sm) {
+                Image(systemName: "photo.fill")
+                    .font(.title3)
+                    .foregroundStyle(MadiniaColors.accent)
+                    .frame(width: 28)
+
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Aperçu visuel")
+                        .font(.subheadline)
+                        .fontWeight(.medium)
+
+                    Text("Images dans les notifications")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+            }
+        }
+        .padding(.vertical, MadiniaSpacing.xs)
     }
 
     // MARK: - Status Row
