@@ -83,6 +83,9 @@
 		DESIGNSYSTEMBUILD00 /* DesignSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DESIGNSYSTEMFILE000 /* DesignSystem.swift */; };
 		E938F1489C664B0886221C5D /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27672990C3B42CCB1D283F0 /* SearchBar.swift */; };
 		EMAILVALIDBUILD00000 /* EmailValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EMAILVALIDFILE000000 /* EmailValidator.swift */; };
+		HAPTICMGRBUILD000000 /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = HAPTICMGRFILE0000000 /* HapticManager.swift */; };
+		ANIMUTILSBUILD000000 /* AnimationUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = ANIMUTILSFILE0000000 /* AnimationUtilities.swift */; };
+		SKELETONVIEWSBUILD00 /* SkeletonViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = SKELETONVIEWSFILE000 /* SkeletonViews.swift */; };
 		ERRORVIEWBUILD000000000 /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ERRORVIEWFILE0000000000 /* ErrorView.swift */; };
 		F7E3C4C45DB27B5FC9E66F49 /* CalendarService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B69F05CB40D632777728972 /* CalendarService.swift */; };
 		FORMATIONBUILD000000000 /* Formation.swift in Sources */ = {isa = PBXBuildFile; fileRef = FORMATIONFILE0000000000 /* Formation.swift */; };
@@ -232,6 +235,9 @@
 		EEEF31CFE1B54B64B1C9632B /* SavedFormationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedFormationsView.swift; sourceTree = "<group>"; };
 		EF7F5FBE20993844F9BB90CB /* EventRegistrationView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = EventRegistrationView.swift; sourceTree = "<group>"; };
 		EMAILVALIDFILE000000 /* EmailValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailValidator.swift; sourceTree = "<group>"; };
+		HAPTICMGRFILE0000000 /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
+		ANIMUTILSFILE0000000 /* AnimationUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationUtilities.swift; sourceTree = "<group>"; };
+		SKELETONVIEWSFILE000 /* SkeletonViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkeletonViews.swift; sourceTree = "<group>"; };
 		ENTITLEMENTSFILE000 /* MadiniaApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MadiniaApp.entitlements; sourceTree = "<group>"; };
 		ERRORVIEWFILE0000000000 /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
 		FA6925262595C0FEBA1ECE4F /* EventDetailView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = EventDetailView.swift; sourceTree = "<group>"; };
@@ -513,6 +519,8 @@
 			isa = PBXGroup;
 			children = (
 				EMAILVALIDFILE000000 /* EmailValidator.swift */,
+				HAPTICMGRFILE0000000 /* HapticManager.swift */,
+				ANIMUTILSFILE0000000 /* AnimationUtilities.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -697,6 +705,7 @@
 				OFFLINESTATUSFILE000 /* OfflineStatusBanner.swift */,
 				OFFLINEBADGEFILE0000 /* OfflineBadge.swift */,
 				OFFLINEDLBTNFILE000 /* OfflineDownloadButton.swift */,
+				SKELETONVIEWSFILE000 /* SkeletonViews.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -852,6 +861,9 @@
 				PREREGVIEWBUILD00000 /* PreRegistrationView.swift in Sources */,
 				PREREGVMBUILD0000000 /* PreRegistrationViewModel.swift in Sources */,
 				EMAILVALIDBUILD00000 /* EmailValidator.swift in Sources */,
+				HAPTICMGRBUILD000000 /* HapticManager.swift in Sources */,
+				ANIMUTILSBUILD000000 /* AnimationUtilities.swift in Sources */,
+				SKELETONVIEWSBUILD00 /* SkeletonViews.swift in Sources */,
 				COLORHEXBUILD00000000 /* Color+Hex.swift in Sources */,
 				INFOBADGEBUILD0000000 /* InfoBadge.swift in Sources */,
 				CATEGORYCHIPBUILD000 /* CategoryChip.swift in Sources */,

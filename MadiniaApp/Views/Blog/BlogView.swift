@@ -45,7 +45,10 @@ struct BlogView: View {
     private var content: some View {
         switch viewModel.loadingState {
         case .idle, .loading:
-            LoadingView(message: "Chargement des articles...")
+            ScrollView {
+                ArticleListSkeleton(count: 4)
+                    .padding(.vertical, MadiniaSpacing.md)
+            }
 
         case .loaded:
             if viewModel.articles.isEmpty {
@@ -66,11 +69,13 @@ struct BlogView: View {
     private var articlesList: some View {
         ScrollView {
             LazyVStack(spacing: 16) {
-                ForEach(viewModel.articles) { article in
+                ForEach(Array(viewModel.articles.enumerated()), id: \.element.id) { index, article in
                     NavigationLink(value: article) {
                         ArticleCard(article: article)
+                            .staggeredAppearance(index: index, baseDelay: 0.05)
                     }
                     .buttonStyle(.plain)
+                    .pressScale(0.98)
                 }
             }
             .padding()

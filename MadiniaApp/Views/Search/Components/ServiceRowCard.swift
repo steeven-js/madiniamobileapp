@@ -85,6 +85,7 @@ struct ServiceRowCard: View {
 
                 // Favorite button
                 Button {
+                    HapticManager.favoriteAdded()
                     Task {
                         await FavoritesService.shared.toggleServiceFavorite(serviceId: service.id)
                     }
@@ -103,6 +104,7 @@ struct ServiceRowCard: View {
             .shadow(color: .black.opacity(0.08), radius: 3, x: 0, y: 1)
         }
         .buttonStyle(.plain)
+        .pressScale(0.98)
         .accessibilityElement(children: .combine)
         .accessibilityAddTraits(.isButton)
         .accessibilityLabel(accessibilityDescription)

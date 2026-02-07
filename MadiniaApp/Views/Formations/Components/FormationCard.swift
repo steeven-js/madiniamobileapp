@@ -41,6 +41,7 @@ struct FormationCard: View {
             .shadow(color: .black.opacity(0.1), radius: 4, x: 0, y: 2)
         }
         .buttonStyle(.plain)
+        .pressScale(0.97)
         .accessibilityElement(children: .combine)
         .accessibilityAddTraits(.isButton)
         .accessibilityLabel(accessibilityDescription)
@@ -86,6 +87,8 @@ struct FormationCard: View {
 
                     // Favorite button - top right
                     Button {
+                        let willBeFavorite = !isFavorite
+                        HapticManager.favoriteAdded()
                         Task {
                             await FavoritesService.shared.toggleFavorite(formationId: formation.id)
                         }

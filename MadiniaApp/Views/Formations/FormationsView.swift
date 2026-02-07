@@ -35,7 +35,9 @@ struct FormationsView: View {
     private var content: some View {
         switch viewModel.loadingState {
         case .idle, .loading:
-            LoadingView(message: "Chargement des formations...")
+            ScrollView {
+                FormationGridSkeleton(count: 6)
+            }
 
         case .loaded:
             formationsList
@@ -81,10 +83,11 @@ struct FormationsView: View {
                     emptyFilterState
                 } else {
                     LazyVGrid(columns: gridColumns, spacing: MadiniaSpacing.md) {
-                        ForEach(viewModel.filteredFormations) { formation in
+                        ForEach(Array(viewModel.filteredFormations.enumerated()), id: \.element.id) { index, formation in
                             NavigationLink(value: formation) {
                                 FormationCard(formation: formation)
                                     .contentShape(Rectangle())
+                                    .staggeredAppearance(index: index, baseDelay: 0.03)
                             }
                             .buttonStyle(PlainNavigationButtonStyle())
                         }
