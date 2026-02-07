@@ -170,7 +170,7 @@ struct UnifiedDetailView: View {
                         .frame(height: 20)
                 }
 
-                // Back button (top-left) and Share button (top-right)
+                // Back button (top-left)
                 VStack {
                     HStack {
                         Button {
@@ -182,28 +182,18 @@ struct UnifiedDetailView: View {
                                 .frame(width: 44, height: 44)
                         }
                         Spacer()
-                        // Share button
-                        if let shareUrl = config.shareUrl {
-                            ShareLink(item: shareUrl) {
-                                Image(systemName: "square.and.arrow.up")
-                                    .font(.system(size: 16, weight: .semibold))
-                                    .foregroundStyle(.white)
-                                    .frame(width: 44, height: 44)
-                                    .background(Color.black.opacity(0.3))
-                                    .clipShape(Circle())
-                            }
-                        }
                     }
                     .padding(.horizontal, 8)
                     .padding(.top, 50) // Safe area offset
                     Spacer()
                 }
 
-                // Favorite button (bottom-left, large) - only show for formations
-                if config.formationId != nil {
-                    VStack {
-                        Spacer()
-                        HStack {
+                // Bottom buttons row (favorite left, share right)
+                VStack {
+                    Spacer()
+                    HStack {
+                        // Favorite button (left) - only show for formations
+                        if config.formationId != nil {
                             Button {
                                 guard let formationId = config.formationId else { return }
                                 Task {
@@ -218,11 +208,24 @@ struct UnifiedDetailView: View {
                                     .clipShape(Circle())
                                     .animation(.spring(response: 0.3), value: isFavorite)
                             }
-                            .padding(.leading, 20)
-                            .padding(.bottom, 16)
-                            Spacer()
+                        }
+
+                        Spacer()
+
+                        // Share button (right)
+                        if let shareUrl = config.shareUrl {
+                            ShareLink(item: shareUrl) {
+                                Image(systemName: "square.and.arrow.up")
+                                    .font(.system(size: 24, weight: .semibold))
+                                    .foregroundStyle(.white)
+                                    .frame(width: 56, height: 56)
+                                    .background(Color.black.opacity(0.4))
+                                    .clipShape(Circle())
+                            }
                         }
                     }
+                    .padding(.horizontal, 20)
+                    .padding(.bottom, 16)
                 }
             }
         }
@@ -260,21 +263,7 @@ struct UnifiedDetailView: View {
                 // Placeholder when no image URL
                 placeholderImage(width: imageWidth, height: imageHeight)
             }
-
-            // Expand icon indicator
-            expandIcon
         }
-    }
-
-    /// Expand icon overlay to indicate tap-to-zoom
-    private var expandIcon: some View {
-        Image(systemName: "arrow.up.left.and.arrow.down.right")
-            .font(.system(size: 12, weight: .semibold))
-            .foregroundStyle(.white)
-            .padding(8)
-            .background(Color.black.opacity(0.5))
-            .clipShape(Circle())
-            .padding(12)
     }
 
     private func placeholderImage(width: CGFloat, height: CGFloat) -> some View {
