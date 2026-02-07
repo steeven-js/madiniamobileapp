@@ -35,6 +35,7 @@ struct DetailViewConfiguration {
     let onRelatedFormationTap: ((Formation) -> Void)?
     let shareUrl: URL?
     let formationId: Int?
+    let formation: Formation?
 
     init(
         title: String,
@@ -55,7 +56,8 @@ struct DetailViewConfiguration {
         ctaAction: @escaping () -> Void = {},
         onRelatedFormationTap: ((Formation) -> Void)? = nil,
         shareUrl: URL? = nil,
-        formationId: Int? = nil
+        formationId: Int? = nil,
+        formation: Formation? = nil
     ) {
         self.title = title
         self.subtitle = subtitle
@@ -76,6 +78,7 @@ struct DetailViewConfiguration {
         self.onRelatedFormationTap = onRelatedFormationTap
         self.shareUrl = shareUrl
         self.formationId = formationId
+        self.formation = formation
     }
 }
 
@@ -188,11 +191,12 @@ struct UnifiedDetailView: View {
                     Spacer()
                 }
 
-                // Favorite button (bottom-left, large) - only show for formations
+                // Favorite and Download buttons (bottom-left) - only show for formations
                 if config.formationId != nil {
                     VStack {
                         Spacer()
-                        HStack {
+                        HStack(spacing: MadiniaSpacing.sm) {
+                            // Favorite button
                             Button {
                                 guard let formationId = config.formationId else { return }
                                 Task {
@@ -207,10 +211,19 @@ struct UnifiedDetailView: View {
                                     .clipShape(Circle())
                                     .animation(.spring(response: 0.3), value: isFavorite)
                             }
-                            .padding(.leading, 20)
-                            .padding(.bottom, 16)
+
+                            // Download button for offline
+                            if let formation = config.formation {
+                                OfflineDownloadButtonCompact(formation: formation)
+                                    .frame(width: 56, height: 56)
+                                    .background(Color.black.opacity(0.4))
+                                    .clipShape(Circle())
+                            }
+
                             Spacer()
                         }
+                        .padding(.leading, 20)
+                        .padding(.bottom, 16)
                     }
                 }
             }

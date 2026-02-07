@@ -7,6 +7,14 @@
 
 import SwiftUI
 
+/// Represents a feature for a specific app version
+private struct VersionFeature {
+    let icon: String
+    let title: String
+    let description: String
+    let color: Color
+}
+
 /// View displaying app updates and new features.
 /// Shows latest articles from the blog as release notes.
 struct WhatsNewView: View {
@@ -127,6 +135,19 @@ struct WhatsNewView: View {
                 // Version badge
                 versionBadge
 
+                // Version-specific features
+                versionFeaturesSection
+
+                // Previous versions
+                previousVersionsSection
+
+                // Blog articles header
+                if !viewModel.articles.isEmpty {
+                    Text("Actualités du blog")
+                        .font(.system(size: 18, weight: .bold))
+                        .padding(.top, MadiniaSpacing.sm)
+                }
+
                 // Articles list
                 ForEach(viewModel.articles) { article in
                     NavigationLink {
@@ -185,6 +206,198 @@ struct WhatsNewView: View {
         .background(MadiniaColors.accent.opacity(0.1))
         .clipShape(Capsule())
         .frame(maxWidth: .infinity)
+    }
+
+    // MARK: - Version Features Section
+
+    private var versionFeaturesSection: some View {
+        VStack(alignment: .leading, spacing: MadiniaSpacing.md) {
+            Text("Nouveautés de cette version")
+                .font(.system(size: 18, weight: .bold))
+                .padding(.top, MadiniaSpacing.sm)
+
+            ForEach(currentVersionFeatures, id: \.title) { feature in
+                featureRow(feature)
+            }
+        }
+        .padding(MadiniaSpacing.md)
+        .background(Color(.secondarySystemBackground))
+        .clipShape(RoundedRectangle(cornerRadius: MadiniaRadius.lg))
+    }
+
+    private func featureRow(_ feature: VersionFeature) -> some View {
+        HStack(alignment: .top, spacing: MadiniaSpacing.md) {
+            Image(systemName: feature.icon)
+                .font(.system(size: 24))
+                .foregroundStyle(feature.color)
+                .frame(width: 32, height: 32)
+
+            VStack(alignment: .leading, spacing: 4) {
+                Text(feature.title)
+                    .font(.system(size: 15, weight: .semibold))
+                    .foregroundStyle(.primary)
+
+                Text(feature.description)
+                    .font(MadiniaTypography.caption)
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+        }
+        .padding(.vertical, MadiniaSpacing.xs)
+    }
+
+    // MARK: - Version Features Data
+
+    private var currentVersionFeatures: [VersionFeature] {
+        // Features for version 0.1.3
+        [
+            VersionFeature(
+                icon: "arrow.down.circle.fill",
+                title: "Mode hors-ligne",
+                description: "Téléchargez vos formations favorites pour les consulter sans connexion internet.",
+                color: MadiniaColors.violet
+            ),
+            VersionFeature(
+                icon: "wifi.slash",
+                title: "Indicateur de connexion",
+                description: "Une bannière vous informe quand vous êtes hors-ligne et affiche les opérations en attente.",
+                color: .orange
+            ),
+            VersionFeature(
+                icon: "arrow.triangle.2.circlepath",
+                title: "Synchronisation intelligente",
+                description: "Vos actions (favoris, inscriptions) sont automatiquement synchronisées au retour en ligne.",
+                color: .green
+            )
+        ]
+    }
+
+    // MARK: - Previous Versions Section
+
+    private var previousVersionsSection: some View {
+        VStack(alignment: .leading, spacing: MadiniaSpacing.md) {
+            Text("Versions précédentes")
+                .font(.system(size: 18, weight: .bold))
+                .padding(.top, MadiniaSpacing.sm)
+
+            // Version 0.1.2
+            version012Section
+
+            // Version 0.1.1
+            version011Section
+        }
+    }
+
+    private var version012Section: some View {
+        VStack(alignment: .leading, spacing: MadiniaSpacing.sm) {
+            HStack {
+                Text("Version 0.1.2")
+                    .font(.system(size: 14, weight: .semibold))
+                    .foregroundStyle(.secondary)
+                Spacer()
+            }
+            .padding(.bottom, MadiniaSpacing.xxs)
+
+            ForEach(version012Features, id: \.title) { feature in
+                featureRowCompact(feature)
+            }
+        }
+        .padding(MadiniaSpacing.md)
+        .background(Color(.secondarySystemBackground))
+        .clipShape(RoundedRectangle(cornerRadius: MadiniaRadius.lg))
+    }
+
+    private var version011Section: some View {
+        VStack(alignment: .leading, spacing: MadiniaSpacing.sm) {
+            HStack {
+                Text("Version 0.1.1")
+                    .font(.system(size: 14, weight: .semibold))
+                    .foregroundStyle(.secondary)
+                Spacer()
+            }
+            .padding(.bottom, MadiniaSpacing.xxs)
+
+            ForEach(version011Features, id: \.title) { feature in
+                featureRowCompact(feature)
+            }
+        }
+        .padding(MadiniaSpacing.md)
+        .background(Color(.secondarySystemBackground))
+        .clipShape(RoundedRectangle(cornerRadius: MadiniaRadius.lg))
+    }
+
+    private func featureRowCompact(_ feature: VersionFeature) -> some View {
+        HStack(spacing: MadiniaSpacing.sm) {
+            Image(systemName: feature.icon)
+                .font(.system(size: 16))
+                .foregroundStyle(feature.color)
+                .frame(width: 24)
+
+            Text(feature.title)
+                .font(.system(size: 14))
+                .foregroundStyle(.primary)
+
+            Spacer()
+        }
+        .padding(.vertical, 2)
+    }
+
+    private var version012Features: [VersionFeature] {
+        [
+            VersionFeature(
+                icon: "hand.wave.fill",
+                title: "Onboarding interactif",
+                description: "Personnalisez vos centres d'intérêt au premier lancement",
+                color: MadiniaColors.accent
+            ),
+            VersionFeature(
+                icon: "sparkles",
+                title: "Écran Nouveautés",
+                description: "Découvrez les mises à jour après chaque installation",
+                color: MadiniaColors.violet
+            ),
+            VersionFeature(
+                icon: "bell.badge.fill",
+                title: "Notifications push",
+                description: "Recevez des alertes pour les nouvelles formations",
+                color: .red
+            ),
+            VersionFeature(
+                icon: "gearshape.fill",
+                title: "Paramètres avancés",
+                description: "Thème, notifications et préférences",
+                color: .gray
+            )
+        ]
+    }
+
+    private var version011Features: [VersionFeature] {
+        [
+            VersionFeature(
+                icon: "brain.head.profile",
+                title: "Coach Madi IA",
+                description: "Assistant intelligent pour vous guider",
+                color: MadiniaColors.accent
+            ),
+            VersionFeature(
+                icon: "heart.fill",
+                title: "Favoris",
+                description: "Sauvegardez vos formations préférées",
+                color: .pink
+            ),
+            VersionFeature(
+                icon: "calendar",
+                title: "Événements",
+                description: "Consultez les événements à venir",
+                color: .blue
+            ),
+            VersionFeature(
+                icon: "magnifyingglass",
+                title: "Recherche",
+                description: "Trouvez rapidement des formations",
+                color: .green
+            )
+        ]
     }
 
     // MARK: - Article Card

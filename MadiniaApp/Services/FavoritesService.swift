@@ -126,6 +126,15 @@ final class FavoritesService {
             saveToLocal()
         }
 
+        // Check network status - queue if offline
+        if !NetworkMonitorService.shared.isConnected {
+            SyncQueueService.shared.queueOperation(
+                type: .addFavorite,
+                payload: ["formationId": String(formationId)]
+            )
+            return
+        }
+
         // Sync with server
         do {
             try await addFavoriteToServer(formationId: formationId)
@@ -139,6 +148,11 @@ final class FavoritesService {
             await MainActor.run {
                 lastSyncError = error.localizedDescription
             }
+            // Queue for retry when back online
+            SyncQueueService.shared.queueOperation(
+                type: .addFavorite,
+                payload: ["formationId": String(formationId)]
+            )
         }
     }
 
@@ -148,6 +162,15 @@ final class FavoritesService {
         await MainActor.run {
             favoriteFormationIds.remove(formationId)
             saveToLocal()
+        }
+
+        // Check network status - queue if offline
+        if !NetworkMonitorService.shared.isConnected {
+            SyncQueueService.shared.queueOperation(
+                type: .removeFavorite,
+                payload: ["formationId": String(formationId)]
+            )
+            return
         }
 
         // Sync with server
@@ -163,6 +186,11 @@ final class FavoritesService {
             await MainActor.run {
                 lastSyncError = error.localizedDescription
             }
+            // Queue for retry when back online
+            SyncQueueService.shared.queueOperation(
+                type: .removeFavorite,
+                payload: ["formationId": String(formationId)]
+            )
         }
     }
 

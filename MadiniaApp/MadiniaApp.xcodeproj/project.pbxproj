@@ -115,6 +115,13 @@
 		UNIFIEDDETAILBUILD000 /* UnifiedDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = UNIFIEDDETAILFILE0000 /* UnifiedDetailView.swift */; };
 		USERSPACEVIEWBUILD00 /* UserSpaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = USERSPACEVIEWFILE000 /* UserSpaceView.swift */; };
 		WELCOMESECTIONBUILD00 /* WelcomeSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = WELCOMESECTIONFILE000 /* WelcomeSection.swift */; };
+		NETWORKMONBUILD00000 /* NetworkMonitorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = NETWORKMONFILE000000 /* NetworkMonitorService.swift */; };
+		SYNCQUEUEBUILD000000 /* SyncQueueService.swift in Sources */ = {isa = PBXBuildFile; fileRef = SYNCQUEUEFILE0000000 /* SyncQueueService.swift */; };
+		OFFLINECONTBUILD0000 /* OfflineContentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = OFFLINECONTFILE00000 /* OfflineContentService.swift */; };
+		OFFLINESTATUSBUILD00 /* OfflineStatusBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = OFFLINESTATUSFILE000 /* OfflineStatusBanner.swift */; };
+		OFFLINEBADGEBUILD000 /* OfflineBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = OFFLINEBADGEFILE0000 /* OfflineBadge.swift */; };
+		OFFLINEDLBTNBUILD00 /* OfflineDownloadButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = OFFLINEDLBTNFILE000 /* OfflineDownloadButton.swift */; };
+		OFFLINESETBUILD0000 /* OfflineContentSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = OFFLINESETFILE00000 /* OfflineContentSettingsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -239,6 +246,13 @@
 		UNIFIEDDETAILFILE0000 /* UnifiedDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnifiedDetailView.swift; sourceTree = "<group>"; };
 		USERSPACEVIEWFILE000 /* UserSpaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSpaceView.swift; sourceTree = "<group>"; };
 		WELCOMESECTIONFILE000 /* WelcomeSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeSection.swift; sourceTree = "<group>"; };
+		NETWORKMONFILE000000 /* NetworkMonitorService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMonitorService.swift; sourceTree = "<group>"; };
+		SYNCQUEUEFILE0000000 /* SyncQueueService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncQueueService.swift; sourceTree = "<group>"; };
+		OFFLINECONTFILE00000 /* OfflineContentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineContentService.swift; sourceTree = "<group>"; };
+		OFFLINESTATUSFILE000 /* OfflineStatusBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineStatusBanner.swift; sourceTree = "<group>"; };
+		OFFLINEBADGEFILE0000 /* OfflineBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineBadge.swift; sourceTree = "<group>"; };
+		OFFLINEDLBTNFILE000 /* OfflineDownloadButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineDownloadButton.swift; sourceTree = "<group>"; };
+		OFFLINESETFILE00000 /* OfflineContentSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineContentSettingsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -383,6 +397,9 @@
 				90D64EDFBEA83B2F3D432B44 /* WhatsNewService.swift */,
 				ONBOARDINGSERVFILE00 /* OnboardingService.swift */,
 				AA96B0A0C6A0422D99DE54EC /* MadiContextService.swift */,
+				NETWORKMONFILE000000 /* NetworkMonitorService.swift */,
+				SYNCQUEUEFILE0000000 /* SyncQueueService.swift */,
+				OFFLINECONTFILE00000 /* OfflineContentService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -563,6 +580,7 @@
 				APPEARANCESETTFILE00 /* AppearanceSettingsView.swift */,
 				SETTINGSVIEWFILE0000 /* SettingsView.swift */,
 				78C74B18ADD267417F296DFF /* WhatsNewView.swift */,
+				OFFLINESETFILE00000 /* OfflineContentSettingsView.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -583,6 +601,9 @@
 				DESIGNSYSTEMFILE000 /* DesignSystem.swift */,
 				SPLASHVIEWFILE00000 /* SplashView.swift */,
 				APPROOTVIEWFILE000 /* AppRootView.swift */,
+				OFFLINESTATUSFILE000 /* OfflineStatusBanner.swift */,
+				OFFLINEBADGEFILE0000 /* OfflineBadge.swift */,
+				OFFLINEDLBTNFILE000 /* OfflineDownloadButton.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -797,6 +818,13 @@
 				737EE0CB7E37EC4952362993 /* MadiQuiz.swift in Sources */,
 				75068B284E887420CC797C5B /* MadiQuizView.swift in Sources */,
 				1BC0720A124EC0D0841FB272 /* QuickActionChips.swift in Sources */,
+				NETWORKMONBUILD00000 /* NetworkMonitorService.swift in Sources */,
+				SYNCQUEUEBUILD000000 /* SyncQueueService.swift in Sources */,
+				OFFLINECONTBUILD0000 /* OfflineContentService.swift in Sources */,
+				OFFLINESTATUSBUILD00 /* OfflineStatusBanner.swift in Sources */,
+				OFFLINEBADGEBUILD000 /* OfflineBadge.swift in Sources */,
+				OFFLINEDLBTNBUILD00 /* OfflineDownloadButton.swift in Sources */,
+				OFFLINESETBUILD0000 /* OfflineContentSettingsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -966,7 +994,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.1.2;
+				MARKETING_VERSION = 0.1.3;
 				PRODUCT_BUNDLE_IDENTIFIER = fr.madinia.MadiniaApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1002,7 +1030,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.1.2;
+				MARKETING_VERSION = 0.1.3;
 				PRODUCT_BUNDLE_IDENTIFIER = fr.madinia.MadiniaApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
