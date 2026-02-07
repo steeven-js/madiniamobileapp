@@ -46,6 +46,12 @@ final class AppDataRepository {
     /// Error message if loading failed
     private(set) var errorMessage: String?
 
+    /// Last successful data refresh time
+    private(set) var lastRefreshTime: Date?
+
+    /// Whether data is from cache (not fresh from API)
+    private(set) var isUsingCachedData = false
+
     // MARK: - Dependencies
 
     private let apiService: APIServiceProtocol
@@ -56,6 +62,26 @@ final class AppDataRepository {
     /// Whether data is available (from cache or API)
     var hasData: Bool {
         !formations.isEmpty || !categories.isEmpty || !services.isEmpty
+    }
+
+    /// Cache freshness for formations
+    var formationsFreshness: CacheFreshness {
+        cacheService.freshness(for: .formations)
+    }
+
+    /// Cache freshness for articles
+    var articlesFreshness: CacheFreshness {
+        cacheService.freshness(for: .articles)
+    }
+
+    /// Cache freshness for events
+    var eventsFreshness: CacheFreshness {
+        cacheService.freshness(for: .events)
+    }
+
+    /// Whether any content type needs refresh
+    var needsRefresh: Bool {
+        !cacheService.typesNeedingRefresh.isEmpty
     }
 
     /// Highlighted formations for home screen
@@ -121,27 +147,36 @@ final class AppDataRepository {
 
     // MARK: - Cache Loading
 
-    /// Loads all data from local cache synchronously
+    /// Loads all data from local cache synchronously (ignoring expiry for immediate display)
     private func loadFromCache() {
-        if let cached = cacheService.loadFormations() {
+        // Always load cached data for immediate display, even if expired
+        if let cached = cacheService.loadFormationsIgnoringExpiry() {
             formations = cached
+            isUsingCachedData = true
         }
-        if let cached = cacheService.loadCategories() {
+        if let cached = cacheService.loadCategoriesIgnoringExpiry() {
             categories = cached
         }
-        if let cached = cacheService.loadServices() {
+        if let cached = cacheService.loadServicesIgnoringExpiry() {
             services = cached
         }
-        if let cached = cacheService.loadArticles() {
+        if let cached = cacheService.loadArticlesIgnoringExpiry() {
             articles = cached
         }
-        if let cached = cacheService.loadEvents() {
+        if let cached = cacheService.loadEventsIgnoringExpiry() {
             events = cached
             featuredEvents = cached.filter { $0.isFeatured }
         }
 
+        // Update freshness state
+        cacheService.refreshFreshnessState()
+
         #if DEBUG
+        let typesNeedingRefresh = cacheService.typesNeedingRefresh.map { $0.rawValue }.joined(separator: ", ")
         print("AppDataRepository: Loaded from cache - \(formations.count) formations, \(categories.count) categories, \(services.count) services, \(articles.count) articles, \(events.count) events")
+        if !typesNeedingRefresh.isEmpty {
+            print("AppDataRepository: Types needing refresh: \(typesNeedingRefresh)")
+        }
         #endif
     }
 
@@ -179,6 +214,8 @@ final class AppDataRepository {
             articles = loadedArticles
             events = loadedEvents.events
             featuredEvents = loadedEvents.featured
+            lastRefreshTime = Date()
+            isUsingCachedData = false
 
             // Save to cache in background
             Task.detached { [weak self] in
@@ -241,6 +278,8 @@ final class AppDataRepository {
             articles = loadedArticles
             events = loadedEvents.events
             featuredEvents = loadedEvents.featured
+            lastRefreshTime = Date()
+            isUsingCachedData = false
 
             // Save to cache
             Task.detached { [weak self] in
@@ -258,6 +297,55 @@ final class AppDataRepository {
         }
 
         isLoading = false
+    }
+
+    // MARK: - Selective Refresh
+
+    /// Refreshes only the specified content types
+    @MainActor
+    func refresh(_ types: [CacheContentType]) async {
+        guard !isLoading else { return }
+        isLoading = true
+
+        do {
+            for type in types {
+                switch type {
+                case .formations:
+                    formations = try await apiService.fetchFormations()
+                    cacheService.saveFormations(formations)
+                case .categories:
+                    categories = try await apiService.fetchCategories()
+                    cacheService.saveCategories(categories)
+                case .services:
+                    services = try await apiService.fetchServices()
+                    cacheService.saveServices(services)
+                case .articles:
+                    articles = try await apiService.fetchArticles()
+                    cacheService.saveArticles(articles)
+                case .events:
+                    let loadedEvents = try await apiService.fetchEvents()
+                    events = loadedEvents.events
+                    featuredEvents = loadedEvents.featured
+                    cacheService.saveEvents(events)
+                }
+            }
+            lastRefreshTime = Date()
+            isUsingCachedData = false
+        } catch {
+            #if DEBUG
+            print("AppDataRepository: Selective refresh failed - \(error)")
+            #endif
+        }
+
+        isLoading = false
+    }
+
+    /// Refreshes only expired content types
+    @MainActor
+    func refreshExpiredContent() async {
+        let expiredTypes = cacheService.typesNeedingRefresh
+        guard !expiredTypes.isEmpty else { return }
+        await refresh(expiredTypes)
     }
 
     // MARK: - Articles Helper

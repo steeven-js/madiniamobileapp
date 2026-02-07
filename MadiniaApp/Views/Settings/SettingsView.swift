@@ -71,6 +71,16 @@ struct SettingsView: View {
                         subtitle: "Gérer les formations téléchargées"
                     )
                 }
+
+                NavigationLink {
+                    CacheSettingsView()
+                } label: {
+                    settingsRow(
+                        icon: "cylinder.split.1x2.fill",
+                        title: "Cache",
+                        subtitle: "Fraîcheur des données et stockage"
+                    )
+                }
             }
 
             Section {

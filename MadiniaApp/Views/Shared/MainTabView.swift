@@ -185,9 +185,9 @@ struct MainTabView: View {
 
     private var iPhoneLayout: some View {
         VStack(spacing: 0) {
-            // Offline status banner at top
-            OfflineStatusBanner()
-                .animation(.spring(response: 0.3), value: NetworkMonitorService.shared.isConnected)
+            // Degraded mode / offline banner at top
+            DegradedModeBanner()
+                .animation(.spring(response: 0.3), value: ErrorHandlingService.shared.healthState.message)
 
             ZStack {
                 // Content based on selected tab
@@ -283,9 +283,9 @@ struct MainTabView: View {
         } detail: {
             // Detail content
             VStack(spacing: 0) {
-                // Offline status banner at top
-                OfflineStatusBanner()
-                    .animation(.spring(response: 0.3), value: NetworkMonitorService.shared.isConnected)
+                // Degraded mode / offline banner at top
+                DegradedModeBanner()
+                    .animation(.spring(response: 0.3), value: ErrorHandlingService.shared.healthState.message)
 
                 ZStack {
                     Group {

@@ -121,7 +121,10 @@
 		OFFLINECONTBUILD0000 /* OfflineContentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = OFFLINECONTFILE00000 /* OfflineContentService.swift */; };
 		OFFLINEDLBTNBUILD00 /* OfflineDownloadButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = OFFLINEDLBTNFILE000 /* OfflineDownloadButton.swift */; };
 		OFFLINESETBUILD0000 /* OfflineContentSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = OFFLINESETFILE00000 /* OfflineContentSettingsView.swift */; };
+		CACHESETTINGSBUILD0 /* CacheSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CACHESETTINGSFILE00 /* CacheSettingsView.swift */; };
 		OFFLINESTATUSBUILD00 /* OfflineStatusBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = OFFLINESTATUSFILE000 /* OfflineStatusBanner.swift */; };
+		ERRORHANDLINGBUILD00 /* ErrorHandlingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = ERRORHANDLINGFILE000 /* ErrorHandlingService.swift */; };
+		DEGRADEDBANNERBUILD0 /* DegradedModeBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEGRADEDBANNERFILE00 /* DegradedModeBanner.swift */; };
 		ONBCOMPLETEBUILD0000 /* OnboardingCompleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ONBCOMPLETEFILE00000 /* OnboardingCompleteView.swift */; };
 		ONBFLOWVIEWBUILD0000 /* OnboardingFlowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ONBFLOWVIEWFILE00000 /* OnboardingFlowView.swift */; };
 		ONBINTERESTSBUILD000 /* OnboardingInterestsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ONBINTERESTSFILE0000 /* OnboardingInterestsView.swift */; };
@@ -279,7 +282,10 @@
 		OFFLINECONTFILE00000 /* OfflineContentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineContentService.swift; sourceTree = "<group>"; };
 		OFFLINEDLBTNFILE000 /* OfflineDownloadButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineDownloadButton.swift; sourceTree = "<group>"; };
 		OFFLINESETFILE00000 /* OfflineContentSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineContentSettingsView.swift; sourceTree = "<group>"; };
+		CACHESETTINGSFILE00 /* CacheSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheSettingsView.swift; sourceTree = "<group>"; };
 		OFFLINESTATUSFILE000 /* OfflineStatusBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineStatusBanner.swift; sourceTree = "<group>"; };
+		ERRORHANDLINGFILE000 /* ErrorHandlingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorHandlingService.swift; sourceTree = "<group>"; };
+		DEGRADEDBANNERFILE00 /* DegradedModeBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DegradedModeBanner.swift; sourceTree = "<group>"; };
 		ONBCOMPLETEFILE00000 /* OnboardingCompleteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingCompleteView.swift; sourceTree = "<group>"; };
 		ONBFLOWVIEWFILE00000 /* OnboardingFlowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingFlowView.swift; sourceTree = "<group>"; };
 		ONBINTERESTSFILE0000 /* OnboardingInterestsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingInterestsView.swift; sourceTree = "<group>"; };
@@ -498,6 +504,7 @@
 			children = (
 				466E55312EFD4331B801A836 /* FavoritesService.swift */,
 				HOMEPREFSSERVFILE00 /* HomePreferencesService.swift */,
+				ERRORHANDLINGFILE000 /* ErrorHandlingService.swift */,
 				APIERRORFILE00000000000 /* APIError.swift */,
 				APISERVICEFILE000000000 /* APIService.swift */,
 				SECRETSMANAGERFILE0000 /* SecretsManager.swift */,
@@ -705,6 +712,7 @@
 				SETTINGSVIEWFILE0000 /* SettingsView.swift */,
 				78C74B18ADD267417F296DFF /* WhatsNewView.swift */,
 				OFFLINESETFILE00000 /* OfflineContentSettingsView.swift */,
+				CACHESETTINGSFILE00 /* CacheSettingsView.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -726,6 +734,7 @@
 				SPLASHVIEWFILE00000 /* SplashView.swift */,
 				APPROOTVIEWFILE000 /* AppRootView.swift */,
 				OFFLINESTATUSFILE000 /* OfflineStatusBanner.swift */,
+				DEGRADEDBANNERFILE00 /* DegradedModeBanner.swift */,
 				OFFLINEBADGEFILE0000 /* OfflineBadge.swift */,
 				OFFLINEDLBTNFILE000 /* OfflineDownloadButton.swift */,
 				SKELETONVIEWSFILE000 /* SkeletonViews.swift */,
@@ -978,9 +987,12 @@
 				SYNCQUEUEBUILD000000 /* SyncQueueService.swift in Sources */,
 				OFFLINECONTBUILD0000 /* OfflineContentService.swift in Sources */,
 				OFFLINESTATUSBUILD00 /* OfflineStatusBanner.swift in Sources */,
+				ERRORHANDLINGBUILD00 /* ErrorHandlingService.swift in Sources */,
+				DEGRADEDBANNERBUILD0 /* DegradedModeBanner.swift in Sources */,
 				OFFLINEBADGEBUILD000 /* OfflineBadge.swift in Sources */,
 				OFFLINEDLBTNBUILD00 /* OfflineDownloadButton.swift in Sources */,
 				OFFLINESETBUILD0000 /* OfflineContentSettingsView.swift in Sources */,
+				CACHESETTINGSBUILD0 /* CacheSettingsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
