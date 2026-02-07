@@ -31,6 +31,12 @@ final class AppDataRepository {
     /// All articles
     private(set) var articles: [Article] = []
 
+    /// All events
+    private(set) var events: [Event] = []
+
+    /// Featured events
+    private(set) var featuredEvents: [Event] = []
+
     /// Overall loading state
     private(set) var isLoading = false
 
@@ -72,6 +78,19 @@ final class AppDataRepository {
             }
             return date1 > date2
         }
+    }
+
+    /// Upcoming events (not in the past, sorted by date)
+    var upcomingEvents: [Event] {
+        let now = Date()
+        return events
+            .filter { $0.startDate >= now }
+            .sorted { $0.startDate < $1.startDate }
+    }
+
+    /// Next upcoming events (max 3)
+    var nextEvents: [Event] {
+        Array(upcomingEvents.prefix(3))
     }
 
     /// Parses an ISO 8601 date string
@@ -116,9 +135,13 @@ final class AppDataRepository {
         if let cached = cacheService.loadArticles() {
             articles = cached
         }
+        if let cached = cacheService.loadEvents() {
+            events = cached
+            featuredEvents = cached.filter { $0.isFeatured }
+        }
 
         #if DEBUG
-        print("AppDataRepository: Loaded from cache - \(formations.count) formations, \(categories.count) categories, \(services.count) services, \(articles.count) articles")
+        print("AppDataRepository: Loaded from cache - \(formations.count) formations, \(categories.count) categories, \(services.count) services, \(articles.count) articles, \(events.count) events")
         #endif
     }
 
@@ -134,17 +157,19 @@ final class AppDataRepository {
         errorMessage = nil
 
         do {
-            // Fetch all data in parallel (including articles now)
+            // Fetch all data in parallel (including articles and events)
             async let formationsTask = apiService.fetchFormations()
             async let categoriesTask = apiService.fetchCategories()
             async let servicesTask = apiService.fetchServices()
             async let articlesTask = apiService.fetchArticles()
+            async let eventsTask = apiService.fetchEvents()
 
-            let (loadedFormations, loadedCategories, loadedServices, loadedArticles) = try await (
+            let (loadedFormations, loadedCategories, loadedServices, loadedArticles, loadedEvents) = try await (
                 formationsTask,
                 categoriesTask,
                 servicesTask,
-                articlesTask
+                articlesTask,
+                eventsTask
             )
 
             // Update data
@@ -152,6 +177,8 @@ final class AppDataRepository {
             categories = loadedCategories
             services = loadedServices
             articles = loadedArticles
+            events = loadedEvents.events
+            featuredEvents = loadedEvents.featured
 
             // Save to cache in background
             Task.detached { [weak self] in
@@ -159,10 +186,11 @@ final class AppDataRepository {
                 self?.cacheService.saveCategories(loadedCategories)
                 self?.cacheService.saveServices(loadedServices)
                 self?.cacheService.saveArticles(loadedArticles)
+                self?.cacheService.saveEvents(loadedEvents.events)
             }
 
             #if DEBUG
-            print("AppDataRepository: Preloaded from API - \(formations.count) formations, \(categories.count) categories, \(services.count) services, \(articles.count) articles")
+            print("AppDataRepository: Preloaded from API - \(formations.count) formations, \(categories.count) categories, \(services.count) services, \(articles.count) articles, \(events.count) events")
             #endif
 
         } catch {
@@ -197,18 +225,22 @@ final class AppDataRepository {
             async let categoriesTask = apiService.fetchCategories()
             async let servicesTask = apiService.fetchServices()
             async let articlesTask = apiService.fetchArticles()
+            async let eventsTask = apiService.fetchEvents()
 
-            let (loadedFormations, loadedCategories, loadedServices, loadedArticles) = try await (
+            let (loadedFormations, loadedCategories, loadedServices, loadedArticles, loadedEvents) = try await (
                 formationsTask,
                 categoriesTask,
                 servicesTask,
-                articlesTask
+                articlesTask,
+                eventsTask
             )
 
             formations = loadedFormations
             categories = loadedCategories
             services = loadedServices
             articles = loadedArticles
+            events = loadedEvents.events
+            featuredEvents = loadedEvents.featured
 
             // Save to cache
             Task.detached { [weak self] in
@@ -216,6 +248,7 @@ final class AppDataRepository {
                 self?.cacheService.saveCategories(loadedCategories)
                 self?.cacheService.saveServices(loadedServices)
                 self?.cacheService.saveArticles(loadedArticles)
+                self?.cacheService.saveEvents(loadedEvents.events)
             }
 
         } catch {
@@ -245,6 +278,25 @@ final class AppDataRepository {
         }
     }
 
+    // MARK: - Events Helper
+
+    /// Loads events on demand (fallback if not preloaded)
+    @MainActor
+    func loadEventsIfNeeded() async {
+        guard events.isEmpty else { return }
+
+        do {
+            let loadedEvents = try await apiService.fetchEvents()
+            events = loadedEvents.events
+            featuredEvents = loadedEvents.featured
+            cacheService.saveEvents(loadedEvents.events)
+        } catch {
+            #if DEBUG
+            print("AppDataRepository: Failed to load events - \(error)")
+            #endif
+        }
+    }
+
     // MARK: - Helpers
 
     /// Finds a formation by slug
@@ -261,5 +313,21 @@ final class AppDataRepository {
     func filteredFormations(byCategory category: FormationCategory?) -> [Formation] {
         guard let category = category else { return self.formations }
         return self.formations.filter { $0.category?.id == category.id }
+    }
+
+    /// Finds an event by slug
+    func event(bySlug slug: String) -> Event? {
+        events.first { $0.slug == slug }
+    }
+
+    /// Finds an event by ID
+    func event(byId id: Int) -> Event? {
+        events.first { $0.id == id }
+    }
+
+    /// Filters events by type
+    func filteredEvents(byType type: EventType?) -> [Event] {
+        guard let type = type else { return upcomingEvents }
+        return upcomingEvents.filter { $0.eventType == type }
     }
 }

@@ -7,6 +7,61 @@
 
 import SwiftUI
 
+// MARK: - Release Feature Model
+
+/// Represents a new feature in a release
+struct ReleaseFeature: Identifiable {
+    let id = UUID()
+    let icon: String
+    let iconColor: Color
+    let title: String
+    let description: String
+}
+
+// MARK: - Release Notes
+
+/// Static release notes for each version
+enum ReleaseNotes {
+    /// Current version features
+    static let version0_1_3: [ReleaseFeature] = [
+        ReleaseFeature(
+            icon: "chart.line.uptrend.xyaxis",
+            iconColor: MadiniaColors.accent,
+            title: "Suivi de progression",
+            description: "Suivez vos statistiques d'apprentissage : formations consultées, temps passé, catégories explorées et jours consécutifs d'activité."
+        ),
+        ReleaseFeature(
+            icon: "star.circle.fill",
+            iconColor: MadiniaColors.goldTier,
+            title: "Système de badges",
+            description: "Débloquez 9 badges en explorant les formations ! Des badges bronze, argent et or récompensent votre progression."
+        ),
+        ReleaseFeature(
+            icon: "clock.arrow.circlepath",
+            iconColor: .blue,
+            title: "Historique des formations",
+            description: "Retrouvez facilement toutes les formations que vous avez consultées, organisées par date."
+        ),
+        ReleaseFeature(
+            icon: "square.and.arrow.up",
+            iconColor: .green,
+            title: "Partage de formations",
+            description: "Partagez vos formations préférées avec vos collègues et amis grâce au nouveau bouton de partage."
+        ),
+        ReleaseFeature(
+            icon: "chart.bar.fill",
+            iconColor: .purple,
+            title: "Graphique d'activité",
+            description: "Visualisez votre activité de la semaine avec un graphique montrant vos jours les plus actifs."
+        )
+    ]
+
+    /// Get features for the current version
+    static var currentFeatures: [ReleaseFeature] {
+        version0_1_3
+    }
+}
+
 /// View displaying app updates and new features.
 /// Shows latest articles from the blog as release notes.
 struct WhatsNewView: View {
@@ -59,66 +114,12 @@ struct WhatsNewView: View {
 
     @ViewBuilder
     private var content: some View {
-        switch viewModel.loadingState {
-        case .idle, .loading:
-            loadingView
-
-        case .loaded:
-            if viewModel.articles.isEmpty {
-                emptyView
-            } else {
-                articlesScrollView
-            }
-
-        case .error(let message):
-            errorView(message: message)
-        }
+        featuresScrollView
     }
 
-    // MARK: - Loading View
+    // MARK: - Features Scroll View
 
-    private var loadingView: some View {
-        VStack(spacing: MadiniaSpacing.lg) {
-            Spacer()
-            ProgressView()
-                .scaleEffect(1.2)
-            Text("Chargement des nouveautés...")
-                .font(MadiniaTypography.body)
-                .foregroundStyle(.secondary)
-            Spacer()
-        }
-    }
-
-    // MARK: - Empty View
-
-    private var emptyView: some View {
-        VStack(spacing: MadiniaSpacing.lg) {
-            Spacer()
-
-            Image(systemName: "sparkles")
-                .font(.system(size: 60))
-                .foregroundStyle(MadiniaColors.accent)
-
-            Text("Bienvenue sur Madin.IA !")
-                .font(.system(size: 24, weight: .bold))
-
-            Text("Merci d'avoir installé notre application.\nDécouvrez nos formations en Intelligence Artificielle.")
-                .font(MadiniaTypography.body)
-                .foregroundStyle(.secondary)
-                .multilineTextAlignment(.center)
-                .padding(.horizontal, MadiniaSpacing.xl)
-
-            Spacer()
-
-            if isModal {
-                continueButton
-            }
-        }
-    }
-
-    // MARK: - Articles Scroll View
-
-    private var articlesScrollView: some View {
+    private var featuresScrollView: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: MadiniaSpacing.lg) {
                 // Header
@@ -127,14 +128,12 @@ struct WhatsNewView: View {
                 // Version badge
                 versionBadge
 
-                // Articles list
-                ForEach(viewModel.articles) { article in
-                    NavigationLink {
-                        ArticleDetailView(article: article)
-                    } label: {
-                        articleCard(article)
-                    }
-                    .buttonStyle(.plain)
+                // New features section
+                newFeaturesSection
+
+                // Blog articles section (if available)
+                if !viewModel.articles.isEmpty {
+                    blogArticlesSection
                 }
 
                 // Continue button for modal
@@ -145,6 +144,71 @@ struct WhatsNewView: View {
             }
             .padding(MadiniaSpacing.md)
             .padding(.bottom, 40)
+        }
+    }
+
+    // MARK: - New Features Section
+
+    private var newFeaturesSection: some View {
+        VStack(alignment: .leading, spacing: MadiniaSpacing.md) {
+            Text("Nouvelles fonctionnalités")
+                .font(.system(size: 20, weight: .bold))
+                .padding(.top, MadiniaSpacing.sm)
+
+            ForEach(ReleaseNotes.currentFeatures) { feature in
+                featureCard(feature)
+            }
+        }
+    }
+
+    private func featureCard(_ feature: ReleaseFeature) -> some View {
+        HStack(alignment: .top, spacing: MadiniaSpacing.md) {
+            // Icon
+            ZStack {
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(feature.iconColor.opacity(0.15))
+                    .frame(width: 50, height: 50)
+
+                Image(systemName: feature.icon)
+                    .font(.system(size: 22))
+                    .foregroundStyle(feature.iconColor)
+            }
+
+            // Text content
+            VStack(alignment: .leading, spacing: 4) {
+                Text(feature.title)
+                    .font(.system(size: 16, weight: .semibold))
+                    .foregroundStyle(.primary)
+
+                Text(feature.description)
+                    .font(MadiniaTypography.subheadline)
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+
+            Spacer(minLength: 0)
+        }
+        .padding(MadiniaSpacing.md)
+        .background(Color(.secondarySystemBackground))
+        .clipShape(RoundedRectangle(cornerRadius: MadiniaRadius.md))
+    }
+
+    // MARK: - Blog Articles Section
+
+    private var blogArticlesSection: some View {
+        VStack(alignment: .leading, spacing: MadiniaSpacing.md) {
+            Text("Articles récents")
+                .font(.system(size: 20, weight: .bold))
+                .padding(.top, MadiniaSpacing.md)
+
+            ForEach(viewModel.articles) { article in
+                NavigationLink {
+                    ArticleDetailView(article: article)
+                } label: {
+                    articleCard(article)
+                }
+                .buttonStyle(.plain)
+            }
         }
     }
 
@@ -177,7 +241,7 @@ struct WhatsNewView: View {
             Image(systemName: "app.badge.checkmark")
                 .foregroundStyle(MadiniaColors.accent)
 
-            Text("Version \(WhatsNewService.shared.currentVersion)")
+            Text("Version 0.1.3")
                 .font(.system(size: 14, weight: .semibold))
         }
         .padding(.horizontal, 16)

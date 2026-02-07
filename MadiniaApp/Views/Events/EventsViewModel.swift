@@ -13,6 +13,7 @@ final class EventsViewModel {
     // MARK: - Dependencies
 
     private let eventsService: EventsService
+    private let dataRepository: AppDataRepository
 
     // MARK: - State
 
@@ -24,14 +25,22 @@ final class EventsViewModel {
 
     // MARK: - Computed Properties
 
-    /// All loaded events
+    /// All loaded events (from cache via repository, or from service)
     var events: [Event] {
-        eventsService.events
+        // Prefer repository (cached) data, fallback to service
+        if !dataRepository.events.isEmpty {
+            return dataRepository.upcomingEvents
+        }
+        return eventsService.events
     }
 
     /// Featured events for carousel
     var featuredEvents: [Event] {
-        eventsService.featuredEvents
+        // Prefer repository (cached) data, fallback to service
+        if !dataRepository.featuredEvents.isEmpty {
+            return dataRepository.featuredEvents.filter { !$0.isPast }
+        }
+        return eventsService.featuredEvents
     }
 
     /// Filtered events based on selected type
@@ -54,8 +63,9 @@ final class EventsViewModel {
 
     // MARK: - Initialization
 
-    init(eventsService: EventsService = .shared) {
+    init(eventsService: EventsService = .shared, dataRepository: AppDataRepository = .shared) {
         self.eventsService = eventsService
+        self.dataRepository = dataRepository
     }
 
     // MARK: - Actions
@@ -65,6 +75,14 @@ final class EventsViewModel {
     func loadEvents() async {
         // If already loading or loaded, skip
         if case .loading = loadingState { return }
+
+        // Check if we have cached data from repository
+        if !dataRepository.events.isEmpty {
+            loadingState = .loaded(events)
+            // Fetch registrations in background
+            await eventsService.fetchRegistrations()
+            return
+        }
 
         if events.isEmpty {
             loadingState = .loading

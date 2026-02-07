@@ -59,6 +59,11 @@ enum MadiniaColors {
     static let levelPerformer = Color.orange
     static let levelMaster = Color.red
 
+    // Achievement tier colors
+    static let bronzeTier = Color(red: 0.8, green: 0.5, blue: 0.2)
+    static let silverTier = Color.gray
+    static let goldTier = gold
+
     // Functional colors
     static let cardBackground = Color(UIColor.secondarySystemBackground)
     static let surfaceBackground = Color(UIColor.systemBackground)

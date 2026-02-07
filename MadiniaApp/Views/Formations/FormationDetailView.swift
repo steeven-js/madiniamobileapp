@@ -71,6 +71,9 @@ struct FormationDetailView: View {
     /// Controls navigation to pre-registration view
     @State private var navigateToPreRegistration = false
 
+    /// Track time spent on this view
+    @State private var viewStartTime: Date?
+
     /// API service
     private let apiService = APIService.shared
 
@@ -102,6 +105,15 @@ struct FormationDetailView: View {
         .onAppear {
             // Track formation view for Madi context
             MadiContextService.shared.trackFormationView(formation)
+            // Start tracking time spent
+            viewStartTime = Date()
+        }
+        .onDisappear {
+            // Track time spent when leaving the view
+            if let start = viewStartTime {
+                let timeSpent = Date().timeIntervalSince(start)
+                ProgressTrackingService.shared.trackFormationEngagement(displayFormation, timeSpent: timeSpent)
+            }
         }
     }
 

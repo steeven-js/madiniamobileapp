@@ -180,6 +180,9 @@ final class MadiContextService {
 
         saveViewedFormations()
 
+        // Notify progress tracking service
+        ProgressTrackingService.shared.trackFormationEngagement(formation, timeSpent: 0)
+
         // Sync to server in background
         Task {
             await trackFormationViewOnServer(viewed)

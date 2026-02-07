@@ -126,6 +126,9 @@ final class FavoritesService {
             saveToLocal()
         }
 
+        // Check achievements for favorites
+        ProgressTrackingService.shared.checkAndUnlockAchievements()
+
         // Sync with server
         do {
             try await addFavoriteToServer(formationId: formationId)

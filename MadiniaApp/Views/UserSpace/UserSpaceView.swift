@@ -28,6 +28,9 @@ struct UserSpaceView: View {
                     // Available features (saved formations)
                     availableFeaturesSection
 
+                    // Progress tracking features
+                    progressSection
+
                     // Coming soon features
                     comingSoonSection
                 }
@@ -116,6 +119,46 @@ struct UserSpaceView: View {
         }
     }
 
+    // MARK: - Progress Section
+
+    private var progressSection: some View {
+        VStack(spacing: MadiniaSpacing.lg) {
+            // Section title
+            HStack {
+                Text("Votre parcours")
+                    .font(MadiniaTypography.title2)
+                    .foregroundStyle(.primary)
+                Spacer()
+            }
+
+            // Progress tracking - Navigable
+            NavigationLink {
+                UserProgressView()
+            } label: {
+                featureCard(
+                    icon: "chart.line.uptrend.xyaxis",
+                    title: "Ma progression",
+                    description: "Visualisez vos statistiques, badges et accomplissements.",
+                    showChevron: true
+                )
+            }
+            .buttonStyle(.plain)
+
+            // History - Navigable
+            NavigationLink {
+                HistoryView()
+            } label: {
+                featureCard(
+                    icon: "clock.arrow.circlepath",
+                    title: "Historique",
+                    description: "Accédez à l'historique de vos formations consultées.",
+                    showChevron: true
+                )
+            }
+            .buttonStyle(.plain)
+        }
+    }
+
     // MARK: - Coming Soon Section
 
     private var comingSoonSection: some View {
@@ -130,18 +173,6 @@ struct UserSpaceView: View {
 
             // Feature cards
             VStack(spacing: MadiniaSpacing.md) {
-                featureCard(
-                    icon: "chart.line.uptrend.xyaxis",
-                    title: "Suivi de progression",
-                    description: "Visualisez votre avancement dans les formations et vos accomplissements."
-                )
-
-                featureCard(
-                    icon: "clock.arrow.circlepath",
-                    title: "Historique",
-                    description: "Accédez à l'historique de vos formations consultées et complétées."
-                )
-
                 featureCard(
                     icon: "sparkles",
                     title: "Recommandations IA",

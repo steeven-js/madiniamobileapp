@@ -21,6 +21,7 @@ final class CacheService {
         case categories
         case services
         case articles
+        case events
     }
 
     // MARK: - Properties
@@ -131,6 +132,16 @@ final class CacheService {
 
     func loadArticles() -> [Article]? {
         load(for: .articles, as: [Article].self)
+    }
+
+    // MARK: - Events
+
+    func saveEvents(_ events: [Event]) {
+        save(events, for: .events)
+    }
+
+    func loadEvents() -> [Event]? {
+        load(for: .events, as: [Event].self)
     }
 
     // MARK: - Clear Cache

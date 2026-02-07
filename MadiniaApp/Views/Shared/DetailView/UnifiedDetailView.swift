@@ -170,7 +170,7 @@ struct UnifiedDetailView: View {
                         .frame(height: 20)
                 }
 
-                // Back button (top-left)
+                // Back button (top-left) and Share button (top-right)
                 VStack {
                     HStack {
                         Button {
@@ -182,6 +182,17 @@ struct UnifiedDetailView: View {
                                 .frame(width: 44, height: 44)
                         }
                         Spacer()
+                        // Share button
+                        if let shareUrl = config.shareUrl {
+                            ShareLink(item: shareUrl) {
+                                Image(systemName: "square.and.arrow.up")
+                                    .font(.system(size: 16, weight: .semibold))
+                                    .foregroundStyle(.white)
+                                    .frame(width: 44, height: 44)
+                                    .background(Color.black.opacity(0.3))
+                                    .clipShape(Circle())
+                            }
+                        }
                     }
                     .padding(.horizontal, 8)
                     .padding(.top, 50) // Safe area offset
