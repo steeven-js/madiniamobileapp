@@ -34,6 +34,7 @@
 		A4CF963F81E882680EA565C1 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CBFD269B5C7ED371C01D503 /* Event.swift */; };
 		A5BA44DE02E14CA29F52FABB /* CategoryListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6183133022A04548810955CC /* CategoryListView.swift */; };
 		A8F7E8E079BF4CC1B341A115 /* FormationRowCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D3DCDFE34F48409F3F3A81 /* FormationRowCard.swift */; };
+		AA5821E0F0661CC9E414AA9E /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB67C49D05F19863C934E29 /* Environment.swift */; };
 		AA96AFD1B3E863887AADC265 /* EventRegistrationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF7F5FBE20993844F9BB90CB /* EventRegistrationView.swift */; };
 		ALLFORMATIONSBUILD000 /* AllFormationsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ALLFORMATIONSFILE0000 /* AllFormationsListView.swift */; };
 		APIERRORBUILD0000000000 /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = APIERRORFILE00000000000 /* APIError.swift */; };
@@ -145,6 +146,7 @@
 		34D66D51D1313FD61C587AB0 /* EventsService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = EventsService.swift; sourceTree = "<group>"; };
 		3C111D8DAAA40A220EC343BF /* MadiniaHubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MadiniaHubView.swift; sourceTree = "<group>"; };
 		3F77A683D12C49159C9B01BC /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
+		3FB67C49D05F19863C934E29 /* Environment.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Environment.swift; sourceTree = "<group>"; };
 		425DA60DAEB04458BF3A5B66 /* PreRegistration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models/PreRegistration.swift; sourceTree = "<group>"; };
 		466E55312EFD4331B801A836 /* FavoritesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesService.swift; sourceTree = "<group>"; };
 		5B05CA648DDB49F8BA3204D0 /* MyPreRegistrationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Views/UserSpace/MyPreRegistrationsView.swift; sourceTree = "<group>"; };
@@ -396,6 +398,7 @@
 			isa = PBXGroup;
 			children = (
 				CF9FC3CAB7123EFF27445B60 /* DeviceRegistrationService.swift */,
+				3FB67C49D05F19863C934E29 /* Environment.swift */,
 			);
 			name = Services;
 			path = Services;
@@ -868,6 +871,7 @@
 				6A85EE5CF94DA382E44F930D /* EventTypeFilter.swift in Sources */,
 				F7E3C4C45DB27B5FC9E66F49 /* CalendarService.swift in Sources */,
 				C18438BBCFC41ED1E04FDD8B /* DeviceRegistrationService.swift in Sources */,
+				AA5821E0F0661CC9E414AA9E /* Environment.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -23,6 +23,7 @@ struct DeviceInfo: Codable {
     let timezone: String
     let pushEnabled: Bool
     let pushToken: String?
+    let environment: String // "sandbox" or "production"
 
     enum CodingKeys: String, CodingKey {
         case deviceUuid = "device_uuid"
@@ -36,6 +37,7 @@ struct DeviceInfo: Codable {
         case timezone
         case pushEnabled = "push_enabled"
         case pushToken = "push_token"
+        case environment
     }
 }
 
@@ -88,7 +90,7 @@ final class DeviceRegistrationService {
 
     // MARK: - Private
 
-    private let baseURL = "https://madinia.fr/api/v1"
+    private var baseURL: String { AppEnvironment.apiBaseURL }
     private var apiKey: String { SecretsManager.apiKey }
     private let session: URLSession
     private let userDefaults = UserDefaults.standard
@@ -190,6 +192,13 @@ final class DeviceRegistrationService {
         // Get push token if available
         let pushToken = userDefaults.string(forKey: pushTokenKey)
 
+        // Determine environment (sandbox for DEBUG builds, production for RELEASE)
+        #if DEBUG
+        let environment = "sandbox"
+        #else
+        let environment = "production"
+        #endif
+
         return DeviceInfo(
             deviceUuid: deviceUUID,
             deviceModel: deviceModel,
@@ -201,7 +210,8 @@ final class DeviceRegistrationService {
             locale: Locale.current.identifier,
             timezone: TimeZone.current.identifier,
             pushEnabled: pushToken != nil,
-            pushToken: pushToken
+            pushToken: pushToken,
+            environment: environment
         )
     }
 

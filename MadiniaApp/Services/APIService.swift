@@ -187,7 +187,7 @@ final class APIService: APIServiceProtocol {
 
     /// Base URL for the Madinia API
     /// Using production API (local API doesn't have routes configured)
-    private let baseURL = "https://madinia.fr/api/v1"
+    private var baseURL: String { AppEnvironment.apiBaseURL }
 
     /// URLSession for network requests (injectable for testing)
     private let session: URLSession
