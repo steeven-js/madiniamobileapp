@@ -12,6 +12,8 @@ import Foundation
 enum PendingOperationType: String, Codable {
     case addFavorite = "add_favorite"
     case removeFavorite = "remove_favorite"
+    case addServiceFavorite = "add_service_favorite"
+    case removeServiceFavorite = "remove_service_favorite"
     case registerEvent = "register_event"
     case unregisterEvent = "unregister_event"
 }
@@ -199,6 +201,20 @@ final class SyncQueueService {
             }
             try await syncRemoveFavorite(formationId: formationId, deviceUUID: deviceUUID)
 
+        case .addServiceFavorite:
+            guard let serviceIdString = operation.payload["serviceId"],
+                  let serviceId = Int(serviceIdString) else {
+                throw SyncError.invalidPayload
+            }
+            try await syncAddServiceFavorite(serviceId: serviceId, deviceUUID: deviceUUID)
+
+        case .removeServiceFavorite:
+            guard let serviceIdString = operation.payload["serviceId"],
+                  let serviceId = Int(serviceIdString) else {
+                throw SyncError.invalidPayload
+            }
+            try await syncRemoveServiceFavorite(serviceId: serviceId, deviceUUID: deviceUUID)
+
         case .registerEvent:
             guard let eventId = operation.payload["eventId"] else {
                 throw SyncError.invalidPayload
@@ -240,6 +256,45 @@ final class SyncQueueService {
 
     private func syncRemoveFavorite(formationId: Int, deviceUUID: String) async throws {
         guard let url = URL(string: "\(baseURL)/favorites/\(formationId)?device_uuid=\(deviceUUID)") else {
+            throw SyncError.invalidURL
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "DELETE"
+
+        let (_, response) = try await URLSession.shared.data(for: request)
+
+        guard let httpResponse = response as? HTTPURLResponse,
+              (200...299).contains(httpResponse.statusCode) else {
+            throw SyncError.serverError
+        }
+    }
+
+    private func syncAddServiceFavorite(serviceId: Int, deviceUUID: String) async throws {
+        guard let url = URL(string: "\(baseURL)/favorites/services") else {
+            throw SyncError.invalidURL
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+        let body: [String: Any] = [
+            "service_id": serviceId,
+            "device_uuid": deviceUUID
+        ]
+        request.httpBody = try JSONSerialization.data(withJSONObject: body)
+
+        let (_, response) = try await URLSession.shared.data(for: request)
+
+        guard let httpResponse = response as? HTTPURLResponse,
+              (200...299).contains(httpResponse.statusCode) else {
+            throw SyncError.serverError
+        }
+    }
+
+    private func syncRemoveServiceFavorite(serviceId: Int, deviceUUID: String) async throws {
+        guard let url = URL(string: "\(baseURL)/favorites/services/\(serviceId)?device_uuid=\(deviceUUID)") else {
             throw SyncError.invalidURL
         }
 

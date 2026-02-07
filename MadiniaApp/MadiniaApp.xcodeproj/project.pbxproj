@@ -43,6 +43,8 @@
 		B348C4CE47024C2DBAA7444A /* PreRegistration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425DA60DAEB04458BF3A5B66 /* PreRegistration.swift */; };
 		B7CDF691054E454FA0AFA335 /* FavoritesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 466E55312EFD4331B801A836 /* FavoritesService.swift */; };
 		BB7138A4957A4D56BA0AA952 /* SectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C253FBE3FF0F4042BFF8302C /* SectionHeader.swift */; };
+		SEARCHFILTERSBUILD00 /* SearchFiltersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = SEARCHFILTERSFILE000 /* SearchFiltersView.swift */; };
+		SERVICEROWCARDBUILD0 /* ServiceRowCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = SERVICEROWCARDFILE00 /* ServiceRowCard.swift */; };
 		BLOGVIEWBUILD0000000000 /* BlogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BLOGVIEWFILE00000000000 /* BlogView.swift */; };
 		BLOGVMBUILD0000000000 /* BlogViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BLOGVMFILE0000000000 /* BlogViewModel.swift */; };
 		BOOKINGCTABUILD000000 /* BookingCTACard.swift in Sources */ = {isa = PBXBuildFile; fileRef = BOOKINGCTAFILE0000000 /* BookingCTACard.swift */; };
@@ -175,6 +177,8 @@
 		BLOGVMFILE0000000000 /* BlogViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogViewModel.swift; sourceTree = "<group>"; };
 		BOOKINGCTAFILE0000000 /* BookingCTACard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookingCTACard.swift; sourceTree = "<group>"; };
 		C253FBE3FF0F4042BFF8302C /* SectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeader.swift; sourceTree = "<group>"; };
+		SEARCHFILTERSFILE000 /* SearchFiltersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFiltersView.swift; sourceTree = "<group>"; };
+		SERVICEROWCARDFILE00 /* ServiceRowCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceRowCard.swift; sourceTree = "<group>"; };
 		CACHEDIMGFILE00000 /* CachedAsyncImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachedAsyncImage.swift; sourceTree = "<group>"; };
 		CACHESERVICEFILE00000 /* CacheService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheService.swift; sourceTree = "<group>"; };
 		CALENDLYVIEWFILE0000 /* CalendlyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendlyView.swift; sourceTree = "<group>"; };
@@ -346,6 +350,8 @@
 			children = (
 				7D014559F2844681BFBBA16E /* ServiceCard.swift */,
 				C253FBE3FF0F4042BFF8302C /* SectionHeader.swift */,
+				SEARCHFILTERSFILE000 /* SearchFiltersView.swift */,
+				SERVICEROWCARDFILE00 /* ServiceRowCard.swift */,
 				B1D3DCDFE34F48409F3F3A81 /* FormationRowCard.swift */,
 				D27672990C3B42CCB1D283F0 /* SearchBar.swift */,
 			);
@@ -794,6 +800,8 @@
 				36B78635747049BFA5AB1A9D /* ServiceDetailView.swift in Sources */,
 				9CDBDDF55D8D49A7B70A7FAB /* ServiceCard.swift in Sources */,
 				BB7138A4957A4D56BA0AA952 /* SectionHeader.swift in Sources */,
+				SEARCHFILTERSBUILD00 /* SearchFiltersView.swift in Sources */,
+				SERVICEROWCARDBUILD0 /* ServiceRowCard.swift in Sources */,
 				A8F7E8E079BF4CC1B341A115 /* FormationRowCard.swift in Sources */,
 				E938F1489C664B0886221C5D /* SearchBar.swift in Sources */,
 				UNIFIEDDETAILBUILD000 /* UnifiedDetailView.swift in Sources */,

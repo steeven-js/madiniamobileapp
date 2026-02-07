@@ -34,6 +34,9 @@ struct SearchView: View {
     /// Controls navigation to all services
     @State private var showAllServices = false
 
+    /// Controls filter sheet presentation
+    @State private var showFilters = false
+
     /// Deep link formation slug binding (optional)
     @Binding var deepLinkFormationSlug: String?
 
@@ -164,12 +167,26 @@ struct SearchView: View {
     private var mainContent: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: MadiniaSpacing.lg) {
-                // Search bar
-                SearchBar(text: $viewModel.searchQuery)
-                    .padding(.horizontal, MadiniaSpacing.md)
+                // Search bar with filter button
+                HStack(spacing: MadiniaSpacing.sm) {
+                    SearchBar(text: $viewModel.searchQuery)
 
-                if viewModel.isSearching {
-                    // Search results
+                    FilterButton(activeCount: viewModel.filters.activeFiltersCount) {
+                        showFilters = true
+                    }
+                }
+                .padding(.horizontal, MadiniaSpacing.md)
+
+                // Active filters chips
+                if viewModel.filters.hasActiveFilters {
+                    ActiveFiltersChipsView(
+                        filters: viewModel.filters,
+                        categories: viewModel.categories
+                    )
+                }
+
+                if viewModel.isSearching || viewModel.filters.hasActiveFilters {
+                    // Search/filter results
                     searchResultsContent
                 } else {
                     // Default sections
@@ -181,6 +198,14 @@ struct SearchView: View {
         }
         .refreshable {
             await viewModel.refresh()
+        }
+        .sheet(isPresented: $showFilters) {
+            SearchFiltersView(
+                filters: viewModel.filters,
+                categories: viewModel.categories,
+                onApply: {}
+            )
+            .presentationDetents([.medium, .large])
         }
     }
 
@@ -265,12 +290,17 @@ struct SearchView: View {
 
     private var searchResultsContent: some View {
         VStack(alignment: .leading, spacing: MadiniaSpacing.lg) {
+            // Results count header
+            if viewModel.filters.hasActiveFilters || viewModel.isSearching {
+                resultsCountHeader
+            }
+
             if !viewModel.hasSearchResults {
                 // No results
                 noResultsView
             } else {
-                // Categories results
-                if !viewModel.filteredCategories.isEmpty {
+                // Categories results (only when searching by text)
+                if viewModel.isSearching && !viewModel.filteredCategories.isEmpty {
                     searchCategoriesSection
                 }
 
@@ -285,6 +315,34 @@ struct SearchView: View {
                 }
             }
         }
+    }
+
+    private var resultsCountHeader: some View {
+        HStack {
+            let formationsCount = viewModel.filteredFormations.count
+            let servicesCount = viewModel.filteredServices.count
+
+            if viewModel.isSearching || viewModel.filters.hasActiveFilters {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("\(formationsCount) formation\(formationsCount > 1 ? "s" : "") • \(servicesCount) service\(servicesCount > 1 ? "s" : "")")
+                        .font(MadiniaTypography.caption)
+                        .foregroundStyle(.secondary)
+                }
+            }
+
+            Spacer()
+
+            if viewModel.filters.hasActiveFilters {
+                Button {
+                    viewModel.filters.reset()
+                } label: {
+                    Text("Effacer")
+                        .font(.system(size: 14, weight: .medium))
+                        .foregroundStyle(MadiniaColors.accent)
+                }
+            }
+        }
+        .padding(.horizontal, MadiniaSpacing.md)
     }
 
     private var noResultsView: some View {
@@ -324,21 +382,19 @@ struct SearchView: View {
 
     private var searchServicesSection: some View {
         VStack(alignment: .leading, spacing: MadiniaSpacing.sm) {
-            Text("Services")
+            Text("Services (\(viewModel.filteredServices.count))")
                 .font(MadiniaTypography.headline)
                 .fontWeight(.semibold)
                 .padding(.horizontal, MadiniaSpacing.md)
 
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: MadiniaSpacing.sm) {
-                    ForEach(viewModel.filteredServices) { service in
-                        ServiceCard(service: service) {
-                            selectedService = service
-                        }
+            VStack(spacing: MadiniaSpacing.sm) {
+                ForEach(viewModel.filteredServices) { service in
+                    ServiceRowCard(service: service) {
+                        selectedService = service
                     }
                 }
-                .padding(.horizontal, MadiniaSpacing.md)
             }
+            .padding(.horizontal, MadiniaSpacing.md)
         }
     }
 

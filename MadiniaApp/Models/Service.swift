@@ -34,6 +34,12 @@ struct Service: Codable, Identifiable, Hashable {
 
     /// Relative href for navigation
     let href: String?
+
+    /// Number of views (for popularity sorting)
+    let viewsCount: Int?
+
+    /// Publication date (for date sorting)
+    let publishedAt: String?
 }
 
 // MARK: - Preview/Mock Data
@@ -48,7 +54,9 @@ extension Service {
         description: nil,
         icon: "heroicon-o-presentation-chart-line",
         imageUrl: "https://rrgxotnrwmjqnaugllks.supabase.co/storage/v1/object/public/formations/services/images/18e73051-e22e-457c-b380-0b859e4a3122.webp",
-        href: "/services/conference-ia"
+        href: "/services/conference-ia",
+        viewsCount: 150,
+        publishedAt: "2026-01-15T10:00:00Z"
     )
 
     /// Array of sample services for previews
@@ -61,7 +69,9 @@ extension Service {
             description: nil,
             icon: "heroicon-o-presentation-chart-line",
             imageUrl: nil,
-            href: "/services/conference-ia"
+            href: "/services/conference-ia",
+            viewsCount: 150,
+            publishedAt: "2026-01-15T10:00:00Z"
         ),
         Service(
             id: 2,
@@ -71,7 +81,9 @@ extension Service {
             description: nil,
             icon: "heroicon-o-clipboard-document-check",
             imageUrl: nil,
-            href: "/services/audit-et-conseils-ia"
+            href: "/services/audit-et-conseils-ia",
+            viewsCount: 89,
+            publishedAt: "2026-01-20T14:30:00Z"
         ),
         Service(
             id: 3,
@@ -81,7 +93,9 @@ extension Service {
             description: nil,
             icon: "heroicon-o-user-group",
             imageUrl: nil,
-            href: "/services/accompagnement-perso"
+            href: "/services/accompagnement-perso",
+            viewsCount: 210,
+            publishedAt: "2026-01-10T09:00:00Z"
         )
     ]
 }
