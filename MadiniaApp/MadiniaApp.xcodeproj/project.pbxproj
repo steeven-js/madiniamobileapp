@@ -46,6 +46,9 @@
 		APIERRORBUILD0000000000 /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = APIERRORFILE00000000000 /* APIError.swift */; };
 		APISERVICEBUILD00000000 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = APISERVICEFILE000000000 /* APIService.swift */; };
 		APISERVICETESTBUILD000 /* APIServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = APISERVICETESTFILE00000 /* APIServiceTests.swift */; };
+		CACHESERVTESTBUILD000 /* CacheServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CACHESERVTESTFILE0000 /* CacheServiceTests.swift */; };
+		ERRORHANDTESTBUILD000 /* ErrorHandlingServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ERRORHANDTESTFILE0000 /* ErrorHandlingServiceTests.swift */; };
+		HOMEPREFSTESTBUILD000 /* HomePreferencesServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = HOMEPREFSTESTFILE0000 /* HomePreferencesServiceTests.swift */; };
 		APPDATAREPOBUILD00000 /* AppDataRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = APPDATAREPOFILE000000 /* AppDataRepository.swift */; };
 		APPDELEGATEBUILD000 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = APPDELEGATEFILE0000 /* AppDelegate.swift */; };
 		APPEARANCESETTBUILD0 /* AppearanceSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = APPEARANCESETTFILE00 /* AppearanceSettingsView.swift */; };
@@ -201,6 +204,9 @@
 		APIERRORFILE00000000000 /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
 		APISERVICEFILE000000000 /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
 		APISERVICETESTFILE00000 /* APIServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIServiceTests.swift; sourceTree = "<group>"; };
+		CACHESERVTESTFILE0000 /* CacheServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheServiceTests.swift; sourceTree = "<group>"; };
+		ERRORHANDTESTFILE0000 /* ErrorHandlingServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorHandlingServiceTests.swift; sourceTree = "<group>"; };
+		HOMEPREFSTESTFILE0000 /* HomePreferencesServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePreferencesServiceTests.swift; sourceTree = "<group>"; };
 		APPDATAREPOFILE000000 /* AppDataRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDataRepository.swift; sourceTree = "<group>"; };
 		APPDELEGATEFILE0000 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		APPEARANCESETTFILE00 /* AppearanceSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceSettingsView.swift; sourceTree = "<group>"; };
@@ -537,6 +543,9 @@
 				HOMEVMTESTFILE00000000 /* HomeViewModelTests.swift */,
 				PROGRESSPATHTESTFILE0 /* ProgressPathTests.swift */,
 				FORMVMTESTFILE0000000 /* FormationsViewModelTests.swift */,
+				CACHESERVTESTFILE0000 /* CacheServiceTests.swift */,
+				ERRORHANDTESTFILE0000 /* ErrorHandlingServiceTests.swift */,
+				HOMEPREFSTESTFILE0000 /* HomePreferencesServiceTests.swift */,
 			);
 			path = MadiniaAppTests;
 			sourceTree = "<group>";
@@ -1006,6 +1015,9 @@
 				HOMEVMTESTBUILD0000000 /* HomeViewModelTests.swift in Sources */,
 				PROGRESSPATHTESTBUILD /* ProgressPathTests.swift in Sources */,
 				FORMVMTESTBUILD000000 /* FormationsViewModelTests.swift in Sources */,
+				CACHESERVTESTBUILD000 /* CacheServiceTests.swift in Sources */,
+				ERRORHANDTESTBUILD000 /* ErrorHandlingServiceTests.swift in Sources */,
+				HOMEPREFSTESTBUILD000 /* HomePreferencesServiceTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
