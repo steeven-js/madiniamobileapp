@@ -19,22 +19,16 @@ struct ContinueLearningSection: View {
     var onViewAllTap: (() -> Void)?
 
     /// Limite d'affichage
-    private let displayLimit = 3
+    private let displayLimit = 5
 
     var body: some View {
         if !recentFormations.isEmpty {
             VStack(alignment: .leading, spacing: MadiniaSpacing.sm) {
                 // Header
                 HStack {
-                    HStack(spacing: MadiniaSpacing.xs) {
-                        Image(systemName: "clock.arrow.circlepath")
-                            .font(.system(size: 16, weight: .semibold))
-                            .foregroundStyle(MadiniaColors.accent)
-
-                        Text("Reprendre")
-                            .font(MadiniaTypography.headline)
-                            .fontWeight(.bold)
-                    }
+                    Text("Reprendre")
+                        .font(MadiniaTypography.title2)
+                        .fontWeight(.bold)
 
                     Spacer()
 
@@ -42,21 +36,27 @@ struct ContinueLearningSection: View {
                         Button {
                             onViewAllTap?()
                         } label: {
-                            Text("Historique")
-                                .font(MadiniaTypography.caption)
-                                .foregroundStyle(MadiniaColors.accent)
+                            HStack(spacing: MadiniaSpacing.xxs) {
+                                Text("Historique")
+                                    .font(MadiniaTypography.subheadline)
+                                Image(systemName: "chevron.right")
+                                    .font(.caption)
+                            }
+                            .foregroundStyle(MadiniaColors.accent)
                         }
                     }
                 }
 
-                // Horizontal scroll of recent formations
+                // Horizontal carousel of recent formations
                 ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: MadiniaSpacing.sm) {
+                    HStack(spacing: MadiniaSpacing.md) {
                         ForEach(Array(recentFormations.prefix(displayLimit))) { formation in
-                            ContinueLearningCard(formation: formation) {
-                                HapticManager.tap()
-                                onFormationTap?(formation)
-                            }
+                            FormationTeaserCard(formation: formation)
+                                .contentShape(Rectangle())
+                                .onTapGesture {
+                                    HapticManager.tap()
+                                    onFormationTap?(formation)
+                                }
                         }
                     }
                 }
@@ -65,102 +65,127 @@ struct ContinueLearningSection: View {
     }
 }
 
-// MARK: - Continue Learning Card
+// MARK: - Formation Teaser Card
 
-/// Carte compacte pour une formation récemment consultée
-struct ContinueLearningCard: View {
+/// Large teaser card for formations (similar to EventTeaserCard)
+struct FormationTeaserCard: View {
     let formation: Formation
-    var onTap: (() -> Void)?
-
-    private let cardWidth: CGFloat = 260
-    private let cardHeight: CGFloat = 80
 
     var body: some View {
-        Button {
-            onTap?()
-        } label: {
-            HStack(spacing: MadiniaSpacing.sm) {
-                // Thumbnail
-                thumbnailView
-
-                // Content
-                VStack(alignment: .leading, spacing: MadiniaSpacing.xxs) {
-                    Text(formation.title)
-                        .font(MadiniaTypography.subheadline)
-                        .fontWeight(.semibold)
-                        .foregroundStyle(.primary)
-                        .lineLimit(2)
-                        .multilineTextAlignment(.leading)
-
-                    HStack(spacing: MadiniaSpacing.xs) {
-                        // Duration
-                        Label(formation.duration, systemImage: "clock")
-                            .font(MadiniaTypography.caption2)
-                            .foregroundStyle(.secondary)
-
-                        // Category
-                        if let category = formation.category {
-                            Text(category.name)
-                                .font(MadiniaTypography.caption2)
-                                .foregroundStyle(MadiniaColors.accent)
-                        }
-                    }
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
-
-                // Arrow indicator
-                Image(systemName: "chevron.right")
-                    .font(.system(size: 12, weight: .semibold))
-                    .foregroundStyle(.tertiary)
-            }
-            .padding(MadiniaSpacing.sm)
-            .frame(width: cardWidth, height: cardHeight)
-            .background(MadiniaColors.cardBackground)
-            .clipShape(RoundedRectangle(cornerRadius: MadiniaRadius.md))
-            .shadow(color: .black.opacity(0.08), radius: 3, x: 0, y: 1)
-        }
-        .buttonStyle(.plain)
-        .pressScale(0.98)
-    }
-
-    private var thumbnailView: some View {
-        Group {
+        ZStack(alignment: .bottomLeading) {
+            // Background image or gradient
             if let imageUrl = formation.imageUrl, let url = URL(string: imageUrl) {
                 CachedAsyncImage(url: url) { image in
                     image
                         .resizable()
                         .aspectRatio(contentMode: .fill)
                 } placeholder: {
-                    ShimmerPlaceholder()
+                    formationGradient
+                }
+                .frame(width: 320, height: 200)
+                .clipped()
+                .overlay {
+                    LinearGradient(
+                        colors: [.clear, .black.opacity(0.7)],
+                        startPoint: .top,
+                        endPoint: .bottom
+                    )
                 }
             } else {
-                MadiniaColors.placeholderGradient
+                formationGradient
                     .overlay {
                         Image(systemName: "graduationcap.fill")
-                            .font(.title3)
-                            .foregroundStyle(.white.opacity(0.7))
+                            .font(.system(size: 50))
+                            .foregroundStyle(.white.opacity(0.3))
                     }
             }
+
+            // Content overlay
+            VStack(alignment: .leading, spacing: MadiniaSpacing.md) {
+                // Top section with category and duration
+                HStack {
+                    // Category pill
+                    if let category = formation.category {
+                        HStack(spacing: MadiniaSpacing.xxs) {
+                            Image(systemName: "folder.fill")
+                                .font(.caption)
+                                .foregroundStyle(.white)
+
+                            Text(category.name.uppercased())
+                                .font(MadiniaTypography.caption)
+                                .fontWeight(.semibold)
+                                .foregroundStyle(.white)
+                                .tracking(0.5)
+                        }
+                        .padding(.horizontal, MadiniaSpacing.sm)
+                        .padding(.vertical, MadiniaSpacing.xxs)
+                        .background(MadiniaColors.accent.opacity(0.8))
+                        .clipShape(Capsule())
+                    }
+
+                    Spacer()
+
+                    // Duration pill
+                    Text(formation.duration)
+                        .font(MadiniaTypography.caption)
+                        .fontWeight(.medium)
+                        .foregroundStyle(.white)
+                        .padding(.horizontal, MadiniaSpacing.sm)
+                        .padding(.vertical, MadiniaSpacing.xxs)
+                        .background(.black.opacity(0.5))
+                        .clipShape(Capsule())
+                }
+
+                Spacer()
+
+                // Bottom section with title
+                VStack(alignment: .leading, spacing: MadiniaSpacing.xs) {
+                    Text(formation.title)
+                        .font(.system(size: 20, weight: .bold))
+                        .foregroundStyle(.white)
+                        .lineLimit(2)
+
+                    if let shortDesc = formation.shortDescription {
+                        Text(shortDesc)
+                            .font(MadiniaTypography.subheadline)
+                            .foregroundStyle(.white.opacity(0.9))
+                            .lineLimit(2)
+                    }
+                }
+                .padding(MadiniaSpacing.sm)
+                .background(.black.opacity(0.5))
+                .clipShape(RoundedRectangle(cornerRadius: MadiniaRadius.md))
+            }
+            .padding(MadiniaSpacing.md)
         }
-        .frame(width: 60, height: 60)
-        .clipShape(RoundedRectangle(cornerRadius: MadiniaRadius.sm))
+        .frame(width: 320, height: 200)
+        .clipShape(RoundedRectangle(cornerRadius: MadiniaRadius.xl))
+        .shadow(color: .black.opacity(0.15), radius: 10, y: 5)
+    }
+
+    private var formationGradient: some View {
+        LinearGradient(
+            colors: [MadiniaColors.accent, MadiniaColors.violetFixed],
+            startPoint: .topLeading,
+            endPoint: .bottomTrailing
+        )
     }
 }
 
 // MARK: - Previews
 
 #Preview("Continue Learning Section") {
-    VStack {
+    ScrollView {
         ContinueLearningSection(
             recentFormations: Formation.samples,
             onFormationTap: { print("Tapped: \($0.title)") },
             onViewAllTap: { print("View all") }
         )
+        .padding()
     }
-    .padding()
 }
 
-#Preview("Single Card") {
-    ContinueLearningCard(formation: .sample)
+#Preview("Formation Teaser Card") {
+    FormationTeaserCard(formation: .sample)
         .padding()
 }
