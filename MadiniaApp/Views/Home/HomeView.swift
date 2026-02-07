@@ -31,11 +31,38 @@ struct HomeView: View {
     /// Navigation state for event detail
     @State private var selectedEvent: Event?
 
+    /// Sheet de personnalisation
+    @State private var showCustomization = false
+
+    /// Navigation vers l'historique
+    @State private var showHistory = false
+
     var body: some View {
         ScrollView(.vertical, showsIndicators: true) {
             VStack(spacing: MadiniaSpacing.lg) {
                 // Welcome section with Madinia branding
                 WelcomeSection()
+
+                // Customization button
+                HStack {
+                    Spacer()
+                    Button {
+                        HapticManager.tap()
+                        showCustomization = true
+                    } label: {
+                        HStack(spacing: MadiniaSpacing.xxs) {
+                            Image(systemName: "slider.horizontal.3")
+                                .font(.system(size: 12, weight: .medium))
+                            Text("Personnaliser")
+                                .font(MadiniaTypography.caption)
+                        }
+                        .foregroundStyle(MadiniaColors.accent)
+                        .padding(.horizontal, MadiniaSpacing.sm)
+                        .padding(.vertical, MadiniaSpacing.xxs)
+                        .background(MadiniaColors.accent.opacity(0.1))
+                        .clipShape(Capsule())
+                    }
+                }
 
                 // Content based on loading state
                 switch viewModel.loadingState {
@@ -43,61 +70,10 @@ struct HomeView: View {
                     LoadingView(message: "Chargement des formations...")
 
                 case .loaded:
-                    // News carousel - real articles first, then teaser placeholders
-                    TeaserCarouselSection(
-                        title: "Actualités",
-                        items: TeaserItem.newsPlaceholders,
-                        articles: viewModel.recentArticles,
-                        onTap: {
-                            navigationContext.triggerBlogNavigation()
-                            selectedTab = 1 // Navigate to Madin.IA tab (Blog)
-                        },
-                        onItemTap: {
-                            navigationContext.triggerBlogNavigation()
-                            selectedTab = 1
-                        },
-                        onArticleTap: { article in
-                            selectedArticle = article
-                        }
-                    )
-
-                    // Events carousel with real events (only if events exist)
-                    if !viewModel.upcomingEvents.isEmpty {
-                        TeaserCarouselSection(
-                            title: "Événements",
-                            items: TeaserItem.eventsItems,
-                            events: viewModel.upcomingEvents,
-                            onTap: {
-                                navigationContext.triggerEventsNavigation()
-                                selectedTab = 1 // Navigate to Madin.IA tab
-                            },
-                            onItemTap: {
-                                navigationContext.triggerEventsNavigation()
-                                selectedTab = 1 // Navigate to Madin.IA tab
-                            },
-                            onEventTap: { event in
-                                selectedEvent = event
-                            }
-                        )
+                    // Afficher les sections selon les préférences utilisateur
+                    ForEach(viewModel.visibleSections) { section in
+                        sectionView(for: section)
                     }
-
-                    // Booking CTA
-                    BookingCTACard {
-                        showCalendly = true
-                    }
-
-                    // Most viewed formations section
-                    TopRatedSection(
-                        formations: viewModel.mostViewedFormations,
-                        onViewAllTap: {
-                            // Navigate to search tab to see all formations
-                            selectedTab = 1
-                        },
-                        onFormationTap: { formation in
-                            // Navigate to formation detail
-                            selectedFormation = formation
-                        }
-                    )
 
                 case .error(let message):
                     ErrorView(message: message) {
@@ -109,7 +85,16 @@ struct HomeView: View {
             .padding(.horizontal, MadiniaSpacing.md)
             .tabBarSafeArea()
         }
+        .refreshable {
+            await viewModel.retry()
+        }
         .navigationTitle("Accueil")
+        .sheet(isPresented: $showCustomization) {
+            HomeCustomizationSheet()
+        }
+        .navigationDestination(isPresented: $showHistory) {
+            HistoryView()
+        }
         .navigationDestination(item: $selectedFormation) { formation in
             FormationDetailView(formation: formation)
         }
@@ -124,6 +109,79 @@ struct HomeView: View {
         }
         .task {
             await viewModel.loadFormations()
+        }
+    }
+}
+
+// MARK: - Section Views
+
+extension HomeView {
+    /// Returns the appropriate view for each home section
+    @ViewBuilder
+    private func sectionView(for section: HomeSection) -> some View {
+        switch section {
+        case .continuelearning:
+            if !viewModel.recentlyViewedFormations.isEmpty {
+                ContinueLearningSection(
+                    recentFormations: viewModel.recentlyViewedFormations,
+                    onFormationTap: { formation in
+                        HapticManager.tap()
+                        selectedFormation = formation
+                    },
+                    onViewAllTap: {
+                        HapticManager.tap()
+                        showHistory = true
+                    }
+                )
+            }
+
+        case .news:
+            ArticlesSection(
+                articles: viewModel.recentArticles,
+                onViewAllTap: {
+                    HapticManager.tap()
+                    navigationContext.triggerBlogNavigation()
+                    selectedTab = 1 // Madin.IA tab
+                },
+                onArticleTap: { article in
+                    HapticManager.tap()
+                    selectedArticle = article
+                }
+            )
+
+        case .events:
+            EventsSection(
+                events: viewModel.upcomingEvents,
+                onViewAllTap: {
+                    HapticManager.tap()
+                    selectedTab = 2 // Events tab
+                },
+                onEventTap: { event in
+                    HapticManager.tap()
+                    selectedEvent = event
+                }
+            )
+
+        case .booking:
+            BookingSection {
+                HapticManager.tap()
+                showCalendly = true
+            }
+
+        case .mostViewed:
+            if !viewModel.mostViewedFormations.isEmpty {
+                TopRatedSection(
+                    formations: viewModel.mostViewedFormations,
+                    onViewAllTap: {
+                        HapticManager.tap()
+                        selectedTab = 1 // Formations tab
+                    },
+                    onFormationTap: { formation in
+                        HapticManager.tap()
+                        selectedFormation = formation
+                    }
+                )
+            }
         }
     }
 }

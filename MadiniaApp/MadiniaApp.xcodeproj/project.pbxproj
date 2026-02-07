@@ -23,14 +23,14 @@
 		6E44259D1E6682BDCB92E1E3 /* WeeklyActivityChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ECAFC363995493D3DBFE61D /* WeeklyActivityChart.swift */; };
 		70256C18828E95A82B8E241D /* ProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0C0153A05D0FA730CCB5E3C /* ProgressView.swift */; };
 		737EE0CB7E37EC4952362993 /* MadiQuiz.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66E4EC77A3DF62BC0DE37970 /* MadiQuiz.swift */; };
-		74ADBB69B67E440599A5D0A1 /* PreRegistrationsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF68241339949EBB1EF3EDF /* PreRegistrationsService.swift */; };
+		74ADBB69B67E440599A5D0A1 /* Services/PreRegistrationsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF68241339949EBB1EF3EDF /* Services/PreRegistrationsService.swift */; };
 		75068B284E887420CC797C5B /* MadiQuizView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 089BB90C454C1BF597092C05 /* MadiQuizView.swift */; };
 		775B39D79E49E8385A5C9E24 /* EventDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6925262595C0FEBA1ECE4F /* EventDetailView.swift */; };
 		7802C29E2F25281B00EE8B5D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7802C29D2F25281B00EE8B5D /* Assets.xcassets */; };
 		787FE2E2847049AF8BF794F8 /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F77A683D12C49159C9B01BC /* Service.swift */; };
-		83ECEFB2D96349D7B60F1E53 /* MyPreRegistrationsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A082AA394C634C269594E699 /* MyPreRegistrationsViewModel.swift */; };
+		83ECEFB2D96349D7B60F1E53 /* ViewModels/MyPreRegistrationsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A082AA394C634C269594E699 /* ViewModels/MyPreRegistrationsViewModel.swift */; };
 		87314FFCBC84AAFE8F8CAD68 /* WhatsNewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C74B18ADD267417F296DFF /* WhatsNewView.swift */; };
-		8D3BF7B2358241BEB78E6069 /* MyPreRegistrationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B05CA648DDB49F8BA3204D0 /* MyPreRegistrationsView.swift */; };
+		8D3BF7B2358241BEB78E6069 /* Views/UserSpace/MyPreRegistrationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B05CA648DDB49F8BA3204D0 /* Views/UserSpace/MyPreRegistrationsView.swift */; };
 		8D4009FECA844FC4898C72BA /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D498316447A40F1BCD95A1A /* SearchView.swift */; };
 		9B40CD85E318B9277D1033B9 /* ProgressTrackingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEEA8A942DE3AAD1619E9D8A /* ProgressTrackingService.swift */; };
 		9CDBDDF55D8D49A7B70A7FAB /* ServiceCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D014559F2844681BFBBA16E /* ServiceCard.swift */; };
@@ -42,6 +42,7 @@
 		AA5821E0F0661CC9E414AA9E /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB67C49D05F19863C934E29 /* Environment.swift */; };
 		AA96AFD1B3E863887AADC265 /* EventRegistrationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF7F5FBE20993844F9BB90CB /* EventRegistrationView.swift */; };
 		ALLFORMATIONSBUILD000 /* AllFormationsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ALLFORMATIONSFILE0000 /* AllFormationsListView.swift */; };
+		ANIMUTILSBUILD000000 /* AnimationUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = ANIMUTILSFILE0000000 /* AnimationUtilities.swift */; };
 		APIERRORBUILD0000000000 /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = APIERRORFILE00000000000 /* APIError.swift */; };
 		APISERVICEBUILD00000000 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = APISERVICEFILE000000000 /* APIService.swift */; };
 		APISERVICETESTBUILD000 /* APIServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = APISERVICETESTFILE00000 /* APIServiceTests.swift */; };
@@ -53,12 +54,15 @@
 		ARTICLECARDBUILD00000 /* ArticleCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = ARTICLECARDFILE000000 /* ArticleCard.swift */; };
 		ARTICLEDETAILBUILD000 /* ArticleDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ARTICLEDETAILFILE0000 /* ArticleDetailView.swift */; };
 		ARTICLESSECTIONBUILD /* ArticlesSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = ARTICLESSECTIONFILE0 /* ArticlesSection.swift */; };
-		B348C4CE47024C2DBAA7444A /* PreRegistration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425DA60DAEB04458BF3A5B66 /* PreRegistration.swift */; };
+		BOOKINGSECTIONBUILD0 /* BookingSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = BOOKINGSECTIONFILE00 /* BookingSection.swift */; };
+		CONTLEARNSECBUILD00 /* ContinueLearningSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = CONTLEARNSECFILE000 /* ContinueLearningSection.swift */; };
+		EVENTSSECTIONBUILD00 /* EventsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = EVENTSSECTIONFILE000 /* EventsSection.swift */; };
+		HOMECUSTSHEETBUILD0 /* HomeCustomizationSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = HOMECUSTSHEETFILE00 /* HomeCustomizationSheet.swift */; };
+		HOMEPREFSSERVBUILD0 /* HomePreferencesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = HOMEPREFSSERVFILE00 /* HomePreferencesService.swift */; };
+		B348C4CE47024C2DBAA7444A /* Models/PreRegistration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425DA60DAEB04458BF3A5B66 /* Models/PreRegistration.swift */; };
 		B7CDF691054E454FA0AFA335 /* FavoritesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 466E55312EFD4331B801A836 /* FavoritesService.swift */; };
 		B9B2D45D70C43FFE2C694118 /* EventCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9673E11A3D89F841DBAA56D /* EventCard.swift */; };
 		BB7138A4957A4D56BA0AA952 /* SectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C253FBE3FF0F4042BFF8302C /* SectionHeader.swift */; };
-		SEARCHFILTERSBUILD00 /* SearchFiltersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = SEARCHFILTERSFILE000 /* SearchFiltersView.swift */; };
-		SERVICEROWCARDBUILD0 /* ServiceRowCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = SERVICEROWCARDFILE00 /* ServiceRowCard.swift */; };
 		BLOGVIEWBUILD0000000000 /* BlogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BLOGVIEWFILE00000000000 /* BlogView.swift */; };
 		BLOGVMBUILD0000000000 /* BlogViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BLOGVMFILE0000000000 /* BlogViewModel.swift */; };
 		BOOKINGCTABUILD000000 /* BookingCTACard.swift in Sources */ = {isa = PBXBuildFile; fileRef = BOOKINGCTAFILE0000000 /* BookingCTACard.swift */; };
@@ -83,9 +87,6 @@
 		DESIGNSYSTEMBUILD00 /* DesignSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DESIGNSYSTEMFILE000 /* DesignSystem.swift */; };
 		E938F1489C664B0886221C5D /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27672990C3B42CCB1D283F0 /* SearchBar.swift */; };
 		EMAILVALIDBUILD00000 /* EmailValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EMAILVALIDFILE000000 /* EmailValidator.swift */; };
-		HAPTICMGRBUILD000000 /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = HAPTICMGRFILE0000000 /* HapticManager.swift */; };
-		ANIMUTILSBUILD000000 /* AnimationUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = ANIMUTILSFILE0000000 /* AnimationUtilities.swift */; };
-		SKELETONVIEWSBUILD00 /* SkeletonViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = SKELETONVIEWSFILE000 /* SkeletonViews.swift */; };
 		ERRORVIEWBUILD000000000 /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ERRORVIEWFILE0000000000 /* ErrorView.swift */; };
 		F7E3C4C45DB27B5FC9E66F49 /* CalendarService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B69F05CB40D632777728972 /* CalendarService.swift */; };
 		FORMATIONBUILD000000000 /* Formation.swift in Sources */ = {isa = PBXBuildFile; fileRef = FORMATIONFILE0000000000 /* Formation.swift */; };
@@ -97,6 +98,7 @@
 		FORMVMFILEBUILD000000 /* FormationsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FORMVMFILE0000000000 /* FormationsViewModel.swift */; };
 		FORMVMTESTBUILD000000 /* FormationsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FORMVMTESTFILE0000000 /* FormationsViewModelTests.swift */; };
 		FULLSCREENIMGBUILD000 /* FullScreenImageViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FULLSCREENIMGFILE0000 /* FullScreenImageViewer.swift */; };
+		HAPTICMGRBUILD000000 /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = HAPTICMGRFILE0000000 /* HapticManager.swift */; };
 		HIGHLIGHTCARDBUILD0000 /* HighlightCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = HIGHLIGHTCARDFILE00000 /* HighlightCard.swift */; };
 		HOMEVIEWBUILD0000000000 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = HOMEVIEWFILE00000000000 /* HomeView.swift */; };
 		HOMEVIEWMODELBUILD0000 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = HOMEVIEWMODELFILE00000 /* HomeViewModel.swift */; };
@@ -113,7 +115,13 @@
 		MAINTABBUILD00000000000 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = MAINTABFILE000000000000 /* MainTabView.swift */; };
 		MAINTABTESTBUILD000000 /* MainTabViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = MAINTABTESTFILE0000000 /* MainTabViewTests.swift */; };
 		NAVCONTEXTBUILD00000 /* NavigationContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = NAVCONTEXTFILE000000 /* NavigationContext.swift */; };
+		NETWORKMONBUILD00000 /* NetworkMonitorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = NETWORKMONFILE000000 /* NetworkMonitorService.swift */; };
 		NOTIFSETTINGSBUILD0 /* NotificationSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = NOTIFSETTINGSFILE00 /* NotificationSettingsView.swift */; };
+		OFFLINEBADGEBUILD000 /* OfflineBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = OFFLINEBADGEFILE0000 /* OfflineBadge.swift */; };
+		OFFLINECONTBUILD0000 /* OfflineContentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = OFFLINECONTFILE00000 /* OfflineContentService.swift */; };
+		OFFLINEDLBTNBUILD00 /* OfflineDownloadButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = OFFLINEDLBTNFILE000 /* OfflineDownloadButton.swift */; };
+		OFFLINESETBUILD0000 /* OfflineContentSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = OFFLINESETFILE00000 /* OfflineContentSettingsView.swift */; };
+		OFFLINESTATUSBUILD00 /* OfflineStatusBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = OFFLINESTATUSFILE000 /* OfflineStatusBanner.swift */; };
 		ONBCOMPLETEBUILD0000 /* OnboardingCompleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ONBCOMPLETEFILE00000 /* OnboardingCompleteView.swift */; };
 		ONBFLOWVIEWBUILD0000 /* OnboardingFlowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ONBFLOWVIEWFILE00000 /* OnboardingFlowView.swift */; };
 		ONBINTERESTSBUILD000 /* OnboardingInterestsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ONBINTERESTSFILE0000 /* OnboardingInterestsView.swift */; };
@@ -128,9 +136,13 @@
 		PROGRESSPATHTESTBUILD /* ProgressPathTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = PROGRESSPATHTESTFILE0 /* ProgressPathTests.swift */; };
 		PUSHSERVICEBUILD000 /* PushNotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = PUSHSERVICEFILE0000 /* PushNotificationService.swift */; };
 		QUICKACCESSBUILD000000 /* QuickAccessSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = QUICKACCESSFILE0000000 /* QuickAccessSection.swift */; };
+		SEARCHFILTERSBUILD00 /* SearchFiltersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = SEARCHFILTERSFILE000 /* SearchFiltersView.swift */; };
 		SECRETSMANAGERBUILD000 /* SecretsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = SECRETSMANAGERFILE0000 /* SecretsManager.swift */; };
+		SERVICEROWCARDBUILD0 /* ServiceRowCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = SERVICEROWCARDFILE00 /* ServiceRowCard.swift */; };
 		SETTINGSVIEWBUILD000 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = SETTINGSVIEWFILE0000 /* SettingsView.swift */; };
+		SKELETONVIEWSBUILD00 /* SkeletonViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = SKELETONVIEWSFILE000 /* SkeletonViews.swift */; };
 		SPLASHVIEWBUILD0000 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = SPLASHVIEWFILE00000 /* SplashView.swift */; };
+		SYNCQUEUEBUILD000000 /* SyncQueueService.swift in Sources */ = {isa = PBXBuildFile; fileRef = SYNCQUEUEFILE0000000 /* SyncQueueService.swift */; };
 		TEASERCAROUSELBUILD00 /* TeaserCarouselSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = TEASERCAROUSELFILE000 /* TeaserCarouselSection.swift */; };
 		THEMEMANAGERBUILD000 /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = THEMEMANAGERFILE0000 /* ThemeManager.swift */; };
 		TOPRATEDCARDBUILD0 /* TopRatedCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = TOPRATEDCARDFILE00 /* TopRatedCard.swift */; };
@@ -138,13 +150,6 @@
 		UNIFIEDDETAILBUILD000 /* UnifiedDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = UNIFIEDDETAILFILE0000 /* UnifiedDetailView.swift */; };
 		USERSPACEVIEWBUILD00 /* UserSpaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = USERSPACEVIEWFILE000 /* UserSpaceView.swift */; };
 		WELCOMESECTIONBUILD00 /* WelcomeSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = WELCOMESECTIONFILE000 /* WelcomeSection.swift */; };
-		NETWORKMONBUILD00000 /* NetworkMonitorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = NETWORKMONFILE000000 /* NetworkMonitorService.swift */; };
-		SYNCQUEUEBUILD000000 /* SyncQueueService.swift in Sources */ = {isa = PBXBuildFile; fileRef = SYNCQUEUEFILE0000000 /* SyncQueueService.swift */; };
-		OFFLINECONTBUILD0000 /* OfflineContentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = OFFLINECONTFILE00000 /* OfflineContentService.swift */; };
-		OFFLINESTATUSBUILD00 /* OfflineStatusBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = OFFLINESTATUSFILE000 /* OfflineStatusBanner.swift */; };
-		OFFLINEBADGEBUILD000 /* OfflineBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = OFFLINEBADGEFILE0000 /* OfflineBadge.swift */; };
-		OFFLINEDLBTNBUILD00 /* OfflineDownloadButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = OFFLINEDLBTNFILE000 /* OfflineDownloadButton.swift */; };
-		OFFLINESETBUILD0000 /* OfflineContentSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = OFFLINESETFILE00000 /* OfflineContentSettingsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -160,16 +165,16 @@
 /* Begin PBXFileReference section */
 		02171FBF628862E3BB106A2D /* AchievementBadge.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AchievementBadge.swift; sourceTree = "<group>"; };
 		089BB90C454C1BF597092C05 /* MadiQuizView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MadiQuizView.swift; sourceTree = "<group>"; };
-		0AF68241339949EBB1EF3EDF /* PreRegistrationsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Services/PreRegistrationsService.swift; sourceTree = "<group>"; };
+		0AF68241339949EBB1EF3EDF /* Services/PreRegistrationsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Services/PreRegistrationsService.swift; sourceTree = "<group>"; };
 		1AABB2D1FCAE4F0584974B1C /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		2848210C2720C5A842CC73EA /* StatCard.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = StatCard.swift; sourceTree = "<group>"; };
 		34D66D51D1313FD61C587AB0 /* EventsService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = EventsService.swift; sourceTree = "<group>"; };
 		3C111D8DAAA40A220EC343BF /* MadiniaHubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MadiniaHubView.swift; sourceTree = "<group>"; };
 		3F77A683D12C49159C9B01BC /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
 		3FB67C49D05F19863C934E29 /* Environment.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Environment.swift; sourceTree = "<group>"; };
-		425DA60DAEB04458BF3A5B66 /* PreRegistration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models/PreRegistration.swift; sourceTree = "<group>"; };
+		425DA60DAEB04458BF3A5B66 /* Models/PreRegistration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models/PreRegistration.swift; sourceTree = "<group>"; };
 		466E55312EFD4331B801A836 /* FavoritesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesService.swift; sourceTree = "<group>"; };
-		5B05CA648DDB49F8BA3204D0 /* MyPreRegistrationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Views/UserSpace/MyPreRegistrationsView.swift; sourceTree = "<group>"; };
+		5B05CA648DDB49F8BA3204D0 /* Views/UserSpace/MyPreRegistrationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Views/UserSpace/MyPreRegistrationsView.swift; sourceTree = "<group>"; };
 		5CBFD269B5C7ED371C01D503 /* Event.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		5D498316447A40F1BCD95A1A /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		5ECAFC363995493D3DBFE61D /* WeeklyActivityChart.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WeeklyActivityChart.swift; sourceTree = "<group>"; };
@@ -183,12 +188,13 @@
 		7C73721984AE4C4D9B120091 /* AllServicesListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllServicesListView.swift; sourceTree = "<group>"; };
 		7D014559F2844681BFBBA16E /* ServiceCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceCard.swift; sourceTree = "<group>"; };
 		90D64EDFBEA83B2F3D432B44 /* WhatsNewService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = WhatsNewService.swift; path = Services/WhatsNewService.swift; sourceTree = SOURCE_ROOT; };
-		A082AA394C634C269594E699 /* MyPreRegistrationsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModels/MyPreRegistrationsViewModel.swift; sourceTree = "<group>"; };
+		A082AA394C634C269594E699 /* ViewModels/MyPreRegistrationsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModels/MyPreRegistrationsViewModel.swift; sourceTree = "<group>"; };
 		A22222222222222222222222 /* MadiniaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MadiniaApp.swift; sourceTree = "<group>"; };
 		A44444444444444444444444 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		A55555555555555555555555 /* MadiniaApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MadiniaApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA96B0A0C6A0422D99DE54EC /* MadiContextService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MadiContextService.swift; sourceTree = "<group>"; };
 		ALLFORMATIONSFILE0000 /* AllFormationsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllFormationsListView.swift; sourceTree = "<group>"; };
+		ANIMUTILSFILE0000000 /* AnimationUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationUtilities.swift; sourceTree = "<group>"; };
 		APIERRORFILE00000000000 /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
 		APISERVICEFILE000000000 /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
 		APISERVICETESTFILE00000 /* APIServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIServiceTests.swift; sourceTree = "<group>"; };
@@ -200,6 +206,11 @@
 		ARTICLEDETAILFILE0000 /* ArticleDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleDetailView.swift; sourceTree = "<group>"; };
 		ARTICLEFILE00000000000 /* Article.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Article.swift; sourceTree = "<group>"; };
 		ARTICLESSECTIONFILE0 /* ArticlesSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticlesSection.swift; sourceTree = "<group>"; };
+		BOOKINGSECTIONFILE00 /* BookingSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookingSection.swift; sourceTree = "<group>"; };
+		CONTLEARNSECFILE000 /* ContinueLearningSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContinueLearningSection.swift; sourceTree = "<group>"; };
+		EVENTSSECTIONFILE000 /* EventsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsSection.swift; sourceTree = "<group>"; };
+		HOMECUSTSHEETFILE00 /* HomeCustomizationSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCustomizationSheet.swift; sourceTree = "<group>"; };
+		HOMEPREFSSERVFILE00 /* HomePreferencesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePreferencesService.swift; sourceTree = "<group>"; };
 		B1D3DCDFE34F48409F3F3A81 /* FormationRowCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormationRowCard.swift; sourceTree = "<group>"; };
 		B78438CEFE60455485D725F3 /* SavedFormationsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedFormationsViewModel.swift; sourceTree = "<group>"; };
 		BB447072BBC564AAA93C26E5 /* HistoryView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
@@ -209,8 +220,6 @@
 		BOOKINGCTAFILE0000000 /* BookingCTACard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookingCTACard.swift; sourceTree = "<group>"; };
 		C253FBE3FF0F4042BFF8302C /* SectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeader.swift; sourceTree = "<group>"; };
 		C9673E11A3D89F841DBAA56D /* EventCard.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = EventCard.swift; sourceTree = "<group>"; };
-		SEARCHFILTERSFILE000 /* SearchFiltersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFiltersView.swift; sourceTree = "<group>"; };
-		SERVICEROWCARDFILE00 /* ServiceRowCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceRowCard.swift; sourceTree = "<group>"; };
 		CACHEDIMGFILE00000 /* CachedAsyncImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachedAsyncImage.swift; sourceTree = "<group>"; };
 		CACHESERVICEFILE00000 /* CacheService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheService.swift; sourceTree = "<group>"; };
 		CALENDLYVIEWFILE0000 /* CalendlyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendlyView.swift; sourceTree = "<group>"; };
@@ -235,9 +244,6 @@
 		EEEF31CFE1B54B64B1C9632B /* SavedFormationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedFormationsView.swift; sourceTree = "<group>"; };
 		EF7F5FBE20993844F9BB90CB /* EventRegistrationView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = EventRegistrationView.swift; sourceTree = "<group>"; };
 		EMAILVALIDFILE000000 /* EmailValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailValidator.swift; sourceTree = "<group>"; };
-		HAPTICMGRFILE0000000 /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
-		ANIMUTILSFILE0000000 /* AnimationUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationUtilities.swift; sourceTree = "<group>"; };
-		SKELETONVIEWSFILE000 /* SkeletonViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkeletonViews.swift; sourceTree = "<group>"; };
 		ENTITLEMENTSFILE000 /* MadiniaApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MadiniaApp.entitlements; sourceTree = "<group>"; };
 		ERRORVIEWFILE0000000000 /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
 		FA6925262595C0FEBA1ECE4F /* EventDetailView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = EventDetailView.swift; sourceTree = "<group>"; };
@@ -250,6 +256,7 @@
 		FORMVMFILE0000000000 /* FormationsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormationsViewModel.swift; sourceTree = "<group>"; };
 		FORMVMTESTFILE0000000 /* FormationsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormationsViewModelTests.swift; sourceTree = "<group>"; };
 		FULLSCREENIMGFILE0000 /* FullScreenImageViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenImageViewer.swift; sourceTree = "<group>"; };
+		HAPTICMGRFILE0000000 /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
 		HIGHLIGHTCARDFILE00000 /* HighlightCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighlightCard.swift; sourceTree = "<group>"; };
 		HOMEVIEWFILE00000000000 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		HOMEVIEWMODELFILE00000 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
@@ -266,7 +273,13 @@
 		MAINTABFILE000000000000 /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
 		MAINTABTESTFILE0000000 /* MainTabViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabViewTests.swift; sourceTree = "<group>"; };
 		NAVCONTEXTFILE000000 /* NavigationContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationContext.swift; sourceTree = "<group>"; };
+		NETWORKMONFILE000000 /* NetworkMonitorService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMonitorService.swift; sourceTree = "<group>"; };
 		NOTIFSETTINGSFILE00 /* NotificationSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettingsView.swift; sourceTree = "<group>"; };
+		OFFLINEBADGEFILE0000 /* OfflineBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineBadge.swift; sourceTree = "<group>"; };
+		OFFLINECONTFILE00000 /* OfflineContentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineContentService.swift; sourceTree = "<group>"; };
+		OFFLINEDLBTNFILE000 /* OfflineDownloadButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineDownloadButton.swift; sourceTree = "<group>"; };
+		OFFLINESETFILE00000 /* OfflineContentSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineContentSettingsView.swift; sourceTree = "<group>"; };
+		OFFLINESTATUSFILE000 /* OfflineStatusBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineStatusBanner.swift; sourceTree = "<group>"; };
 		ONBCOMPLETEFILE00000 /* OnboardingCompleteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingCompleteView.swift; sourceTree = "<group>"; };
 		ONBFLOWVIEWFILE00000 /* OnboardingFlowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingFlowView.swift; sourceTree = "<group>"; };
 		ONBINTERESTSFILE0000 /* OnboardingInterestsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingInterestsView.swift; sourceTree = "<group>"; };
@@ -281,9 +294,13 @@
 		PROGRESSPATHTESTFILE0 /* ProgressPathTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressPathTests.swift; sourceTree = "<group>"; };
 		PUSHSERVICEFILE0000 /* PushNotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationService.swift; sourceTree = "<group>"; };
 		QUICKACCESSFILE0000000 /* QuickAccessSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickAccessSection.swift; sourceTree = "<group>"; };
+		SEARCHFILTERSFILE000 /* SearchFiltersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFiltersView.swift; sourceTree = "<group>"; };
 		SECRETSMANAGERFILE0000 /* SecretsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecretsManager.swift; sourceTree = "<group>"; };
+		SERVICEROWCARDFILE00 /* ServiceRowCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceRowCard.swift; sourceTree = "<group>"; };
 		SETTINGSVIEWFILE0000 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		SKELETONVIEWSFILE000 /* SkeletonViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkeletonViews.swift; sourceTree = "<group>"; };
 		SPLASHVIEWFILE00000 /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
+		SYNCQUEUEFILE0000000 /* SyncQueueService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncQueueService.swift; sourceTree = "<group>"; };
 		TEASERCAROUSELFILE000 /* TeaserCarouselSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeaserCarouselSection.swift; sourceTree = "<group>"; };
 		TESTTARGETPRODUCT00000 /* MadiniaAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MadiniaAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		THEMEMANAGERFILE0000 /* ThemeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeManager.swift; sourceTree = "<group>"; };
@@ -292,13 +309,6 @@
 		UNIFIEDDETAILFILE0000 /* UnifiedDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnifiedDetailView.swift; sourceTree = "<group>"; };
 		USERSPACEVIEWFILE000 /* UserSpaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSpaceView.swift; sourceTree = "<group>"; };
 		WELCOMESECTIONFILE000 /* WelcomeSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeSection.swift; sourceTree = "<group>"; };
-		NETWORKMONFILE000000 /* NetworkMonitorService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMonitorService.swift; sourceTree = "<group>"; };
-		SYNCQUEUEFILE0000000 /* SyncQueueService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncQueueService.swift; sourceTree = "<group>"; };
-		OFFLINECONTFILE00000 /* OfflineContentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineContentService.swift; sourceTree = "<group>"; };
-		OFFLINESTATUSFILE000 /* OfflineStatusBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineStatusBanner.swift; sourceTree = "<group>"; };
-		OFFLINEBADGEFILE0000 /* OfflineBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineBadge.swift; sourceTree = "<group>"; };
-		OFFLINEDLBTNFILE000 /* OfflineDownloadButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineDownloadButton.swift; sourceTree = "<group>"; };
-		OFFLINESETFILE00000 /* OfflineContentSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineContentSettingsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -325,7 +335,6 @@
 				C9673E11A3D89F841DBAA56D /* EventCard.swift */,
 				DD125E63BA208181F4092E8F /* EventTypeFilter.swift */,
 			);
-			name = Components;
 			path = Components;
 			sourceTree = "<group>";
 		};
@@ -336,8 +345,18 @@
 				02171FBF628862E3BB106A2D /* AchievementBadge.swift */,
 				5ECAFC363995493D3DBFE61D /* WeeklyActivityChart.swift */,
 			);
-			name = Components;
 			path = Components;
+			sourceTree = "<group>";
+		};
+		788B82312F37C72900C19170 /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				5B05CA648DDB49F8BA3204D0 /* Views/UserSpace/MyPreRegistrationsView.swift */,
+				A082AA394C634C269594E699 /* ViewModels/MyPreRegistrationsViewModel.swift */,
+				0AF68241339949EBB1EF3EDF /* Services/PreRegistrationsService.swift */,
+				425DA60DAEB04458BF3A5B66 /* Models/PreRegistration.swift */,
+			);
+			name = "Recovered References";
 			sourceTree = "<group>";
 		};
 		7F675963CD36484CB0CFB3A8 /* Search */ = {
@@ -360,6 +379,7 @@
 				A77777777777777777777777 /* MadiniaApp */,
 				TESTSGROUP0000000000000 /* MadiniaAppTests */,
 				A88888888888888888888888 /* Products */,
+				788B82312F37C72900C19170 /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -419,7 +439,6 @@
 				EF7F5FBE20993844F9BB90CB /* EventRegistrationView.swift */,
 				0A5E6DD1E2B2D274923F10B4 /* Components */,
 			);
-			name = Events;
 			path = Events;
 			sourceTree = "<group>";
 		};
@@ -449,7 +468,6 @@
 				CF9FC3CAB7123EFF27445B60 /* DeviceRegistrationService.swift */,
 				3FB67C49D05F19863C934E29 /* Environment.swift */,
 			);
-			name = Services;
 			path = Services;
 			sourceTree = "<group>";
 		};
@@ -479,6 +497,7 @@
 			isa = PBXGroup;
 			children = (
 				466E55312EFD4331B801A836 /* FavoritesService.swift */,
+				HOMEPREFSSERVFILE00 /* HomePreferencesService.swift */,
 				APIERRORFILE00000000000 /* APIError.swift */,
 				APISERVICEFILE000000000 /* APIService.swift */,
 				SECRETSMANAGERFILE0000 /* SecretsManager.swift */,
@@ -627,6 +646,10 @@
 				TOPRATEDCARDFILE00 /* TopRatedCard.swift */,
 				TOPRATEDSECFILE000 /* TopRatedSection.swift */,
 				ARTICLESSECTIONFILE0 /* ArticlesSection.swift */,
+				BOOKINGSECTIONFILE00 /* BookingSection.swift */,
+				CONTLEARNSECFILE000 /* ContinueLearningSection.swift */,
+				EVENTSSECTIONFILE000 /* EventsSection.swift */,
+				HOMECUSTSHEETFILE00 /* HomeCustomizationSheet.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -822,10 +845,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8D3BF7B2358241BEB78E6069 /* MyPreRegistrationsView.swift in Sources */,
-				83ECEFB2D96349D7B60F1E53 /* MyPreRegistrationsViewModel.swift in Sources */,
-				74ADBB69B67E440599A5D0A1 /* PreRegistrationsService.swift in Sources */,
-				B348C4CE47024C2DBAA7444A /* PreRegistration.swift in Sources */,
+				8D3BF7B2358241BEB78E6069 /* Views/UserSpace/MyPreRegistrationsView.swift in Sources */,
+				83ECEFB2D96349D7B60F1E53 /* ViewModels/MyPreRegistrationsViewModel.swift in Sources */,
+				74ADBB69B67E440599A5D0A1 /* Services/PreRegistrationsService.swift in Sources */,
+				B348C4CE47024C2DBAA7444A /* Models/PreRegistration.swift in Sources */,
 				69F0DABE1A1A44B2A391906B /* AllServicesListView.swift in Sources */,
 				B7CDF691054E454FA0AFA335 /* FavoritesService.swift in Sources */,
 				CB31545E9DF24F888D55BA95 /* SavedFormationsViewModel.swift in Sources */,
@@ -893,6 +916,11 @@
 				TOPRATEDCARDBUILD0 /* TopRatedCard.swift in Sources */,
 				TOPRATEDSECBUILD00 /* TopRatedSection.swift in Sources */,
 				ARTICLESSECTIONBUILD /* ArticlesSection.swift in Sources */,
+				BOOKINGSECTIONBUILD0 /* BookingSection.swift in Sources */,
+				CONTLEARNSECBUILD00 /* ContinueLearningSection.swift in Sources */,
+				EVENTSSECTIONBUILD00 /* EventsSection.swift in Sources */,
+				HOMECUSTSHEETBUILD0 /* HomeCustomizationSheet.swift in Sources */,
+				HOMEPREFSSERVBUILD0 /* HomePreferencesService.swift in Sources */,
 				SPLASHVIEWBUILD0000 /* SplashView.swift in Sources */,
 				APPROOTVIEWBUILD00 /* AppRootView.swift in Sources */,
 				787FE2E2847049AF8BF794F8 /* Service.swift in Sources */,
@@ -1106,7 +1134,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = MadiniaApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = 7Q6MN7W987;
 				ENABLE_PREVIEWS = YES;
@@ -1142,7 +1170,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = MadiniaApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = 7Q6MN7W987;
 				ENABLE_PREVIEWS = YES;
