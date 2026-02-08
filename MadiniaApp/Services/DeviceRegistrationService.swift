@@ -112,29 +112,93 @@ final class DeviceRegistrationService {
     func registerOnLaunch() async {
         let deviceInfo = collectDeviceInfo()
 
+        // Retry up to 3 times with exponential backoff
+        var retryCount = 0
+        let maxRetries = 3
+
+        while retryCount < maxRetries {
+            do {
+                let response = try await registerDevice(deviceInfo)
+
+                isRegistered = response.data?.registered ?? false
+                isNewDevice = response.data?.isNew ?? false
+                launchCount = response.data?.launchCount ?? 1
+
+                if let installedAtString = response.data?.installedAt {
+                    installedAt = ISO8601DateFormatter().date(from: installedAtString)
+                }
+
+                userDefaults.set(true, forKey: registeredKey)
+                lastError = nil
+
+                #if DEBUG
+                print("✅ Device registered: uuid=\(deviceUUID), isNew=\(isNewDevice), launchCount=\(launchCount)")
+                #endif
+
+                return // Success, exit the retry loop
+            } catch {
+                retryCount += 1
+                #if DEBUG
+                print("⚠️ Device registration attempt \(retryCount)/\(maxRetries) failed: \(error)")
+                #endif
+
+                if retryCount < maxRetries {
+                    // Wait before retrying (exponential backoff: 1s, 2s, 4s)
+                    try? await Task.sleep(nanoseconds: UInt64(pow(2.0, Double(retryCount - 1)) * 1_000_000_000))
+                } else {
+                    lastError = error.localizedDescription
+                    #if DEBUG
+                    print("❌ Device registration failed after \(maxRetries) attempts")
+                    #endif
+                }
+            }
+        }
+    }
+
+    /// Verify device registration status with the backend
+    @MainActor
+    func verifyRegistration() async -> Bool {
         do {
-            let response = try await registerDevice(deviceInfo)
+            let url = URL(string: "\(baseURL)/devices/\(deviceUUID)")!
+            var request = URLRequest(url: url)
+            request.httpMethod = "GET"
+            request.setValue("application/json", forHTTPHeaderField: "Accept")
+            request.setValue(apiKey, forHTTPHeaderField: "X-API-Key")
+            request.timeoutInterval = 10
 
-            isRegistered = response.data?.registered ?? false
-            isNewDevice = response.data?.isNew ?? false
-            launchCount = response.data?.launchCount ?? 1
+            let (data, response) = try await session.data(for: request)
 
-            if let installedAtString = response.data?.installedAt {
-                installedAt = ISO8601DateFormatter().date(from: installedAtString)
+            guard let httpResponse = response as? HTTPURLResponse else {
+                return false
             }
 
-            userDefaults.set(true, forKey: registeredKey)
-            lastError = nil
-
-            #if DEBUG
-            print("Device registered: isNew=\(isNewDevice), launchCount=\(launchCount)")
-            #endif
+            if httpResponse.statusCode == 200 {
+                // Device exists in backend
+                if let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+                   let deviceData = json["data"] as? [String: Any] {
+                    launchCount = deviceData["launch_count"] as? Int ?? launchCount
+                    isRegistered = true
+                    #if DEBUG
+                    print("✅ Device verification successful: uuid=\(deviceUUID)")
+                    #endif
+                    return true
+                }
+            } else if httpResponse.statusCode == 404 {
+                // Device not found, needs registration
+                isRegistered = false
+                #if DEBUG
+                print("⚠️ Device not found in backend, will register: uuid=\(deviceUUID)")
+                #endif
+                // Trigger registration
+                await registerOnLaunch()
+                return isRegistered
+            }
         } catch {
             #if DEBUG
-            print("Device registration failed: \(error)")
+            print("❌ Device verification failed: \(error)")
             #endif
-            lastError = error.localizedDescription
         }
+        return false
     }
 
     /// Update push notification token

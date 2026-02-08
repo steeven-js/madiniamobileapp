@@ -13,11 +13,14 @@ struct SettingsView: View {
     /// State for showing onboarding
     @State private var showOnboarding = false
 
-    /// Device UUID for debugging
+    /// Device registration service for status
+    private let deviceRegistration = DeviceRegistrationService.shared
+
+    /// Device UUID for debugging - uses the same UUID as services (stored in UserDefaults)
     private var deviceUUID: String {
-        UIDevice.current.identifierForVendor?.uuidString ?? "Non disponible"
+        FavoritesService.shared.deviceUUID
     }
-    
+
     /// Truncated UUID for display
     private var truncatedUUID: String {
         let uuid = deviceUUID
@@ -184,18 +187,56 @@ struct SettingsView: View {
                     .padding(.vertical, MadiniaSpacing.xxs)
                 }
                 
+                // Registration status
+                HStack {
+                    Image(systemName: deviceRegistration.isRegistered ? "checkmark.circle.fill" : "exclamationmark.triangle.fill")
+                        .font(.title3)
+                        .foregroundStyle(deviceRegistration.isRegistered ? .green : .orange)
+                        .frame(width: 28)
+
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("Enregistrement")
+                            .font(MadiniaTypography.body)
+
+                        if let error = deviceRegistration.lastError {
+                            Text(error)
+                                .font(.system(.caption, design: .monospaced))
+                                .foregroundStyle(.red)
+                                .lineLimit(1)
+                        } else {
+                            Text(deviceRegistration.isRegistered ? "Enregistré (launches: \(deviceRegistration.launchCount))" : "Non enregistré")
+                                .font(.system(.caption, design: .monospaced))
+                                .foregroundStyle(.secondary)
+                        }
+                    }
+
+                    Spacer()
+
+                    Button {
+                        Task {
+                            await deviceRegistration.registerOnLaunch()
+                        }
+                    } label: {
+                        Image(systemName: "arrow.clockwise")
+                            .font(.caption)
+                            .foregroundStyle(.orange)
+                    }
+                    .buttonStyle(.plain)
+                }
+                .padding(.vertical, MadiniaSpacing.xxs)
+
                 // Environment
                 HStack {
                     Image(systemName: "hammer")
                         .font(.title3)
                         .foregroundStyle(.orange)
                         .frame(width: 28)
-                    
+
                     Text("Environnement")
                         .font(MadiniaTypography.body)
-                    
+
                     Spacer()
-                    
+
                     Text("DEBUG")
                         .font(.system(.caption, design: .monospaced))
                         .foregroundStyle(.white)
