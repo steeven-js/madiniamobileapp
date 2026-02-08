@@ -111,7 +111,8 @@ struct SearchView: View {
         }
     }
 
-    /// Navigate to a formation by fetching it from the API
+    /// Navigate to a formation by fetching it from the API.
+    /// Falls back to service lookup if the formation slug is not found.
     @MainActor
     private func navigateToFormation(slug: String) async {
         do {
@@ -119,7 +120,11 @@ struct SearchView: View {
             navigationPath.append(formation)
             deepLinkFormationSlug = nil
         } catch {
-            print("Failed to fetch formation for deep link: \(error)")
+            #if DEBUG
+            print("Formation not found for slug '\(slug)', trying as service...")
+            #endif
+            // Fallback: try to open as a service
+            await navigateToService(slug: slug)
             deepLinkFormationSlug = nil
         }
     }
