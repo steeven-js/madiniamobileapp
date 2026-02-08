@@ -1,0 +1,247 @@
+{
+  "name": "Test Push Notification - Madin.IA",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "trigger-manual",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "device_uuid",
+              "name": "device_uuid",
+              "value": "383cc93c-2a88-4688-8be9-6d70ffabd1ae",
+              "type": "string"
+            },
+            {
+              "id": "title",
+              "name": "title",
+              "value": "🎓 Nouvelle formation disponible",
+              "type": "string"
+            },
+            {
+              "id": "body",
+              "name": "body",
+              "value": "Découvrez notre formation sur l'Intelligence Artificielle",
+              "type": "string"
+            },
+            {
+              "id": "type",
+              "name": "type",
+              "value": "formation",
+              "type": "string"
+            },
+            {
+              "id": "slug",
+              "name": "slug",
+              "value": "initiation-intelligence-artificielle",
+              "type": "string"
+            },
+            {
+              "id": "content_id",
+              "name": "content_id",
+              "value": "1",
+              "type": "string"
+            },
+            {
+              "id": "category",
+              "name": "category",
+              "value": "FORMATION_CATEGORY",
+              "type": "string"
+            },
+            {
+              "id": "image_url",
+              "name": "image_url",
+              "value": "https://madinia.fr/storage/formations/ia-formation.jpg",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "set-variables",
+      "name": "Configuration Notification",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [450, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://madinia.fr/api/notifications/send",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"device_uuid\": \"{{ $json.device_uuid }}\",\n  \"title\": \"{{ $json.title }}\",\n  \"body\": \"{{ $json.body }}\",\n  \"data\": {\n    \"type\": \"{{ $json.type }}\",\n    \"slug\": \"{{ $json.slug }}\",\n    \"id\": {{ $json.content_id }},\n    \"category\": \"{{ $json.category }}\",\n    \"image_url\": \"{{ $json.image_url }}\"\n  }\n}",
+        "options": {}
+      },
+      "id": "http-request",
+      "name": "Envoyer Notification",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [650, 300],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "API_KEY_CREDENTIAL_ID",
+          "name": "Madinia API Key"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "condition-success",
+              "leftValue": "={{ $json.statusCode }}",
+              "rightValue": 200,
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "if-success",
+      "name": "Vérifier Réponse",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [850, 300]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "result",
+              "name": "result",
+              "value": "✅ Notification envoyée avec succès !",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "success-message",
+      "name": "Succès",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [1050, 200]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "result",
+              "name": "result",
+              "value": "❌ Erreur lors de l'envoi de la notification",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "error-message",
+      "name": "Erreur",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [1050, 400]
+    }
+  ],
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Configuration Notification",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Configuration Notification": {
+      "main": [
+        [
+          {
+            "node": "Envoyer Notification",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Envoyer Notification": {
+      "main": [
+        [
+          {
+            "node": "Vérifier Réponse",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Vérifier Réponse": {
+      "main": [
+        [
+          {
+            "node": "Succès",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Erreur",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    {
+      "name": "push-notifications"
+    },
+    {
+      "name": "test"
+    }
+  ],
+  "triggerCount": 0,
+  "pinData": {}
+}
