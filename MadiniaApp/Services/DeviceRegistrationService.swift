@@ -346,10 +346,18 @@ final class DeviceRegistrationService {
         request.setValue(apiKey, forHTTPHeaderField: "X-API-Key")
         request.timeoutInterval = 30
 
+        #if DEBUG
+        let environment = "sandbox"
+        #else
+        let environment = "production"
+        #endif
+
         let body: [String: Any] = [
             "device_uuid": deviceUUID,
             "push_token": token,
-            "push_enabled": enabled
+            "push_enabled": enabled,
+            "platform": "ios",
+            "environment": environment
         ]
         request.httpBody = try JSONSerialization.data(withJSONObject: body)
 
