@@ -108,7 +108,7 @@ struct ArticleDetailView: View {
                     endPoint: .bottom
                 )
 
-                // Back button
+                // Back button (top-left)
                 VStack {
                     HStack {
                         Button {
@@ -122,23 +122,13 @@ struct ArticleDetailView: View {
                                 .clipShape(Circle())
                         }
                         Spacer()
-
-                        // Share button
-                        ShareLink(item: shareURL) {
-                            Image(systemName: "square.and.arrow.up")
-                                .font(.system(size: 16, weight: .semibold))
-                                .foregroundStyle(.white)
-                                .frame(width: 44, height: 44)
-                                .background(Color.black.opacity(0.3))
-                                .clipShape(Circle())
-                        }
                     }
                     .padding(.horizontal, MadiniaSpacing.md)
                     .padding(.top, 50)
                     Spacer()
                 }
 
-                // Category badge at bottom
+                // Category badge (bottom-left) + Share button (bottom-right)
                 VStack {
                     Spacer()
                     HStack {
@@ -152,9 +142,19 @@ struct ArticleDetailView: View {
                                 .clipShape(Capsule())
                         }
                         Spacer()
+
+                        // Share button
+                        ShareLink(item: shareURL) {
+                            Image(systemName: "square.and.arrow.up")
+                                .font(.system(size: 24, weight: .semibold))
+                                .foregroundStyle(.white)
+                                .frame(width: 56, height: 56)
+                                .background(Color.black.opacity(0.4))
+                                .clipShape(Circle())
+                        }
                     }
-                    .padding(.horizontal, MadiniaSpacing.md)
-                    .padding(.bottom, MadiniaSpacing.md)
+                    .padding(.horizontal, 20)
+                    .padding(.bottom, 16)
                 }
             }
         }

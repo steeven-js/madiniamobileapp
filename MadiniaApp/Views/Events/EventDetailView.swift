@@ -115,7 +115,7 @@ struct EventDetailView: View {
                     endPoint: .bottom
                 )
 
-                // Back button
+                // Back button (top-left)
                 VStack {
                     HStack {
                         Button {
@@ -129,20 +129,28 @@ struct EventDetailView: View {
                                 .clipShape(Circle())
                         }
                         Spacer()
-
-                        // Share button
-                        ShareLink(item: shareURL) {
-                            Image(systemName: "square.and.arrow.up")
-                                .font(.system(size: 16, weight: .semibold))
-                                .foregroundStyle(.white)
-                                .frame(width: 44, height: 44)
-                                .background(Color.black.opacity(0.3))
-                                .clipShape(Circle())
-                        }
                     }
                     .padding(.horizontal, MadiniaSpacing.md)
                     .padding(.top, 50)
                     Spacer()
+                }
+
+                // Share button (bottom-right)
+                VStack {
+                    Spacer()
+                    HStack {
+                        Spacer()
+                        ShareLink(item: shareURL) {
+                            Image(systemName: "square.and.arrow.up")
+                                .font(.system(size: 24, weight: .semibold))
+                                .foregroundStyle(.white)
+                                .frame(width: 56, height: 56)
+                                .background(Color.black.opacity(0.4))
+                                .clipShape(Circle())
+                        }
+                    }
+                    .padding(.horizontal, 20)
+                    .padding(.bottom, 16)
                 }
             }
         }
