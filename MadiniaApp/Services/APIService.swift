@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import UIKit
 
 // MARK: - API Response Wrappers
 
@@ -82,10 +81,11 @@ struct ContactResponse: Decodable {
     let message: String?
 }
 
-/// Request payload for device token registration
+/// Request payload for push token update
 struct DeviceTokenRequest: Encodable {
     let deviceUUID: String
-    let deviceToken: String
+    let pushToken: String
+    let pushEnabled: Bool
     let platform: String
     let environment: String
     let appVersion: String
@@ -93,7 +93,8 @@ struct DeviceTokenRequest: Encodable {
 
     enum CodingKeys: String, CodingKey {
         case deviceUUID = "device_uuid"
-        case deviceToken = "device_token"
+        case pushToken = "push_token"
+        case pushEnabled = "push_enabled"
         case platform
         case environment
         case appVersion = "app_version"
@@ -356,9 +357,8 @@ final class APIService: APIServiceProtocol {
     /// - Throws: APIError if the request fails
     func registerDeviceToken(token: String, preferences: NotificationPreferences) async throws {
         let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0"
-        let deviceUUID = UIDevice.current.identifierForVendor?.uuidString ?? UUID().uuidString
+        let deviceUUID = DeviceRegistrationService.shared.deviceUUID
 
-        // Determine environment based on build configuration
         #if DEBUG
         let environment = "sandbox"
         #else
@@ -367,13 +367,14 @@ final class APIService: APIServiceProtocol {
 
         let body = DeviceTokenRequest(
             deviceUUID: deviceUUID,
-            deviceToken: token,
+            pushToken: token,
+            pushEnabled: true,
             platform: "ios",
             environment: environment,
             appVersion: appVersion,
             preferences: preferences
         )
-        let _: ContactResponse = try await postRequest(endpoint: "/devices", body: body)
+        let _: ContactResponse = try await putRequest(endpoint: "/devices/push-token", body: body)
     }
 
     // MARK: - Events API
@@ -553,6 +554,55 @@ final class APIService: APIServiceProtocol {
                     let delay = baseRetryDelay * pow(2.0, Double(attempt))
                     #if DEBUG
                     print("POST request failed (attempt \(attempt + 1)/\(maxRetries)) for \(endpoint): \(error.localizedDescription). Retrying in \(delay)s...")
+                    #endif
+                    try await Task.sleep(for: .seconds(delay))
+                }
+            }
+        }
+
+        throw lastError
+    }
+
+    /// Generic PUT request method for API calls with JSON body.
+    /// - Parameters:
+    ///   - endpoint: API endpoint path (e.g., "/devices/push-token")
+    ///   - body: Encodable body to send as JSON
+    /// - Returns: Decoded response of type T
+    /// - Throws: APIError if the request fails
+    private func putRequest<T: Decodable, B: Encodable>(
+        endpoint: String,
+        body: B
+    ) async throws -> T {
+        guard let url = URL(string: "\(baseURL)\(endpoint)") else {
+            throw APIError.invalidURL
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "PUT"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
+        request.setValue(apiKey, forHTTPHeaderField: "X-API-Key")
+        request.timeoutInterval = 30
+
+        let encoder = JSONEncoder()
+        request.httpBody = try encoder.encode(body)
+
+        var lastError: APIError = .networkError("Unknown error")
+
+        for attempt in 0..<maxRetries {
+            do {
+                return try await executeRequest(request)
+            } catch let error as APIError {
+                lastError = error
+
+                guard error.isRetryable else {
+                    throw error
+                }
+
+                if attempt < maxRetries - 1 {
+                    let delay = baseRetryDelay * pow(2.0, Double(attempt))
+                    #if DEBUG
+                    print("PUT request failed (attempt \(attempt + 1)/\(maxRetries)) for \(endpoint): \(error.localizedDescription). Retrying in \(delay)s...")
                     #endif
                     try await Task.sleep(for: .seconds(delay))
                 }

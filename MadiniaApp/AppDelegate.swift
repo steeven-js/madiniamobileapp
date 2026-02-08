@@ -38,8 +38,19 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
         // Register notification categories for quick actions
         pushService.registerNotificationCategories()
 
+        // Restore push token from previous session
+        pushService.restoreTokenFromStorage()
+
         // Clear badge on launch
         clearBadge()
+
+        // Re-register for remote notifications if already authorized
+        Task {
+            await pushService.checkAuthorizationStatus()
+            if pushService.isEnabled {
+                await pushService.registerForRemoteNotifications()
+            }
+        }
 
         // Check for notification that launched the app
         if let notification = launchOptions?[.remoteNotification] as? [AnyHashable: Any] {

@@ -341,9 +341,9 @@ final class PushNotificationService: NSObject {
         let token = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
         self.deviceToken = token
 
-        // Register token with backend
+        // Save token via DeviceRegistrationService (persists to UserDefaults + sends to backend)
         Task {
-            await registerTokenWithBackend(token)
+            await DeviceRegistrationService.shared.updatePushToken(token, enabled: true)
         }
     }
 
@@ -352,21 +352,14 @@ final class PushNotificationService: NSObject {
         print("Failed to register for remote notifications: \(error)")
     }
 
-    /// Registers the device token with the backend
-    private func registerTokenWithBackend(_ token: String) async {
-        do {
-            try await apiService.registerDeviceToken(
-                token: token,
-                preferences: NotificationPreferences(
-                    newFormations: notifyNewFormations,
-                    newArticles: notifyNewArticles,
-                    reminders: notifyReminders,
-                    engagement: notifyEngagement
-                )
-            )
-        } catch {
-            // Handle silently - non-blocking
-            print("Failed to register device token: \(error)")
+    /// Restores push token from UserDefaults on launch
+    func restoreTokenFromStorage() {
+        let storedToken = UserDefaults.standard.string(forKey: "device_push_token")
+        if let token = storedToken, !token.isEmpty {
+            self.deviceToken = token
+            #if DEBUG
+            print("Restored push token from storage: \(token.prefix(20))...")
+            #endif
         }
     }
 
@@ -386,8 +379,13 @@ final class PushNotificationService: NSObject {
                     engagement: notifyEngagement
                 )
             )
+            #if DEBUG
+            print("Notification preferences updated successfully")
+            #endif
         } catch {
+            #if DEBUG
             print("Failed to update preferences: \(error)")
+            #endif
         }
     }
 

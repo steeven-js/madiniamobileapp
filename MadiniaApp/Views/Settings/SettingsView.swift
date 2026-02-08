@@ -16,9 +16,9 @@ struct SettingsView: View {
     /// Device registration service for status
     private let deviceRegistration = DeviceRegistrationService.shared
 
-    /// Device UUID for debugging - uses the same UUID as services (stored in UserDefaults)
+    /// Device UUID for debugging - uses DeviceRegistrationService as canonical source
     private var deviceUUID: String {
-        FavoritesService.shared.deviceUUID
+        DeviceRegistrationService.shared.deviceUUID
     }
 
     /// Truncated UUID for display
