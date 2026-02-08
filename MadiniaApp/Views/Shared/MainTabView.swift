@@ -198,7 +198,7 @@ struct MainTabView: View {
                             HomeView(selectedTab: selectedTabBinding)
                         }
                     case .madinia:
-                        MadiniaHubView()
+                        MadiniaHubView(deepLinkArticleSlug: $selectedArticleSlug)
                     case .userSpace:
                         UserSpaceView()
                     case .search:

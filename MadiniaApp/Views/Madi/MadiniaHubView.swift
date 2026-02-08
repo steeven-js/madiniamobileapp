@@ -13,8 +13,15 @@ struct MadiniaHubView: View {
     /// Currently selected tab - default to About since Blog/News have no content yet
     @State private var selectedTab: HubTab = .about
 
+    /// Deep link article slug for navigating directly to an article
+    @Binding var deepLinkArticleSlug: String?
+
     /// Navigation context for handling contact navigation from services
     @Environment(\.navigationContext) private var navigationContext
+
+    init(deepLinkArticleSlug: Binding<String?> = .constant(nil)) {
+        self._deepLinkArticleSlug = deepLinkArticleSlug
+    }
 
     var body: some View {
         NavigationStack {
@@ -51,7 +58,18 @@ struct MadiniaHubView: View {
                 navigationContext.clearEventsNavigationFlag()
             }
         }
+        .onChange(of: deepLinkArticleSlug) { _, newSlug in
+            if newSlug != nil {
+                withAnimation(.easeInOut(duration: 0.2)) {
+                    selectedTab = .blog
+                }
+            }
+        }
         .onAppear {
+            // Check if we should navigate to an article on appear
+            if deepLinkArticleSlug != nil {
+                selectedTab = .blog
+            }
             // Check if we should navigate to contact on appear (handles timing issue)
             if navigationContext.shouldNavigateToContact {
                 selectedTab = .contact
@@ -125,7 +143,7 @@ struct MadiniaHubView: View {
     // MARK: - Blog Content
 
     private var blogContent: some View {
-        BlogView(embedded: true)
+        BlogView(embedded: true, deepLinkArticleSlug: $deepLinkArticleSlug)
     }
 
     // MARK: - About Content

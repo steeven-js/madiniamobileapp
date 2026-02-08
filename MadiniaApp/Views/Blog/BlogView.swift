@@ -16,14 +16,41 @@ struct BlogView: View {
     /// Whether to show within its own NavigationStack (false when embedded in MadiniaHubView)
     var embedded: Bool = false
 
+    /// Deep link article slug binding (optional)
+    @Binding var deepLinkArticleSlug: String?
+
+    /// Article fetched from deep link for navigation
+    @State private var deepLinkArticle: Article?
+
+    /// API service for fetching article details
+    private let apiService: APIServiceProtocol = APIService.shared
+
+    init(embedded: Bool = false, deepLinkArticleSlug: Binding<String?> = .constant(nil)) {
+        self.embedded = embedded
+        self._deepLinkArticleSlug = deepLinkArticleSlug
+    }
+
     var body: some View {
         if embedded {
             content
                 .navigationDestination(for: Article.self) { article in
                     ArticleDetailView(article: article)
                 }
+                .navigationDestination(item: $deepLinkArticle) { article in
+                    ArticleDetailView(article: article)
+                }
                 .task {
                     await viewModel.loadArticles()
+                }
+                .onChange(of: deepLinkArticleSlug) { _, newSlug in
+                    guard let slug = newSlug else { return }
+                    Task {
+                        await navigateToArticle(slug: slug)
+                    }
+                }
+                .task(id: deepLinkArticleSlug) {
+                    guard let slug = deepLinkArticleSlug else { return }
+                    await navigateToArticle(slug: slug)
                 }
         } else {
             NavigationStack {
@@ -37,6 +64,35 @@ struct BlogView: View {
                 await viewModel.loadArticles()
             }
         }
+    }
+
+    /// Navigate to an article by fetching it from the API
+    @MainActor
+    private func navigateToArticle(slug: String) async {
+        // Wait for articles to load if needed
+        if case .idle = viewModel.loadingState {
+            await viewModel.loadArticles()
+        } else if case .loading = viewModel.loadingState {
+            try? await Task.sleep(nanoseconds: 500_000_000)
+        }
+
+        // Try to find in already loaded articles first
+        if let article = viewModel.articles.first(where: { $0.slug == slug }) {
+            deepLinkArticle = article
+            deepLinkArticleSlug = nil
+            return
+        }
+
+        // Fallback: fetch from API
+        do {
+            let article = try await apiService.fetchArticle(slug: slug)
+            deepLinkArticle = article
+        } catch {
+            #if DEBUG
+            print("Failed to fetch article for deep link: \(error)")
+            #endif
+        }
+        deepLinkArticleSlug = nil
     }
 
     // MARK: - Content View
