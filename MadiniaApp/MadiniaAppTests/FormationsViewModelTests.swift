@@ -13,6 +13,20 @@ import XCTest
 /// These tests verify the ViewModel correctly exposes repository data.
 final class FormationsViewModelTests: XCTestCase {
 
+    // MARK: - Setup / Teardown
+
+    override func setUp() {
+        super.setUp()
+        // Reset shared repository state before each test
+        FormationsRepository.shared.selectedCategoryFilter = nil
+    }
+
+    override func tearDown() {
+        // Clean up after each test
+        FormationsRepository.shared.selectedCategoryFilter = nil
+        super.tearDown()
+    }
+
     // MARK: - Initial State Tests
 
     /// Test that ViewModel correctly reflects repository state
@@ -30,17 +44,24 @@ final class FormationsViewModelTests: XCTestCase {
     func testSelectCategorySetsFilter() {
         let viewModel = FormationsViewModel()
 
-        // Initially no filter
+        // Initially no filter (reset in setUp)
         XCTAssertNil(viewModel.selectedCategory)
 
-        // Create a test category
-        if let firstCategory = viewModel.categories.first {
-            // When
-            viewModel.selectCategory(firstCategory)
-
-            // Then
-            XCTAssertEqual(viewModel.selectedCategory?.id, firstCategory.id)
+        // Skip test if no categories available (repository not loaded)
+        guard let firstCategory = viewModel.categories.first else {
+            // No categories loaded - this is expected in unit test context
+            // Test the mechanism with a mock category instead
+            let mockCategory = FormationCategory(id: 999, name: "Test Category", slug: "test", description: nil, color: nil, icon: nil, formationsCount: nil)
+            viewModel.selectCategory(mockCategory)
+            XCTAssertEqual(viewModel.selectedCategory?.id, mockCategory.id)
+            return
         }
+
+        // When - select category from repository
+        viewModel.selectCategory(firstCategory)
+
+        // Then
+        XCTAssertEqual(viewModel.selectedCategory?.id, firstCategory.id)
     }
 
     /// Test that selecting same category twice clears filter (toggle behavior)

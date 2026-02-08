@@ -49,6 +49,12 @@
 		CACHESERVTESTBUILD000 /* CacheServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CACHESERVTESTFILE0000 /* CacheServiceTests.swift */; };
 		ERRORHANDTESTBUILD000 /* ErrorHandlingServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ERRORHANDTESTFILE0000 /* ErrorHandlingServiceTests.swift */; };
 		HOMEPREFSTESTBUILD000 /* HomePreferencesServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = HOMEPREFSTESTFILE0000 /* HomePreferencesServiceTests.swift */; };
+		FAVSERVTESTBUILD0000 /* FavoritesServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAVSERVTESTFILE00000 /* FavoritesServiceTests.swift */; };
+		NETMONTESTBUILD00000 /* NetworkMonitorServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = NETMONTESTFILE000000 /* NetworkMonitorServiceTests.swift */; };
+		SYNCQTESTBUILD000000 /* SyncQueueServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = SYNCQTESTFILE0000000 /* SyncQueueServiceTests.swift */; };
+		OFFLINETESTBUILD0000 /* OfflineContentServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OFFLINETESTFILE00000 /* OfflineContentServiceTests.swift */; };
+		THEMEMGRTESTBUILD000 /* ThemeManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = THEMEMGRTESTFILE0000 /* ThemeManagerTests.swift */; };
+		DEEPLINKTESTBUILD000 /* DeepLinkServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEEPLINKTESTFILE0000 /* DeepLinkServiceTests.swift */; };
 		APPDATAREPOBUILD00000 /* AppDataRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = APPDATAREPOFILE000000 /* AppDataRepository.swift */; };
 		APPDELEGATEBUILD000 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = APPDELEGATEFILE0000 /* AppDelegate.swift */; };
 		APPEARANCESETTBUILD0 /* AppearanceSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = APPEARANCESETTFILE00 /* AppearanceSettingsView.swift */; };
@@ -207,6 +213,12 @@
 		CACHESERVTESTFILE0000 /* CacheServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheServiceTests.swift; sourceTree = "<group>"; };
 		ERRORHANDTESTFILE0000 /* ErrorHandlingServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorHandlingServiceTests.swift; sourceTree = "<group>"; };
 		HOMEPREFSTESTFILE0000 /* HomePreferencesServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePreferencesServiceTests.swift; sourceTree = "<group>"; };
+		FAVSERVTESTFILE00000 /* FavoritesServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesServiceTests.swift; sourceTree = "<group>"; };
+		NETMONTESTFILE000000 /* NetworkMonitorServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMonitorServiceTests.swift; sourceTree = "<group>"; };
+		SYNCQTESTFILE0000000 /* SyncQueueServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncQueueServiceTests.swift; sourceTree = "<group>"; };
+		OFFLINETESTFILE00000 /* OfflineContentServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineContentServiceTests.swift; sourceTree = "<group>"; };
+		THEMEMGRTESTFILE0000 /* ThemeManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeManagerTests.swift; sourceTree = "<group>"; };
+		DEEPLINKTESTFILE0000 /* DeepLinkServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLinkServiceTests.swift; sourceTree = "<group>"; };
 		APPDATAREPOFILE000000 /* AppDataRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDataRepository.swift; sourceTree = "<group>"; };
 		APPDELEGATEFILE0000 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		APPEARANCESETTFILE00 /* AppearanceSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceSettingsView.swift; sourceTree = "<group>"; };
@@ -546,6 +558,12 @@
 				CACHESERVTESTFILE0000 /* CacheServiceTests.swift */,
 				ERRORHANDTESTFILE0000 /* ErrorHandlingServiceTests.swift */,
 				HOMEPREFSTESTFILE0000 /* HomePreferencesServiceTests.swift */,
+				FAVSERVTESTFILE00000 /* FavoritesServiceTests.swift */,
+				NETMONTESTFILE000000 /* NetworkMonitorServiceTests.swift */,
+				SYNCQTESTFILE0000000 /* SyncQueueServiceTests.swift */,
+				OFFLINETESTFILE00000 /* OfflineContentServiceTests.swift */,
+				THEMEMGRTESTFILE0000 /* ThemeManagerTests.swift */,
+				DEEPLINKTESTFILE0000 /* DeepLinkServiceTests.swift */,
 			);
 			path = MadiniaAppTests;
 			sourceTree = "<group>";
@@ -1018,6 +1036,12 @@
 				CACHESERVTESTBUILD000 /* CacheServiceTests.swift in Sources */,
 				ERRORHANDTESTBUILD000 /* ErrorHandlingServiceTests.swift in Sources */,
 				HOMEPREFSTESTBUILD000 /* HomePreferencesServiceTests.swift in Sources */,
+				FAVSERVTESTBUILD0000 /* FavoritesServiceTests.swift in Sources */,
+				NETMONTESTBUILD00000 /* NetworkMonitorServiceTests.swift in Sources */,
+				SYNCQTESTBUILD000000 /* SyncQueueServiceTests.swift in Sources */,
+				OFFLINETESTBUILD0000 /* OfflineContentServiceTests.swift in Sources */,
+				THEMEMGRTESTBUILD000 /* ThemeManagerTests.swift in Sources */,
+				DEEPLINKTESTBUILD000 /* DeepLinkServiceTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
