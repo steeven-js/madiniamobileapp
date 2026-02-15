@@ -214,7 +214,8 @@ struct FormationDetailView: View {
                 }
             },
             shareUrl: shareURL,
-            formationId: f.id
+            formationId: f.id,
+            formation: f
         )
     }
 

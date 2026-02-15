@@ -23,7 +23,7 @@ struct OnboardingFlowView: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     /// Total number of onboarding steps
-    private let totalSteps = 4
+    private let totalSteps = 5
 
     var body: some View {
         TabView(selection: $currentStep) {
@@ -36,8 +36,11 @@ struct OnboardingFlowView: View {
             OnboardingNotificationsView(onContinue: goToNextStep)
                 .tag(2)
 
-            OnboardingCompleteView(onFinish: completeOnboarding)
+            OnboardingOfflineView(onContinue: goToNextStep)
                 .tag(3)
+
+            OnboardingCompleteView(onFinish: completeOnboarding)
+                .tag(4)
         }
         .tabViewStyle(.page(indexDisplayMode: .never))
         .ignoresSafeArea()
@@ -72,10 +75,14 @@ struct OnboardingFlowView: View {
 /// Wrapper view for replaying onboarding from Settings.
 /// Handles dismiss and allows users to update their interests.
 struct OnboardingReplayView: View {
+    /// Optional callback fired when the replay finishes (before dismiss)
+    var onDismissed: (() -> Void)?
+
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
         OnboardingFlowView(onComplete: {
+            onDismissed?()
             dismiss()
         })
     }
@@ -99,8 +106,10 @@ struct OnboardingReplayView: View {
                     .tag(1)
                 OnboardingNotificationsView { step = 3 }
                     .tag(2)
-                OnboardingCompleteView { }
+                OnboardingOfflineView { step = 4 }
                     .tag(3)
+                OnboardingCompleteView { }
+                    .tag(4)
             }
             .tabViewStyle(.page(indexDisplayMode: .never))
             .ignoresSafeArea()

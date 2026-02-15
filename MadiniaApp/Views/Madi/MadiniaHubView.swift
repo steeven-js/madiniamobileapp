@@ -6,12 +6,16 @@
 //
 
 import SwiftUI
+import TipKit
 
 /// Hub view containing all Madinia-related content: Blog, About, and News.
 /// Uses a segmented tab control at the top for navigation between sections.
 struct MadiniaHubView: View {
     /// Currently selected tab - default to About since Blog/News have no content yet
     @State private var selectedTab: HubTab = .about
+
+    /// Coach mark service for contextual tips
+    private let coachMarks = CoachMarkService.shared
 
     /// Deep link article slug for navigating directly to an article
     @Binding var deepLinkArticleSlug: String?
@@ -86,15 +90,57 @@ struct MadiniaHubView: View {
                 navigationContext.clearEventsNavigationFlag()
             }
         }
+        // Coach marks dismiss observers for hub contextual tips
+        .task(id: coachMarks.tourReplayToken) {
+            for await _ in coachMarks.hubAboutTabTip.statusUpdates {
+                guard !coachMarks.isSkippingTour else { continue }
+                if coachMarks.hubAboutTabTip.status == .invalidated(.tipClosed) {
+                    coachMarks.advanceToNextStep()
+                }
+            }
+        }
+        .task(id: coachMarks.tourReplayToken) {
+            for await _ in coachMarks.hubBlogTabTip.statusUpdates {
+                guard !coachMarks.isSkippingTour else { continue }
+                if coachMarks.hubBlogTabTip.status == .invalidated(.tipClosed) {
+                    coachMarks.advanceToNextStep()
+                }
+            }
+        }
+        .task(id: coachMarks.tourReplayToken) {
+            for await _ in coachMarks.hubEventsTabTip.statusUpdates {
+                guard !coachMarks.isSkippingTour else { continue }
+                if coachMarks.hubEventsTabTip.status == .invalidated(.tipClosed) {
+                    coachMarks.advanceToNextStep()
+                }
+            }
+        }
+        .task(id: coachMarks.tourReplayToken) {
+            for await _ in coachMarks.hubContactTabTip.statusUpdates {
+                guard !coachMarks.isSkippingTour else { continue }
+                if coachMarks.hubContactTabTip.status == .invalidated(.tipClosed) {
+                    coachMarks.advanceToNextStep()
+                }
+            }
+        }
     }
 
     // MARK: - Tab Selector
 
     private var tabSelector: some View {
         HStack(spacing: 0) {
-            ForEach(HubTab.allCases, id: \.self) { tab in
-                tabButton(for: tab)
-            }
+            tabButton(for: .about)
+                .tourHighlight(step: 9, shape: .capsule)
+                .popoverTip(coachMarks.hubAboutTabTip)
+            tabButton(for: .blog)
+                .tourHighlight(step: 10, shape: .capsule)
+                .popoverTip(coachMarks.hubBlogTabTip)
+            tabButton(for: .events)
+                .tourHighlight(step: 11, shape: .capsule)
+                .popoverTip(coachMarks.hubEventsTabTip)
+            tabButton(for: .contact)
+                .tourHighlight(step: 12, shape: .capsule)
+                .popoverTip(coachMarks.hubContactTabTip)
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, MadiniaSpacing.xs)

@@ -99,7 +99,7 @@ struct OnboardingWelcomeView: View {
             }
 
             // Progress dots
-            ProgressDots(currentStep: 0, totalSteps: 4)
+            ProgressDots(currentStep: 0, totalSteps: 5)
                 .padding(.bottom, MadiniaSpacing.md)
         }
     }

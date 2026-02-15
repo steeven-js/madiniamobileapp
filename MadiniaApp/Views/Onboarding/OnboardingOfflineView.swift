@@ -1,17 +1,16 @@
 //
-//  OnboardingNotificationsView.swift
+//  OnboardingOfflineView.swift
 //  MadiniaApp
 //
-//  Created by Madinia on 2026-02-05.
+//  Created by Madinia on 2026-02-15.
 //
 
 import SwiftUI
-import UserNotifications
 
-/// Third screen of the onboarding flow.
-/// Requests permission for push notifications.
-struct OnboardingNotificationsView: View {
-    /// Callback when user taps continue (either enable or skip)
+/// Fourth screen of the onboarding flow.
+/// Presents the offline content features to the user.
+struct OnboardingOfflineView: View {
+    /// Callback when user taps continue
     let onContinue: () -> Void
 
     /// Animation state for icon
@@ -59,8 +58,8 @@ struct OnboardingNotificationsView: View {
                 .fill(MadiniaColors.accent.opacity(0.1))
                 .frame(width: 160, height: 160)
 
-            // Notification icon
-            Image(systemName: "bell.badge.fill")
+            // Offline icon
+            Image(systemName: "arrow.down.circle.fill")
                 .font(.system(size: 70))
                 .foregroundStyle(MadiniaColors.accent)
                 .symbolRenderingMode(.hierarchical)
@@ -73,12 +72,12 @@ struct OnboardingNotificationsView: View {
 
     private var contentSection: some View {
         VStack(spacing: MadiniaSpacing.md) {
-            Text("Restez informé")
+            Text("Apprenez partout")
                 .font(MadiniaTypography.largeTitle)
                 .foregroundStyle(MadiniaColors.darkGray)
                 .multilineTextAlignment(.center)
 
-            Text("Activez les notifications pour ne manquer aucune nouveauté : nouvelles formations, événements et actualités de l'IA.")
+            Text("Téléchargez vos formations pour y accéder même sans connexion internet.")
                 .font(MadiniaTypography.body)
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
@@ -86,9 +85,9 @@ struct OnboardingNotificationsView: View {
 
             // Benefits list
             VStack(alignment: .leading, spacing: MadiniaSpacing.sm) {
-                benefitRow(icon: "graduationcap.fill", text: "Nouvelles formations disponibles")
-                benefitRow(icon: "calendar.badge.clock", text: "Rappels d'événements")
-                benefitRow(icon: "newspaper.fill", text: "Actualités de l'IA")
+                benefitRow(icon: "arrow.down.app.fill", text: "Téléchargez vos formations favorites")
+                benefitRow(icon: "wifi.slash", text: "Accédez au contenu sans connexion")
+                benefitRow(icon: "arrow.triangle.2.circlepath", text: "Synchronisation automatique")
             }
             .padding(.top, MadiniaSpacing.md)
         }
@@ -111,14 +110,12 @@ struct OnboardingNotificationsView: View {
 
     private var bottomSection: some View {
         VStack(spacing: MadiniaSpacing.lg) {
-            // Enable notifications button
+            // Continue button
             Button {
-                requestNotificationPermission()
+                onContinue()
             } label: {
                 HStack(spacing: MadiniaSpacing.xs) {
-                    Image(systemName: "bell")
-                        .font(.system(size: 16, weight: .semibold))
-                    Text("Activer les notifications")
+                    Text("Continuer")
                         .font(.system(size: 16, weight: .semibold))
                 }
                 .foregroundStyle(MadiniaColors.darkGrayFixed)
@@ -128,36 +125,17 @@ struct OnboardingNotificationsView: View {
                 .clipShape(RoundedRectangle(cornerRadius: MadiniaRadius.md))
             }
 
-            // Skip option
-            Button {
-                onContinue()
-            } label: {
-                Text("Plus tard")
-                    .font(MadiniaTypography.subheadline)
-                    .foregroundStyle(.secondary)
-            }
-
             // Progress dots
-            ProgressDots(currentStep: 2, totalSteps: 5)
+            ProgressDots(currentStep: 3, totalSteps: 5)
                 .padding(.bottom, MadiniaSpacing.md)
-        }
-    }
-
-    // MARK: - Actions
-
-    private func requestNotificationPermission() {
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { granted, _ in
-            DispatchQueue.main.async {
-                onContinue()
-            }
         }
     }
 }
 
 // MARK: - Previews
 
-#Preview("Notifications View") {
-    OnboardingNotificationsView {
+#Preview("Offline View") {
+    OnboardingOfflineView {
         print("Continue tapped")
     }
 }

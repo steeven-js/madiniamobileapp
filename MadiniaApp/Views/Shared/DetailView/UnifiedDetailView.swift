@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import TipKit
 
 /// Tab options for the detail view
 enum DetailTab: String, CaseIterable {
@@ -90,6 +91,9 @@ struct UnifiedDetailView: View {
     @State private var showFullScreenImage: Bool = false
     @Environment(\.dismiss) private var dismiss
 
+    /// Coach mark service for contextual tips
+    private let coachMarks = CoachMarkService.shared
+
     /// Computed property to check if current formation is favorite
     private var isFavorite: Bool {
         guard let formationId = config.formationId else { return false }
@@ -145,6 +149,47 @@ struct UnifiedDetailView: View {
                 imageUrl: config.imageUrl,
                 isPresented: $showFullScreenImage
             )
+        }
+        // Activate FavoriteTip when this view appears during the tour (step 17).
+        // The parameter must be set AFTER the view is mounted so .popoverTip() has an anchor.
+        .task {
+            if coachMarks.activeTipStep == 17 {
+                try? await Task.sleep(for: .milliseconds(500))
+                FavoriteTip.hasSeenHistory = true
+            }
+        }
+        // Coach marks dismiss observers for detail contextual tips
+        .task(id: coachMarks.tourReplayToken) {
+            for await _ in coachMarks.favoriteTip.statusUpdates {
+                guard !coachMarks.isSkippingTour else { continue }
+                if coachMarks.favoriteTip.status == .invalidated(.tipClosed) {
+                    coachMarks.advanceToNextStep()
+                }
+            }
+        }
+        .task(id: coachMarks.tourReplayToken) {
+            for await _ in coachMarks.offlineDownloadTip.statusUpdates {
+                guard !coachMarks.isSkippingTour else { continue }
+                if coachMarks.offlineDownloadTip.status == .invalidated(.tipClosed) {
+                    coachMarks.advanceToNextStep()
+                }
+            }
+        }
+        .task(id: coachMarks.tourReplayToken) {
+            for await _ in coachMarks.shareTip.statusUpdates {
+                guard !coachMarks.isSkippingTour else { continue }
+                if coachMarks.shareTip.status == .invalidated(.tipClosed) {
+                    coachMarks.advanceToNextStep()
+                }
+            }
+        }
+        .task(id: coachMarks.tourReplayToken) {
+            for await _ in coachMarks.preRegistrationCTATip.statusUpdates {
+                guard !coachMarks.isSkippingTour else { continue }
+                if coachMarks.preRegistrationCTATip.status == .invalidated(.tipClosed) {
+                    coachMarks.advanceToNextStep()
+                }
+            }
         }
     }
 
@@ -213,6 +258,8 @@ struct UnifiedDetailView: View {
                                         .clipShape(Circle())
                                         .animation(.spring(response: 0.3), value: isFavorite)
                                 }
+                                .tourHighlight(step: 17, shape: .circle)
+                                .popoverTip(coachMarks.favoriteTip)
 
                                 // Download button for offline
                                 if let formation = config.formation {
@@ -220,6 +267,8 @@ struct UnifiedDetailView: View {
                                         .frame(width: 56, height: 56)
                                         .background(Color.black.opacity(0.4))
                                         .clipShape(Circle())
+                                        .tourHighlight(step: 18, shape: .circle)
+                                        .popoverTip(coachMarks.offlineDownloadTip)
                                 }
                             }
                         }
@@ -236,6 +285,8 @@ struct UnifiedDetailView: View {
                                     .background(Color.black.opacity(0.4))
                                     .clipShape(Circle())
                             }
+                            .tourHighlight(step: 19, shape: .circle)
+                            .popoverTip(coachMarks.shareTip)
                         }
                     }
                     .padding(.horizontal, 20)
@@ -516,6 +567,8 @@ struct UnifiedDetailView: View {
                 .background(MadiniaColors.accent)
                 .clipShape(RoundedRectangle(cornerRadius: 12))
         }
+        .tourHighlight(step: 20)
+        .popoverTip(coachMarks.preRegistrationCTATip)
         .padding(.leading, 20)
         .padding(.trailing, 88) // Leave space for Madi FAB on the right
         .tabBarSafeArea() // Adaptive bottom padding for tab bar

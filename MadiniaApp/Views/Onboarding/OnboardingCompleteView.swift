@@ -147,7 +147,7 @@ struct OnboardingCompleteView: View {
             }
 
             // Progress dots
-            ProgressDots(currentStep: 3, totalSteps: 4)
+            ProgressDots(currentStep: 4, totalSteps: 5)
                 .padding(.bottom, MadiniaSpacing.md)
         }
     }

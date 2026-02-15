@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import TipKit
 
 @main
 struct MadiniaApp: App {
@@ -26,6 +27,13 @@ struct MadiniaApp: App {
 
     /// Deep link service
     private let deepLinkService = DeepLinkService.shared
+
+    init() {
+        // Reset TipKit datastore BEFORE configure if a replay was requested.
+        // This runs before any view renders so .popoverTip() picks up fresh tip instances.
+        CoachMarkService.shared.performPendingReplayIfNeeded()
+        try? Tips.configure([.displayFrequency(.immediate)])
+    }
 
     var body: some Scene {
         WindowGroup {
@@ -64,7 +72,8 @@ struct MadiniaApp: App {
     private func checkForWhatsNew() {
         // Slight delay to let the app finish launching
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            if WhatsNewService.shared.shouldShowWhatsNew {
+            // Don't show What's New during the guided tour — it covers the tips
+            if WhatsNewService.shared.shouldShowWhatsNew && CoachMarkService.shared.activeTipStep == nil {
                 showWhatsNew = true
             }
         }

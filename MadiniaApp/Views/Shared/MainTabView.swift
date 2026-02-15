@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import TipKit
 
 /// Main tab types for the app
 enum MainTab: Int, CaseIterable {
@@ -88,6 +89,9 @@ struct MainTabView: View {
     /// Navigation context for handling contact navigation
     private var navigationContext = NavigationContext.shared
 
+    /// Coach marks service for guided tour
+    private var coachMarkService = CoachMarkService.shared
+
     /// Whether we're on iPad (regular width)
     private var isIPad: Bool {
         horizontalSizeClass == .regular
@@ -113,6 +117,8 @@ struct MainTabView: View {
                 iPhoneLayout
             }
         }
+        // Dimming overlay behind the tour tips for better readability
+        .modifier(TourDimmingModifier())
         .sheet(isPresented: $isShowingMadiChat) {
             MadiChatView { recommendation in
                 navigateToFormation(slug: recommendation.formationSlug)
@@ -139,8 +145,13 @@ struct MainTabView: View {
             .preferredColorScheme(themeManager.colorScheme)
         }
         .task {
+            // Force Home tab when tour is active (e.g. after replay)
+            if !coachMarkService.hasSeenTour {
+                selectedTab = .home
+            }
             await pushService.checkAuthorizationStatus()
-            if pushService.shouldPromptForPermission {
+            // Don't show permission prompt during the guided tour — it covers the tips
+            if pushService.shouldPromptForPermission && coachMarkService.activeTipStep == nil {
                 try? await Task.sleep(for: .seconds(2))
                 isShowingPermissionPrompt = true
             }
@@ -178,6 +189,76 @@ struct MainTabView: View {
         .onChange(of: selectedTab) { _, newTab in
             // Persist tab selection in background
             UserDefaults.standard.set(newTab.rawValue, forKey: "selectedTab")
+        }
+        // Coach marks auto-navigation: switch tab when the tour requests it
+        .onChange(of: coachMarkService.pendingTabNavigation) { _, newTab in
+            if let tab = newTab {
+                withAnimation(.easeInOut(duration: 0.3)) {
+                    selectedTab = tab
+                }
+                coachMarkService.pendingTabNavigation = nil
+            }
+        }
+        // Coach marks auto-navigation: open formation detail when tour requests it.
+        // First switch to search tab, then set the slug after a delay so SearchView is mounted.
+        .onChange(of: coachMarkService.pendingFormationSlug) { _, newSlug in
+            if let slug = newSlug {
+                coachMarkService.pendingFormationSlug = nil
+                selectedTab = .search
+                Task { @MainActor in
+                    try? await Task.sleep(for: .milliseconds(800))
+                    selectedFormationSlug = slug
+                }
+            }
+        }
+        // Coach marks dismiss observers - use .id() with tourReplayToken to recreate on replay
+        .task(id: coachMarkService.tourReplayToken) {
+            for await _ in coachMarkService.homeTabTip.statusUpdates {
+                guard !coachMarkService.isSkippingTour else { continue }
+                if coachMarkService.homeTabTip.status == .invalidated(.tipClosed) {
+                    coachMarkService.advanceToNextStep()
+                }
+            }
+        }
+        .task(id: coachMarkService.tourReplayToken) {
+            for await _ in coachMarkService.madiniaTabTip.statusUpdates {
+                guard !coachMarkService.isSkippingTour else { continue }
+                if coachMarkService.madiniaTabTip.status == .invalidated(.tipClosed) {
+                    coachMarkService.advanceToNextStep()
+                }
+            }
+        }
+        .task(id: coachMarkService.tourReplayToken) {
+            for await _ in coachMarkService.userSpaceTabTip.statusUpdates {
+                guard !coachMarkService.isSkippingTour else { continue }
+                if coachMarkService.userSpaceTabTip.status == .invalidated(.tipClosed) {
+                    coachMarkService.advanceToNextStep()
+                }
+            }
+        }
+        .task(id: coachMarkService.tourReplayToken) {
+            for await _ in coachMarkService.searchTabTip.statusUpdates {
+                guard !coachMarkService.isSkippingTour else { continue }
+                if coachMarkService.searchTabTip.status == .invalidated(.tipClosed) {
+                    coachMarkService.advanceToNextStep()
+                }
+            }
+        }
+        .task(id: coachMarkService.tourReplayToken) {
+            for await _ in coachMarkService.madiFABTip.statusUpdates {
+                guard !coachMarkService.isSkippingTour else { continue }
+                if coachMarkService.madiFABTip.status == .invalidated(.tipClosed) {
+                    coachMarkService.advanceToNextStep()
+                }
+            }
+        }
+        .task(id: coachMarkService.tourReplayToken) {
+            for await _ in coachMarkService.settingsTip.statusUpdates {
+                guard !coachMarkService.isSkippingTour else { continue }
+                if coachMarkService.settingsTip.status == .invalidated(.tipClosed) {
+                    coachMarkService.advanceToNextStep()
+                }
+            }
         }
     }
 
@@ -218,6 +299,8 @@ struct MainTabView: View {
                     HStack {
                         Spacer()
                         MadiFAB(isShowingChat: $isShowingMadiChat)
+                            .tourHighlight(step: 5, shape: .circle)
+                            .popoverTip(coachMarkService.madiFABTip, arrowEdge: .bottom)
                             .padding(.trailing, MadiniaSpacing.lg)
                             .padding(.bottom, 16) // Just above custom tab bar
                     }
@@ -238,34 +321,18 @@ struct MainTabView: View {
         NavigationSplitView {
             // Sidebar
             List {
-                ForEach(MainTab.allCases, id: \.self) { tab in
-                    Button {
-                        selectedTab = tab
-                    } label: {
-                        HStack(spacing: MadiniaSpacing.sm) {
-                            if tab.isSystemIcon {
-                                Image(systemName: tab.icon)
-                                    .font(.title3)
-                                    .frame(width: 24)
-                            } else {
-                                Image(tab.icon)
-                                    .renderingMode(.template)
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(width: 24, height: 24)
-                            }
-                            Text(tab.title)
-                                .font(MadiniaTypography.body)
-                        }
-                        .foregroundStyle(selectedTab == tab ? MadiniaColors.accent : .primary)
-                        .padding(.vertical, MadiniaSpacing.xs)
-                    }
-                    .listRowBackground(
-                        selectedTab == tab
-                            ? MadiniaColors.accent.opacity(0.1)
-                            : Color.clear
-                    )
-                }
+                iPadSidebarButton(for: .home)
+                    .tourHighlight(step: 1)
+                    .popoverTip(coachMarkService.homeTabTip, arrowEdge: .trailing)
+                iPadSidebarButton(for: .madinia)
+                    .tourHighlight(step: 2)
+                    .popoverTip(coachMarkService.madiniaTabTip, arrowEdge: .trailing)
+                iPadSidebarButton(for: .userSpace)
+                    .tourHighlight(step: 3)
+                    .popoverTip(coachMarkService.userSpaceTabTip, arrowEdge: .trailing)
+                iPadSidebarButton(for: .search)
+                    .tourHighlight(step: 4)
+                    .popoverTip(coachMarkService.searchTabTip, arrowEdge: .trailing)
             }
             .listStyle(.sidebar)
             .navigationTitle("Madin.IA")
@@ -278,6 +345,7 @@ struct MainTabView: View {
                             .foregroundStyle(MadiniaColors.accent)
                     }
                     .accessibilityLabel("Paramètres")
+                    .popoverTip(coachMarkService.settingsTip, arrowEdge: .top)
                 }
             }
         } detail: {
@@ -312,6 +380,7 @@ struct MainTabView: View {
                         HStack {
                             Spacer()
                             MadiFAB(isShowingChat: $isShowingMadiChat)
+                                .popoverTip(coachMarkService.madiFABTip, arrowEdge: .bottom)
                                 .padding(.trailing, MadiniaSpacing.lg)
                                 .padding(.bottom, MadiniaSpacing.lg)
                         }
@@ -340,6 +409,8 @@ struct MainTabView: View {
                         .shadow(color: .black.opacity(0.1), radius: 4, y: 2)
                 }
                 .accessibilityLabel("Paramètres")
+                .tourHighlight(step: 6, shape: .circle)
+                .popoverTip(coachMarkService.settingsTip, arrowEdge: .top)
                 .padding(.trailing, MadiniaSpacing.md)
                 .padding(.top, 4)
             }
@@ -354,8 +425,14 @@ struct MainTabView: View {
             // Left group: Accueil + Madin.IA + L'IA&Vous
             HStack(spacing: 0) {
                 tabButton(for: .home)
+                    .tourHighlight(step: 1, shape: .capsule)
+                    .popoverTip(coachMarkService.homeTabTip, arrowEdge: .bottom)
                 tabButton(for: .madinia)
+                    .tourHighlight(step: 2, shape: .capsule)
+                    .popoverTip(coachMarkService.madiniaTabTip, arrowEdge: .bottom)
                 tabButton(for: .userSpace)
+                    .tourHighlight(step: 3, shape: .capsule)
+                    .popoverTip(coachMarkService.userSpaceTabTip, arrowEdge: .bottom)
             }
             .padding(.horizontal, MadiniaSpacing.xs)
             .padding(.vertical, MadiniaSpacing.xs)
@@ -363,6 +440,8 @@ struct MainTabView: View {
 
             // Right group: Recherche
             tabButton(for: .search)
+                .tourHighlight(step: 4, shape: .capsule)
+                .popoverTip(coachMarkService.searchTabTip, arrowEdge: .bottom)
                 .padding(.horizontal, MadiniaSpacing.sm)
                 .padding(.vertical, MadiniaSpacing.xs)
                 .modifier(LiquidGlassModifier())
@@ -399,6 +478,37 @@ struct MainTabView: View {
         .buttonStyle(TabButtonStyle())
         .accessibilityLabel(tab.title)
         .accessibilityAddTraits(selectedTab == tab ? .isSelected : [])
+    }
+
+    // MARK: - iPad Sidebar Button
+
+    private func iPadSidebarButton(for tab: MainTab) -> some View {
+        Button {
+            selectedTab = tab
+        } label: {
+            HStack(spacing: MadiniaSpacing.sm) {
+                if tab.isSystemIcon {
+                    Image(systemName: tab.icon)
+                        .font(.title3)
+                        .frame(width: 24)
+                } else {
+                    Image(tab.icon)
+                        .renderingMode(.template)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 24, height: 24)
+                }
+                Text(tab.title)
+                    .font(MadiniaTypography.body)
+            }
+            .foregroundStyle(selectedTab == tab ? MadiniaColors.accent : .primary)
+            .padding(.vertical, MadiniaSpacing.xs)
+        }
+        .listRowBackground(
+            selectedTab == tab
+                ? MadiniaColors.accent.opacity(0.1)
+                : Color.clear
+        )
     }
 
     // MARK: - Navigation

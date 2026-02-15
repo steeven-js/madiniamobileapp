@@ -6,12 +6,16 @@
 //
 
 import SwiftUI
+import TipKit
 import UIKit
 
 /// Main settings hub view with navigation to sub-settings
 struct SettingsView: View {
     /// State for showing onboarding
     @State private var showOnboarding = false
+
+    /// State for coach marks replay feedback
+    @State private var didReplayCoachMarks = false
 
     /// Device registration service for status
     private let deviceRegistration = DeviceRegistrationService.shared
@@ -113,6 +117,49 @@ struct SettingsView: View {
                             .foregroundStyle(.tertiary)
                     }
                     .padding(.vertical, MadiniaSpacing.xxs)
+                }
+
+                Button {
+                    CoachMarkService.shared.replayTour()
+                    didReplayCoachMarks = true
+                    HapticManager.success()
+                } label: {
+                    HStack(spacing: MadiniaSpacing.md) {
+                        Image(systemName: "questionmark.circle")
+                            .font(.title3)
+                            .foregroundStyle(MadiniaColors.accent)
+                            .frame(width: 28)
+
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text("Revoir le guide")
+                                .font(MadiniaTypography.body)
+                                .foregroundStyle(.primary)
+
+                            if didReplayCoachMarks {
+                                Text("Le guide redémarrera au prochain lancement")
+                                    .font(MadiniaTypography.caption)
+                                    .foregroundStyle(MadiniaColors.accent)
+                            } else {
+                                Text("Relancer les bulles d'aide")
+                                    .font(MadiniaTypography.caption)
+                                    .foregroundStyle(.secondary)
+                            }
+                        }
+
+                        Spacer()
+
+                        if didReplayCoachMarks {
+                            Image(systemName: "checkmark.circle.fill")
+                                .foregroundStyle(.green)
+                                .transition(.scale.combined(with: .opacity))
+                        } else {
+                            Image(systemName: "chevron.right")
+                                .font(.caption)
+                                .foregroundStyle(.tertiary)
+                        }
+                    }
+                    .padding(.vertical, MadiniaSpacing.xxs)
+                    .animation(.easeInOut(duration: 0.2), value: didReplayCoachMarks)
                 }
             }
 
@@ -254,7 +301,9 @@ struct SettingsView: View {
         .navigationTitle("Paramètres")
         .navigationBarTitleDisplayMode(.inline)
         .fullScreenCover(isPresented: $showOnboarding) {
-            OnboardingReplayView()
+            OnboardingReplayView(onDismissed: {
+                CoachMarkService.shared.replayTour()
+            })
         }
     }
 

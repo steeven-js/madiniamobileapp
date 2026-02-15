@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import TipKit
 
 /// Navigation destination for all formations list
 struct AllFormationsDestination: Hashable {
@@ -45,6 +46,9 @@ struct SearchView: View {
 
     /// API service for fetching formation details
     private let apiService: APIServiceProtocol = APIService.shared
+
+    /// Coach marks service
+    private var coachMarkService: CoachMarkService { CoachMarkService.shared }
 
     /// Default initializer without deep link
     init() {
@@ -87,18 +91,6 @@ struct SearchView: View {
         .sheet(item: $selectedService) { service in
             ServiceDetailView(service: service)
         }
-        .onChange(of: deepLinkFormationSlug) { _, newSlug in
-            guard let slug = newSlug else { return }
-            Task {
-                await navigateToFormation(slug: slug)
-            }
-        }
-        .onChange(of: deepLinkServiceSlug) { _, newSlug in
-            guard let slug = newSlug else { return }
-            Task {
-                await navigateToService(slug: slug)
-            }
-        }
         .task(id: deepLinkFormationSlug) {
             // Handle initial value when view appears with a slug already set
             guard let slug = deepLinkFormationSlug else { return }
@@ -108,6 +100,14 @@ struct SearchView: View {
             // Handle initial value when view appears with a slug already set
             guard let slug = deepLinkServiceSlug else { return }
             await navigateToService(slug: slug)
+        }
+        .task {
+            for await _ in coachMarkService.searchFiltersTip.statusUpdates {
+                guard !coachMarkService.isSkippingTour else { continue }
+                if coachMarkService.searchFiltersTip.status == .invalidated(.tipClosed) {
+                    coachMarkService.advanceToNextStep()
+                }
+            }
         }
     }
 
@@ -179,6 +179,8 @@ struct SearchView: View {
                     FilterButton(activeCount: viewModel.filters.activeFiltersCount) {
                         showFilters = true
                     }
+                    .tourHighlight(step: 8)
+                    .popoverTip(coachMarkService.searchFiltersTip, arrowEdge: .bottom)
                 }
                 .padding(.horizontal, MadiniaSpacing.md)
 

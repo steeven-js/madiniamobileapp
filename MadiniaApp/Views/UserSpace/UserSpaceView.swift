@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import TipKit
 
 /// User space view - "L'IA&Vous" section for personalized user experience.
 /// This will serve as the user's personal dashboard for their AI learning journey.
@@ -13,34 +14,88 @@ struct UserSpaceView: View {
     /// Navigation state for Calendly booking
     @State private var showCalendly = false
 
+    /// Coach mark service for contextual tips
+    private let coachMarks = CoachMarkService.shared
+
     var body: some View {
         NavigationStack {
-            ScrollView {
-                VStack(spacing: MadiniaSpacing.xl) {
-                    // Hero section
-                    heroSection
+            ScrollViewReader { proxy in
+                ScrollView {
+                    VStack(spacing: MadiniaSpacing.xl) {
+                        // Hero section
+                        heroSection
 
-                    // Booking CTA
-                    BookingCTACard {
-                        showCalendly = true
+                        // Booking CTA
+                        BookingCTACard {
+                            showCalendly = true
+                        }
+
+                        // Available features (saved formations)
+                        availableFeaturesSection
+
+                        // Progress tracking features
+                        progressSection
+
+                        // Coming soon features
+                        comingSoonSection
                     }
-
-                    // Available features (saved formations)
-                    availableFeaturesSection
-
-                    // Progress tracking features
-                    progressSection
-
-                    // Coming soon features
-                    comingSoonSection
+                    .padding(MadiniaSpacing.md)
+                    .tabBarSafeArea()
                 }
-                .padding(MadiniaSpacing.md)
-                .tabBarSafeArea()
+                // Auto-scroll to the active tip target
+                .onChange(of: coachMarks.activeTipStep) { _, step in
+                    guard let step else { return }
+                    let scrollId: String? = switch step {
+                    case 13: "saved-formations"
+                    case 14: "pre-registrations"
+                    case 15: "progress"
+                    case 16: "history"
+                    default: nil
+                    }
+                    if let id = scrollId {
+                        withAnimation(.easeInOut(duration: 0.3)) {
+                            proxy.scrollTo(id, anchor: .center)
+                        }
+                    }
+                }
             }
             .navigationTitle("L'IA&Vous")
             .navigationBarTitleDisplayMode(.large)
             .navigationDestination(isPresented: $showCalendly) {
                 CalendlyView(embedded: true)
+            }
+            // Coach marks dismiss observers for user space contextual tips
+            .task(id: coachMarks.tourReplayToken) {
+                for await _ in coachMarks.savedFormationsTip.statusUpdates {
+                    guard !coachMarks.isSkippingTour else { continue }
+                    if coachMarks.savedFormationsTip.status == .invalidated(.tipClosed) {
+                        coachMarks.advanceToNextStep()
+                    }
+                }
+            }
+            .task(id: coachMarks.tourReplayToken) {
+                for await _ in coachMarks.preRegistrationsTip.statusUpdates {
+                    guard !coachMarks.isSkippingTour else { continue }
+                    if coachMarks.preRegistrationsTip.status == .invalidated(.tipClosed) {
+                        coachMarks.advanceToNextStep()
+                    }
+                }
+            }
+            .task(id: coachMarks.tourReplayToken) {
+                for await _ in coachMarks.progressTip.statusUpdates {
+                    guard !coachMarks.isSkippingTour else { continue }
+                    if coachMarks.progressTip.status == .invalidated(.tipClosed) {
+                        coachMarks.advanceToNextStep()
+                    }
+                }
+            }
+            .task(id: coachMarks.tourReplayToken) {
+                for await _ in coachMarks.historyTip.statusUpdates {
+                    guard !coachMarks.isSkippingTour else { continue }
+                    if coachMarks.historyTip.status == .invalidated(.tipClosed) {
+                        coachMarks.advanceToNextStep()
+                    }
+                }
             }
         }
     }
@@ -103,6 +158,9 @@ struct UserSpaceView: View {
                 )
             }
             .buttonStyle(.plain)
+            .tourHighlight(step: 13)
+            .popoverTip(coachMarks.savedFormationsTip)
+            .id("saved-formations")
 
             // Pre-registrations - Navigable
             NavigationLink {
@@ -116,6 +174,9 @@ struct UserSpaceView: View {
                 )
             }
             .buttonStyle(.plain)
+            .tourHighlight(step: 14)
+            .popoverTip(coachMarks.preRegistrationsTip)
+            .id("pre-registrations")
         }
     }
 
@@ -143,6 +204,9 @@ struct UserSpaceView: View {
                 )
             }
             .buttonStyle(.plain)
+            .tourHighlight(step: 15)
+            .popoverTip(coachMarks.progressTip)
+            .id("progress")
 
             // History - Navigable
             NavigationLink {
@@ -156,6 +220,9 @@ struct UserSpaceView: View {
                 )
             }
             .buttonStyle(.plain)
+            .tourHighlight(step: 16)
+            .popoverTip(coachMarks.historyTip)
+            .id("history")
         }
     }
 
