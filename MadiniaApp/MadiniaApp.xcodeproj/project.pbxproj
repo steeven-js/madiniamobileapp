@@ -69,6 +69,7 @@
 		CACHEDIMGBUILD0000 /* CachedAsyncImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CACHEDIMGFILE00000 /* CachedAsyncImage.swift */; };
 		CACHESERVICEBUILD0000 /* CacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CACHESERVICEFILE00000 /* CacheService.swift */; };
 		CACHESERVTESTBUILD000 /* CacheServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CACHESERVTESTFILE0000 /* CacheServiceTests.swift */; };
+		COACHMKTESTBUILD0000 /* CoachMarkServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = COACHMKTESTFILE00000 /* CoachMarkServiceTests.swift */; };
 		CACHESETTINGSBUILD0 /* CacheSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CACHESETTINGSFILE00 /* CacheSettingsView.swift */; };
 		CALENDLYVIEWBUILD00 /* CalendlyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CALENDLYVIEWFILE0000 /* CalendlyView.swift */; };
 		CATEGORYCARDBUILD00 /* CategoryCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = CATEGORYCARDFILE000 /* CategoryCard.swift */; };
@@ -240,6 +241,7 @@
 		CACHEDIMGFILE00000 /* CachedAsyncImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachedAsyncImage.swift; sourceTree = "<group>"; };
 		CACHESERVICEFILE00000 /* CacheService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheService.swift; sourceTree = "<group>"; };
 		CACHESERVTESTFILE0000 /* CacheServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheServiceTests.swift; sourceTree = "<group>"; };
+		COACHMKTESTFILE00000 /* CoachMarkServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoachMarkServiceTests.swift; sourceTree = "<group>"; };
 		CACHESETTINGSFILE00 /* CacheSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheSettingsView.swift; sourceTree = "<group>"; };
 		CALENDLYVIEWFILE0000 /* CalendlyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendlyView.swift; sourceTree = "<group>"; };
 		CATEGORYCARDFILE000 /* CategoryCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCard.swift; sourceTree = "<group>"; };
@@ -590,6 +592,7 @@
 				OFFLINETESTFILE00000 /* OfflineContentServiceTests.swift */,
 				THEMEMGRTESTFILE0000 /* ThemeManagerTests.swift */,
 				DEEPLINKTESTFILE0000 /* DeepLinkServiceTests.swift */,
+				COACHMKTESTFILE00000 /* CoachMarkServiceTests.swift */,
 			);
 			path = MadiniaAppTests;
 			sourceTree = "<group>";
@@ -1075,6 +1078,7 @@
 				OFFLINETESTBUILD0000 /* OfflineContentServiceTests.swift in Sources */,
 				THEMEMGRTESTBUILD000 /* ThemeManagerTests.swift in Sources */,
 				DEEPLINKTESTBUILD000 /* DeepLinkServiceTests.swift in Sources */,
+				COACHMKTESTBUILD0000 /* CoachMarkServiceTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
