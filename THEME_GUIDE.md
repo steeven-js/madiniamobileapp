@@ -31,16 +31,18 @@
 | Tier Argent | `gray` (system) | Récompenses |
 | Tier Or | `#EED076` | Récompenses |
 
-### Surfaces (iOS system)
+### Surfaces (iOS system) — Valeurs hex pour Figma
 
-| Token | Correspondance iOS |
-|-------|-------------------|
-| Card Background | `UIColor.secondarySystemBackground` |
-| Surface Background | `UIColor.systemBackground` |
-| Elevated Background | `UIColor.secondarySystemBackground` |
-| Grouped Background | `UIColor.systemGroupedBackground` |
-| Primary Text | `Color.primary` |
-| Secondary Text | `Color.secondary` |
+| Token | Light Mode | Dark Mode |
+|-------|-----------|-----------|
+| **Surface Background** | `#FFFFFF` | `#000000` |
+| **Card Background** | `#F2F2F7` | `#1C1C1E` |
+| **Elevated Background** | `#F2F2F7` | `#1C1C1E` |
+| **Grouped Background** | `#F2F2F7` | `#000000` |
+| **Primary Text** | `#000000` | `#FFFFFF` |
+| **Secondary Text** | `#3C3C43` (60%) | `#EBEBF5` (60%) |
+
+> Note : Le thème par défaut est **Dark Mode**, donc les fonds principaux sont `#000000` (fond de page) et `#1C1C1E` (cartes/élevé).
 
 ---
 
