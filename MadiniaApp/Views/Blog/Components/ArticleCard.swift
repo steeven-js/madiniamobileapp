@@ -19,12 +19,13 @@ struct ArticleCard: View {
                 CachedAsyncImage(url: url) { image in
                     image
                         .resizable()
-                        .aspectRatio(16/9, contentMode: .fill)
+                        .aspectRatio(contentMode: .fill)
                 } placeholder: {
                     ShimmerPlaceholder()
                         .aspectRatio(16/9, contentMode: .fit)
                 }
-                .frame(height: 180)
+                .aspectRatio(16/9, contentMode: .fit)
+                .clipped()
                 .clipShape(RoundedRectangle(cornerRadius: 12))
             } else {
                 imagePlaceholder

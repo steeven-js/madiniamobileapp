@@ -122,7 +122,7 @@ struct EventCard: View {
                 eventTypeBadge
                     .padding(MadiniaSpacing.xs)
             }
-            .frame(height: 120)
+            .aspectRatio(16/9, contentMode: .fit)
             .clipped()
 
             // Content
@@ -178,7 +178,7 @@ struct EventCard: View {
             eventTypeBadge
                 .padding(MadiniaSpacing.sm)
         }
-        .frame(height: 160)
+        .aspectRatio(16/9, contentMode: .fit)
         .clipped()
     }
 

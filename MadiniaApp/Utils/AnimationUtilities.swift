@@ -107,11 +107,9 @@ struct PressScaleEffect: ViewModifier {
         content
             .scaleEffect(isPressed ? scale : 1.0)
             .animation(MadiniaAnimation.quick, value: isPressed)
-            .simultaneousGesture(
-                DragGesture(minimumDistance: 0)
-                    .onChanged { _ in isPressed = true }
-                    .onEnded { _ in isPressed = false }
-            )
+            .onLongPressGesture(minimumDuration: .infinity, pressing: { pressing in
+                isPressed = pressing
+            }, perform: {})
     }
 }
 
