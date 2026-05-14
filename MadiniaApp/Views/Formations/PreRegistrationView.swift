@@ -72,6 +72,7 @@ struct PreRegistrationView: View {
             .padding()
         }
         .scrollDismissesKeyboard(.interactively)
+        .tabBarSafeArea()
     }
 
     // MARK: - Info Section
@@ -408,6 +409,7 @@ struct PreRegistrationView: View {
             .buttonStyle(.borderedProminent)
         }
         .padding()
+        .tabBarSafeArea()
     }
 
     // MARK: - Helpers
