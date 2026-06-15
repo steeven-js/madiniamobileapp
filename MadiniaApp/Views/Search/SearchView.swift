@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import TipKit
+import SSCoachMarks
 
 /// Navigation destination for all formations list
 struct AllFormationsDestination: Hashable {
@@ -46,9 +46,6 @@ struct SearchView: View {
 
     /// API service for fetching formation details
     private let apiService: APIServiceProtocol = APIService.shared
-
-    /// Coach marks service
-    private var coachMarkService: CoachMarkService { CoachMarkService.shared }
 
     /// Default initializer without deep link
     init() {
@@ -100,14 +97,6 @@ struct SearchView: View {
             // Handle initial value when view appears with a slug already set
             guard let slug = deepLinkServiceSlug else { return }
             await navigateToService(slug: slug)
-        }
-        .task {
-            for await _ in coachMarkService.searchFiltersTip.statusUpdates {
-                guard !coachMarkService.isSkippingTour else { continue }
-                if coachMarkService.searchFiltersTip.status == .invalidated(.tipClosed) {
-                    coachMarkService.advanceToNextStep()
-                }
-            }
         }
     }
 
@@ -179,8 +168,7 @@ struct SearchView: View {
                     FilterButton(activeCount: viewModel.filters.activeFiltersCount) {
                         showFilters = true
                     }
-                    .tourHighlight(step: 8)
-                    .popoverTip(coachMarkService.searchFiltersTip, arrowEdge: .bottom)
+                    .showCoachMark(order: 0, title: "Filtres de recherche", description: "Étape 8/20 — Affinez vos résultats par catégorie, durée ou niveau pour trouver la formation idéale.", highlightViewCornerRadius: 12)
                 }
                 .padding(.horizontal, MadiniaSpacing.md)
 

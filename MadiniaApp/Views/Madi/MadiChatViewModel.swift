@@ -120,16 +120,17 @@ final class MadiChatViewModel {
             messages.append(response)
         } catch let error as MadiError {
             errorMessage = error.errorDescription
-            // Add fallback message
             messages.append(MadiMessage(
                 content: "Désolé, je rencontre un petit problème technique. Pouvez-vous reformuler votre question ?",
-                isFromUser: false
+                isFromUser: false,
+                isLocalFallback: true
             ))
         } catch {
             errorMessage = "Une erreur est survenue"
             messages.append(MadiMessage(
                 content: "Désolé, je rencontre un petit problème technique. Pouvez-vous reformuler votre question ?",
-                isFromUser: false
+                isFromUser: false,
+                isLocalFallback: true
             ))
         }
 

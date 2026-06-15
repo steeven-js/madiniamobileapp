@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import TipKit
+import SSCoachMarks
 
 /// Hub view containing all Madinia-related content: Blog, About, and News.
 /// Uses a segmented tab control at the top for navigation between sections.
@@ -14,17 +14,18 @@ struct MadiniaHubView: View {
     /// Currently selected tab - default to About since Blog/News have no content yet
     @State private var selectedTab: HubTab = .about
 
-    /// Coach mark service for contextual tips
-    private let coachMarks = CoachMarkService.shared
-
     /// Deep link article slug for navigating directly to an article
     @Binding var deepLinkArticleSlug: String?
+
+    /// Deep link event slug for navigating directly to an event
+    @Binding var deepLinkEventSlug: String?
 
     /// Navigation context for handling contact navigation from services
     @Environment(\.navigationContext) private var navigationContext
 
-    init(deepLinkArticleSlug: Binding<String?> = .constant(nil)) {
+    init(deepLinkArticleSlug: Binding<String?> = .constant(nil), deepLinkEventSlug: Binding<String?> = .constant(nil)) {
         self._deepLinkArticleSlug = deepLinkArticleSlug
+        self._deepLinkEventSlug = deepLinkEventSlug
     }
 
     var body: some View {
@@ -69,6 +70,13 @@ struct MadiniaHubView: View {
                 }
             }
         }
+        .onChange(of: deepLinkEventSlug) { _, newSlug in
+            if newSlug != nil {
+                withAnimation(.easeInOut(duration: 0.2)) {
+                    selectedTab = .events
+                }
+            }
+        }
         .onAppear {
             // Check if we should navigate to an article on appear
             if deepLinkArticleSlug != nil {
@@ -89,38 +97,9 @@ struct MadiniaHubView: View {
                 selectedTab = .events
                 navigationContext.clearEventsNavigationFlag()
             }
-        }
-        // Coach marks dismiss observers for hub contextual tips
-        .task(id: coachMarks.tourReplayToken) {
-            for await _ in coachMarks.hubAboutTabTip.statusUpdates {
-                guard !coachMarks.isSkippingTour else { continue }
-                if coachMarks.hubAboutTabTip.status == .invalidated(.tipClosed) {
-                    coachMarks.advanceToNextStep()
-                }
-            }
-        }
-        .task(id: coachMarks.tourReplayToken) {
-            for await _ in coachMarks.hubBlogTabTip.statusUpdates {
-                guard !coachMarks.isSkippingTour else { continue }
-                if coachMarks.hubBlogTabTip.status == .invalidated(.tipClosed) {
-                    coachMarks.advanceToNextStep()
-                }
-            }
-        }
-        .task(id: coachMarks.tourReplayToken) {
-            for await _ in coachMarks.hubEventsTabTip.statusUpdates {
-                guard !coachMarks.isSkippingTour else { continue }
-                if coachMarks.hubEventsTabTip.status == .invalidated(.tipClosed) {
-                    coachMarks.advanceToNextStep()
-                }
-            }
-        }
-        .task(id: coachMarks.tourReplayToken) {
-            for await _ in coachMarks.hubContactTabTip.statusUpdates {
-                guard !coachMarks.isSkippingTour else { continue }
-                if coachMarks.hubContactTabTip.status == .invalidated(.tipClosed) {
-                    coachMarks.advanceToNextStep()
-                }
+            // Check if we should navigate to a specific event on appear
+            if deepLinkEventSlug != nil {
+                selectedTab = .events
             }
         }
     }
@@ -130,17 +109,13 @@ struct MadiniaHubView: View {
     private var tabSelector: some View {
         HStack(spacing: 0) {
             tabButton(for: .about)
-                .tourHighlight(step: 9, shape: .capsule)
-                .popoverTip(coachMarks.hubAboutTabTip)
+                .showCoachMark(order: 0, title: "À propos", description: "Étape 9/20 — Découvrez l'histoire et la mission de Madin.IA.", highlightViewCornerRadius: 20)
             tabButton(for: .blog)
-                .tourHighlight(step: 10, shape: .capsule)
-                .popoverTip(coachMarks.hubBlogTabTip)
+                .showCoachMark(order: 1, title: "Blog", description: "Étape 10/20 — Lisez nos articles sur l'IA générative et les dernières tendances.", highlightViewCornerRadius: 20)
             tabButton(for: .events)
-                .tourHighlight(step: 11, shape: .capsule)
-                .popoverTip(coachMarks.hubEventsTabTip)
+                .showCoachMark(order: 2, title: "Événements", description: "Étape 11/20 — Retrouvez les prochains événements, ateliers et conférences.", highlightViewCornerRadius: 20)
             tabButton(for: .contact)
-                .tourHighlight(step: 12, shape: .capsule)
-                .popoverTip(coachMarks.hubContactTabTip)
+                .showCoachMark(order: 3, title: "Contact", description: "Étape 12/20 — Contactez-nous pour toute question ou demande d'information.", highlightViewCornerRadius: 20)
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, MadiniaSpacing.xs)
@@ -284,7 +259,7 @@ struct MadiniaHubView: View {
     // MARK: - Events Content
 
     private var eventsContent: some View {
-        EventsView(embedded: true)
+        EventsView(embedded: true, deepLinkEventSlug: $deepLinkEventSlug)
     }
 }
 

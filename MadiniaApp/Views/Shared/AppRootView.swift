@@ -61,10 +61,10 @@ struct AppRootView: View {
                 await dataRepository.preloadAllData()
             }
 
-            // Minimum splash duration for branding (1.5 seconds)
-            // This ensures the logo animation completes
+            // Minimum splash duration for branding (0.8 seconds)
+            // Enough for the logo animation without unnecessary wait
             group.addTask {
-                try? await Task.sleep(for: .milliseconds(1500))
+                try? await Task.sleep(for: .milliseconds(800))
             }
 
             // Wait for BOTH tasks to complete

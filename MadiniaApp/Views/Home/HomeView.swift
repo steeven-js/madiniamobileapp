@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import TipKit
+import SSCoachMarks
 
 /// Home screen view displaying welcome section, articles, events and most viewed formations.
 /// Handles loading, error, and loaded states for formation data.
@@ -38,9 +38,6 @@ struct HomeView: View {
     /// Navigation vers l'historique
     @State private var showHistory = false
 
-    /// Coach marks service
-    private var coachMarkService: CoachMarkService { CoachMarkService.shared }
-
     var body: some View {
         ScrollView(.vertical, showsIndicators: true) {
             VStack(spacing: MadiniaSpacing.lg) {
@@ -66,8 +63,6 @@ struct HomeView: View {
                         .background(MadiniaColors.accent.opacity(0.1))
                         .clipShape(Capsule())
                     }
-                    .tourHighlight(step: 7, shape: .capsule)
-                    .popoverTip(coachMarkService.customizeHomeTip, arrowEdge: .top)
                 }
 
                 // Content based on loading state
@@ -115,14 +110,6 @@ struct HomeView: View {
         }
         .task {
             await viewModel.loadFormations()
-        }
-        .task {
-            for await _ in coachMarkService.customizeHomeTip.statusUpdates {
-                guard !coachMarkService.isSkippingTour else { continue }
-                if coachMarkService.customizeHomeTip.status == .invalidated(.tipClosed) {
-                    coachMarkService.advanceToNextStep()
-                }
-            }
         }
     }
 }

@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import TipKit
+import SSCoachMarks
 
 /// Main tab types for the app
 enum MainTab: Int, CaseIterable {
@@ -72,6 +72,9 @@ struct MainTabView: View {
     /// Service to navigate to from deep link
     @State private var selectedServiceSlug: String?
 
+    /// Event to navigate to from deep link
+    @State private var selectedEventSlug: String?
+
     /// Controls the permission prompt sheet
     @State private var isShowingPermissionPrompt = false
 
@@ -79,6 +82,7 @@ struct MainTabView: View {
     @Environment(\.deepLinkFormationSlug) private var deepLinkFormationSlug
     @Environment(\.deepLinkArticleSlug) private var deepLinkArticleSlug
     @Environment(\.deepLinkServiceSlug) private var deepLinkServiceSlug
+    @Environment(\.deepLinkEventSlug) private var deepLinkEventSlug
 
     /// Horizontal size class for iPad detection
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
@@ -117,8 +121,6 @@ struct MainTabView: View {
                 iPhoneLayout
             }
         }
-        // Dimming overlay behind the tour tips for better readability
-        .modifier(TourDimmingModifier())
         .sheet(isPresented: $isShowingMadiChat) {
             MadiChatView { recommendation in
                 navigateToFormation(slug: recommendation.formationSlug)
@@ -149,10 +151,11 @@ struct MainTabView: View {
             if !coachMarkService.hasSeenTour {
                 selectedTab = .home
             }
+            // Defer push permission check to avoid interrupting first experience
+            try? await Task.sleep(for: .seconds(8))
             await pushService.checkAuthorizationStatus()
             // Don't show permission prompt during the guided tour — it covers the tips
-            if pushService.shouldPromptForPermission && coachMarkService.activeTipStep == nil {
-                try? await Task.sleep(for: .seconds(2))
+            if pushService.shouldPromptForPermission && coachMarkService.activeTourGroup == nil {
                 isShowingPermissionPrompt = true
             }
         }
@@ -173,6 +176,13 @@ struct MainTabView: View {
             if let slug = newSlug {
                 navigateToService(slug: slug)
                 deepLinkServiceSlug.wrappedValue = nil
+            }
+        }
+        .onChange(of: deepLinkEventSlug.wrappedValue) { _, newSlug in
+            if let slug = newSlug {
+                selectedEventSlug = slug
+                selectedTab = .madinia
+                deepLinkEventSlug.wrappedValue = nil
             }
         }
         .onChange(of: navigationContext.shouldNavigateToContact) { _, shouldNavigate in
@@ -211,55 +221,6 @@ struct MainTabView: View {
                 }
             }
         }
-        // Coach marks dismiss observers - use .id() with tourReplayToken to recreate on replay
-        .task(id: coachMarkService.tourReplayToken) {
-            for await _ in coachMarkService.homeTabTip.statusUpdates {
-                guard !coachMarkService.isSkippingTour else { continue }
-                if coachMarkService.homeTabTip.status == .invalidated(.tipClosed) {
-                    coachMarkService.advanceToNextStep()
-                }
-            }
-        }
-        .task(id: coachMarkService.tourReplayToken) {
-            for await _ in coachMarkService.madiniaTabTip.statusUpdates {
-                guard !coachMarkService.isSkippingTour else { continue }
-                if coachMarkService.madiniaTabTip.status == .invalidated(.tipClosed) {
-                    coachMarkService.advanceToNextStep()
-                }
-            }
-        }
-        .task(id: coachMarkService.tourReplayToken) {
-            for await _ in coachMarkService.userSpaceTabTip.statusUpdates {
-                guard !coachMarkService.isSkippingTour else { continue }
-                if coachMarkService.userSpaceTabTip.status == .invalidated(.tipClosed) {
-                    coachMarkService.advanceToNextStep()
-                }
-            }
-        }
-        .task(id: coachMarkService.tourReplayToken) {
-            for await _ in coachMarkService.searchTabTip.statusUpdates {
-                guard !coachMarkService.isSkippingTour else { continue }
-                if coachMarkService.searchTabTip.status == .invalidated(.tipClosed) {
-                    coachMarkService.advanceToNextStep()
-                }
-            }
-        }
-        .task(id: coachMarkService.tourReplayToken) {
-            for await _ in coachMarkService.madiFABTip.statusUpdates {
-                guard !coachMarkService.isSkippingTour else { continue }
-                if coachMarkService.madiFABTip.status == .invalidated(.tipClosed) {
-                    coachMarkService.advanceToNextStep()
-                }
-            }
-        }
-        .task(id: coachMarkService.tourReplayToken) {
-            for await _ in coachMarkService.settingsTip.statusUpdates {
-                guard !coachMarkService.isSkippingTour else { continue }
-                if coachMarkService.settingsTip.status == .invalidated(.tipClosed) {
-                    coachMarkService.advanceToNextStep()
-                }
-            }
-        }
     }
 
     // MARK: - iPhone Layout
@@ -279,13 +240,25 @@ struct MainTabView: View {
                             HomeView(selectedTab: selectedTabBinding)
                         }
                     case .madinia:
-                        MadiniaHubView(deepLinkArticleSlug: $selectedArticleSlug)
+                        MadiniaHubView(deepLinkArticleSlug: $selectedArticleSlug, deepLinkEventSlug: $selectedEventSlug)
+                            .conditionalCoachMarkView(
+                                active: coachMarkService.activeTourGroup == .hub,
+                                onFinished: { coachMarkService.onGroupFinished(group: .hub) }
+                            )
                     case .userSpace:
                         UserSpaceView()
+                            .conditionalCoachMarkView(
+                                active: coachMarkService.activeTourGroup == .userSpace,
+                                onFinished: { coachMarkService.onGroupFinished(group: .userSpace) }
+                            )
                     case .search:
                         SearchTab(
                             selectedFormationSlug: $selectedFormationSlug,
                             selectedServiceSlug: $selectedServiceSlug
+                        )
+                        .conditionalCoachMarkView(
+                            active: coachMarkService.activeTourGroup == .search,
+                            onFinished: { coachMarkService.onGroupFinished(group: .search) }
                         )
                     }
                 }
@@ -299,8 +272,8 @@ struct MainTabView: View {
                     HStack {
                         Spacer()
                         MadiFAB(isShowingChat: $isShowingMadiChat)
-                            .tourHighlight(step: 5, shape: .circle)
-                            .popoverTip(coachMarkService.madiFABTip, arrowEdge: .bottom)
+                            .showCoachMark(order: 4, title: "Madi, coach IA", description: "Étape 5/20 — Posez vos questions à Madi, votre assistant IA personnel.", highlightViewCornerRadius: 30)
+
                             .padding(.trailing, MadiniaSpacing.lg)
                             .padding(.bottom, 16) // Just above custom tab bar
                     }
@@ -313,6 +286,10 @@ struct MainTabView: View {
                     .padding(.bottom, MadiniaSpacing.sm)
             }
         }
+        .conditionalCoachMarkView(
+            active: coachMarkService.activeTourGroup == .tabBar,
+            onFinished: { coachMarkService.onGroupFinished(group: .tabBar) }
+        )
     }
 
     // MARK: - iPad Layout
@@ -322,17 +299,13 @@ struct MainTabView: View {
             // Sidebar
             List {
                 iPadSidebarButton(for: .home)
-                    .tourHighlight(step: 1)
-                    .popoverTip(coachMarkService.homeTabTip, arrowEdge: .trailing)
+
                 iPadSidebarButton(for: .madinia)
-                    .tourHighlight(step: 2)
-                    .popoverTip(coachMarkService.madiniaTabTip, arrowEdge: .trailing)
+
                 iPadSidebarButton(for: .userSpace)
-                    .tourHighlight(step: 3)
-                    .popoverTip(coachMarkService.userSpaceTabTip, arrowEdge: .trailing)
+
                 iPadSidebarButton(for: .search)
-                    .tourHighlight(step: 4)
-                    .popoverTip(coachMarkService.searchTabTip, arrowEdge: .trailing)
+
             }
             .listStyle(.sidebar)
             .navigationTitle("Madin.IA")
@@ -345,7 +318,7 @@ struct MainTabView: View {
                             .foregroundStyle(MadiniaColors.accent)
                     }
                     .accessibilityLabel("Paramètres")
-                    .popoverTip(coachMarkService.settingsTip, arrowEdge: .top)
+
                 }
             }
         } detail: {
@@ -380,7 +353,7 @@ struct MainTabView: View {
                         HStack {
                             Spacer()
                             MadiFAB(isShowingChat: $isShowingMadiChat)
-                                .popoverTip(coachMarkService.madiFABTip, arrowEdge: .bottom)
+            
                                 .padding(.trailing, MadiniaSpacing.lg)
                                 .padding(.bottom, MadiniaSpacing.lg)
                         }
@@ -409,8 +382,7 @@ struct MainTabView: View {
                         .shadow(color: .black.opacity(0.1), radius: 4, y: 2)
                 }
                 .accessibilityLabel("Paramètres")
-                .tourHighlight(step: 6, shape: .circle)
-                .popoverTip(coachMarkService.settingsTip, arrowEdge: .top)
+                .showCoachMark(order: 5, title: "Paramètres", description: "Étape 6/20 — Personnalisez l'apparence, les notifications et gérez vos données.", highlightViewCornerRadius: 30)
                 .padding(.trailing, MadiniaSpacing.md)
                 .padding(.top, 4)
             }
@@ -425,14 +397,14 @@ struct MainTabView: View {
             // Left group: Accueil + Madin.IA + L'IA&Vous
             HStack(spacing: 0) {
                 tabButton(for: .home)
-                    .tourHighlight(step: 1, shape: .capsule)
-                    .popoverTip(coachMarkService.homeTabTip, arrowEdge: .bottom)
+                    .showCoachMark(order: 0, title: "Accueil", description: "Étape 1/20 — Retrouvez ici vos formations en cours, les dernières actualités et les événements à venir.", highlightViewCornerRadius: 25)
+
                 tabButton(for: .madinia)
-                    .tourHighlight(step: 2, shape: .capsule)
-                    .popoverTip(coachMarkService.madiniaTabTip, arrowEdge: .bottom)
+                    .showCoachMark(order: 1, title: "Madin.IA", description: "Étape 2/20 — Explorez les articles du blog, les vidéos et toutes les ressources Madin.IA.", highlightViewCornerRadius: 25)
+
                 tabButton(for: .userSpace)
-                    .tourHighlight(step: 3, shape: .capsule)
-                    .popoverTip(coachMarkService.userSpaceTabTip, arrowEdge: .bottom)
+                    .showCoachMark(order: 2, title: "L'IA&Vous", description: "Étape 3/20 — Votre espace personnel : favoris, progression et historique de formations.", highlightViewCornerRadius: 25)
+
             }
             .padding(.horizontal, MadiniaSpacing.xs)
             .padding(.vertical, MadiniaSpacing.xs)
@@ -440,8 +412,8 @@ struct MainTabView: View {
 
             // Right group: Recherche
             tabButton(for: .search)
-                .tourHighlight(step: 4, shape: .capsule)
-                .popoverTip(coachMarkService.searchTabTip, arrowEdge: .bottom)
+                .showCoachMark(order: 3, title: "Recherche", description: "Étape 4/20 — Trouvez rapidement une formation, un service ou une catégorie.", highlightViewCornerRadius: 25)
+
                 .padding(.horizontal, MadiniaSpacing.sm)
                 .padding(.vertical, MadiniaSpacing.xs)
                 .modifier(LiquidGlassModifier())

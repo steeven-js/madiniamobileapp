@@ -14,7 +14,6 @@
 		217C8F16F8C246BD992013C2 /* SavedFormationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEEF31CFE1B54B64B1C9632B /* SavedFormationsView.swift */; };
 		36B78635747049BFA5AB1A9D /* ServiceDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB02D656A044D26A0789F00 /* ServiceDetailView.swift */; };
 		38DB3AD23270D2D272B9A4F6 /* EventsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D66D51D1313FD61C587AB0 /* EventsService.swift */; };
-		3B2ED5A24A63B863C8817F17 /* DetailContextualTips.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29734D962393C70463B316CA /* DetailContextualTips.swift */; };
 		4F5CF21489ED4D3B91C9168A /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AABB2D1FCAE4F0584974B1C /* SearchViewModel.swift */; };
 		58FD9955ECE4C9064B0CFD42 /* MadiContextService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA96B0A0C6A0422D99DE54EC /* MadiContextService.swift */; };
 		61F1F41984060E0C79421F63 /* AchievementBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02171FBF628862E3BB106A2D /* AchievementBadge.swift */; };
@@ -24,16 +23,17 @@
 		6E44259D1E6682BDCB92E1E3 /* WeeklyActivityChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ECAFC363995493D3DBFE61D /* WeeklyActivityChart.swift */; };
 		70256C18828E95A82B8E241D /* ProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0C0153A05D0FA730CCB5E3C /* ProgressView.swift */; };
 		737EE0CB7E37EC4952362993 /* MadiQuiz.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66E4EC77A3DF62BC0DE37970 /* MadiQuiz.swift */; };
-		74ADBB69B67E440599A5D0A1 /* PreRegistrationsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF68241339949EBB1EF3EDF /* PreRegistrationsService.swift */; };
+		74503503132DCF9042B8C322 /* MyEventsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D36182E73F6F232F12DAF32 /* MyEventsView.swift */; };
+		74ADBB69B67E440599A5D0A1 /* Services/PreRegistrationsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF68241339949EBB1EF3EDF /* Services/PreRegistrationsService.swift */; };
 		75068B284E887420CC797C5B /* MadiQuizView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 089BB90C454C1BF597092C05 /* MadiQuizView.swift */; };
 		775B39D79E49E8385A5C9E24 /* EventDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6925262595C0FEBA1ECE4F /* EventDetailView.swift */; };
 		7802C29E2F25281B00EE8B5D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7802C29D2F25281B00EE8B5D /* Assets.xcassets */; };
+		786D1F392FB65B9F00828445 /* SSCoachMarks in Frameworks */ = {isa = PBXBuildFile; productRef = 907D6821CCC20A639E94AC6D /* SSCoachMarks */; };
 		787FE2E2847049AF8BF794F8 /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F77A683D12C49159C9B01BC /* Service.swift */; };
-		83ECEFB2D96349D7B60F1E53 /* MyPreRegistrationsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A082AA394C634C269594E699 /* MyPreRegistrationsViewModel.swift */; };
+		83ECEFB2D96349D7B60F1E53 /* ViewModels/MyPreRegistrationsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A082AA394C634C269594E699 /* ViewModels/MyPreRegistrationsViewModel.swift */; };
 		87314FFCBC84AAFE8F8CAD68 /* WhatsNewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C74B18ADD267417F296DFF /* WhatsNewView.swift */; };
-		8D3BF7B2358241BEB78E6069 /* MyPreRegistrationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B05CA648DDB49F8BA3204D0 /* MyPreRegistrationsView.swift */; };
+		8D3BF7B2358241BEB78E6069 /* Views/UserSpace/MyPreRegistrationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B05CA648DDB49F8BA3204D0 /* Views/UserSpace/MyPreRegistrationsView.swift */; };
 		8D4009FECA844FC4898C72BA /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D498316447A40F1BCD95A1A /* SearchView.swift */; };
-		90D4C159EA1B06853C46D4C6 /* HubContextualTips.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1562AA5CCFCBD302AE3B019 /* HubContextualTips.swift */; };
 		9B40CD85E318B9277D1033B9 /* ProgressTrackingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEEA8A942DE3AAD1619E9D8A /* ProgressTrackingService.swift */; };
 		9CDBDDF55D8D49A7B70A7FAB /* ServiceCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D014559F2844681BFBBA16E /* ServiceCard.swift */; };
 		A11111111111111111111111 /* MadiniaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A22222222222222222222222 /* MadiniaApp.swift */; };
@@ -52,12 +52,11 @@
 		APPDELEGATEBUILD000 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = APPDELEGATEFILE0000 /* AppDelegate.swift */; };
 		APPEARANCESETTBUILD0 /* AppearanceSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = APPEARANCESETTFILE00 /* AppearanceSettingsView.swift */; };
 		APPROOTVIEWBUILD00 /* AppRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = APPROOTVIEWFILE000 /* AppRootView.swift */; };
-		APPTIPSBUILD000000000 /* AppTips.swift in Sources */ = {isa = PBXBuildFile; fileRef = APPTIPSFILE0000000000 /* AppTips.swift */; };
 		ARTICLEBUILD0000000000 /* Article.swift in Sources */ = {isa = PBXBuildFile; fileRef = ARTICLEFILE00000000000 /* Article.swift */; };
 		ARTICLECARDBUILD00000 /* ArticleCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = ARTICLECARDFILE000000 /* ArticleCard.swift */; };
 		ARTICLEDETAILBUILD000 /* ArticleDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ARTICLEDETAILFILE0000 /* ArticleDetailView.swift */; };
 		ARTICLESSECTIONBUILD /* ArticlesSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = ARTICLESSECTIONFILE0 /* ArticlesSection.swift */; };
-		B348C4CE47024C2DBAA7444A /* PreRegistration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425DA60DAEB04458BF3A5B66 /* PreRegistration.swift */; };
+		B348C4CE47024C2DBAA7444A /* Models/PreRegistration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425DA60DAEB04458BF3A5B66 /* Models/PreRegistration.swift */; };
 		B7CDF691054E454FA0AFA335 /* FavoritesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 466E55312EFD4331B801A836 /* FavoritesService.swift */; };
 		B9B2D45D70C43FFE2C694118 /* EventCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9673E11A3D89F841DBAA56D /* EventCard.swift */; };
 		BB7138A4957A4D56BA0AA952 /* SectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C253FBE3FF0F4042BFF8302C /* SectionHeader.swift */; };
@@ -69,7 +68,6 @@
 		CACHEDIMGBUILD0000 /* CachedAsyncImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CACHEDIMGFILE00000 /* CachedAsyncImage.swift */; };
 		CACHESERVICEBUILD0000 /* CacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CACHESERVICEFILE00000 /* CacheService.swift */; };
 		CACHESERVTESTBUILD000 /* CacheServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CACHESERVTESTFILE0000 /* CacheServiceTests.swift */; };
-		COACHMKTESTBUILD0000 /* CoachMarkServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = COACHMKTESTFILE00000 /* CoachMarkServiceTests.swift */; };
 		CACHESETTINGSBUILD0 /* CacheSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CACHESETTINGSFILE00 /* CacheSettingsView.swift */; };
 		CALENDLYVIEWBUILD00 /* CalendlyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CALENDLYVIEWFILE0000 /* CalendlyView.swift */; };
 		CATEGORYCARDBUILD00 /* CategoryCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = CATEGORYCARDFILE000 /* CategoryCard.swift */; };
@@ -79,6 +77,7 @@
 		CATGRIDVIEWBUILD00 /* CategoriesGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CATGRIDVIEWFILE000 /* CategoriesGridView.swift */; };
 		CB31545E9DF24F888D55BA95 /* SavedFormationsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78438CEFE60455485D725F3 /* SavedFormationsViewModel.swift */; };
 		COACHMARKBUILD0000000 /* CoachMarkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = COACHMARKFILE00000000 /* CoachMarkService.swift */; };
+		COACHMKTESTBUILD0000 /* CoachMarkServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = COACHMKTESTFILE00000 /* CoachMarkServiceTests.swift */; };
 		COLORHEXBUILD00000000 /* Color+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = COLORHEXFILE000000000 /* Color+Hex.swift */; };
 		CONTACTHUBBUILD0000 /* ContactHubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CONTACTHUBVIEWFILE0 /* ContactHubView.swift */; };
 		CONTACTVMBUILD000000 /* ContactViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CONTACTVMFILE0000000 /* ContactViewModel.swift */; };
@@ -91,7 +90,6 @@
 		DEEPLINKTESTBUILD000 /* DeepLinkServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEEPLINKTESTFILE0000 /* DeepLinkServiceTests.swift */; };
 		DEGRADEDBANNERBUILD0 /* DegradedModeBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEGRADEDBANNERFILE00 /* DegradedModeBanner.swift */; };
 		DESIGNSYSTEMBUILD00 /* DesignSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DESIGNSYSTEMFILE000 /* DesignSystem.swift */; };
-		E8D02D59F88EDA33B899254D /* UserSpaceContextualTips.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0ABDB2D01C3E17B2C5257A8 /* UserSpaceContextualTips.swift */; };
 		E938F1489C664B0886221C5D /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27672990C3B42CCB1D283F0 /* SearchBar.swift */; };
 		EMAILVALIDBUILD00000 /* EmailValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EMAILVALIDFILE000000 /* EmailValidator.swift */; };
 		ERRORHANDLINGBUILD00 /* ErrorHandlingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = ERRORHANDLINGFILE000 /* ErrorHandlingService.swift */; };
@@ -123,6 +121,7 @@
 		LOADSTATEBUILD000000000 /* LoadingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = LOADSTATEFILE0000000000 /* LoadingState.swift */; };
 		MADICHATVIEWBUILD00 /* MadiChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = MADICHATVIEWFILE0000 /* MadiChatView.swift */; };
 		MADICHATVMBUILD00000 /* MadiChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = MADICHATVMFILE000000 /* MadiChatViewModel.swift */; };
+		MADICONSENTBUILD0000 /* MadiConsentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = MADICONSENTFILE00000 /* MadiConsentView.swift */; };
 		MADIFABBUILD00000000 /* MadiFAB.swift in Sources */ = {isa = PBXBuildFile; fileRef = MADIFABFILE000000000 /* MadiFAB.swift */; };
 		MADIMSGBUILD00000000 /* MadiMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = MADIMSGFILE000000000 /* MadiMessage.swift */; };
 		MADISERVICEBUILD0000 /* MadiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = MADISERVICEFILE00000 /* MadiService.swift */; };
@@ -184,17 +183,17 @@
 /* Begin PBXFileReference section */
 		02171FBF628862E3BB106A2D /* AchievementBadge.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AchievementBadge.swift; sourceTree = "<group>"; };
 		089BB90C454C1BF597092C05 /* MadiQuizView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MadiQuizView.swift; sourceTree = "<group>"; };
-		0AF68241339949EBB1EF3EDF /* PreRegistrationsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Services/PreRegistrationsService.swift; sourceTree = "<group>"; };
+		0AF68241339949EBB1EF3EDF /* Services/PreRegistrationsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Services/PreRegistrationsService.swift; sourceTree = "<group>"; };
 		1AABB2D1FCAE4F0584974B1C /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
+		1D36182E73F6F232F12DAF32 /* MyEventsView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MyEventsView.swift; path = Views/UserSpace/MyEventsView.swift; sourceTree = "<group>"; };
 		2848210C2720C5A842CC73EA /* StatCard.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = StatCard.swift; sourceTree = "<group>"; };
-		29734D962393C70463B316CA /* DetailContextualTips.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DetailContextualTips.swift; sourceTree = "<group>"; };
 		34D66D51D1313FD61C587AB0 /* EventsService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = EventsService.swift; sourceTree = "<group>"; };
 		3C111D8DAAA40A220EC343BF /* MadiniaHubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MadiniaHubView.swift; sourceTree = "<group>"; };
 		3F77A683D12C49159C9B01BC /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
 		3FB67C49D05F19863C934E29 /* Environment.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Environment.swift; sourceTree = "<group>"; };
-		425DA60DAEB04458BF3A5B66 /* PreRegistration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models/PreRegistration.swift; sourceTree = "<group>"; };
+		425DA60DAEB04458BF3A5B66 /* Models/PreRegistration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models/PreRegistration.swift; sourceTree = "<group>"; };
 		466E55312EFD4331B801A836 /* FavoritesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesService.swift; sourceTree = "<group>"; };
-		5B05CA648DDB49F8BA3204D0 /* MyPreRegistrationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Views/UserSpace/MyPreRegistrationsView.swift; sourceTree = "<group>"; };
+		5B05CA648DDB49F8BA3204D0 /* Views/UserSpace/MyPreRegistrationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Views/UserSpace/MyPreRegistrationsView.swift; sourceTree = "<group>"; };
 		5CBFD269B5C7ED371C01D503 /* Event.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		5D498316447A40F1BCD95A1A /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		5ECAFC363995493D3DBFE61D /* WeeklyActivityChart.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WeeklyActivityChart.swift; sourceTree = "<group>"; };
@@ -208,8 +207,7 @@
 		7C73721984AE4C4D9B120091 /* AllServicesListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllServicesListView.swift; sourceTree = "<group>"; };
 		7D014559F2844681BFBBA16E /* ServiceCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceCard.swift; sourceTree = "<group>"; };
 		90D64EDFBEA83B2F3D432B44 /* WhatsNewService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = WhatsNewService.swift; path = Services/WhatsNewService.swift; sourceTree = SOURCE_ROOT; };
-		A082AA394C634C269594E699 /* MyPreRegistrationsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModels/MyPreRegistrationsViewModel.swift; sourceTree = "<group>"; };
-		A0ABDB2D01C3E17B2C5257A8 /* UserSpaceContextualTips.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = UserSpaceContextualTips.swift; sourceTree = "<group>"; };
+		A082AA394C634C269594E699 /* ViewModels/MyPreRegistrationsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModels/MyPreRegistrationsViewModel.swift; sourceTree = "<group>"; };
 		A22222222222222222222222 /* MadiniaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MadiniaApp.swift; sourceTree = "<group>"; };
 		A44444444444444444444444 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		A55555555555555555555555 /* MadiniaApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MadiniaApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -223,7 +221,6 @@
 		APPDELEGATEFILE0000 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		APPEARANCESETTFILE00 /* AppearanceSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceSettingsView.swift; sourceTree = "<group>"; };
 		APPROOTVIEWFILE000 /* AppRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRootView.swift; sourceTree = "<group>"; };
-		APPTIPSFILE0000000000 /* AppTips.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTips.swift; sourceTree = "<group>"; };
 		ARTICLECARDFILE000000 /* ArticleCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleCard.swift; sourceTree = "<group>"; };
 		ARTICLEDETAILFILE0000 /* ArticleDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleDetailView.swift; sourceTree = "<group>"; };
 		ARTICLEFILE00000000000 /* Article.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Article.swift; sourceTree = "<group>"; };
@@ -241,7 +238,6 @@
 		CACHEDIMGFILE00000 /* CachedAsyncImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachedAsyncImage.swift; sourceTree = "<group>"; };
 		CACHESERVICEFILE00000 /* CacheService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheService.swift; sourceTree = "<group>"; };
 		CACHESERVTESTFILE0000 /* CacheServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheServiceTests.swift; sourceTree = "<group>"; };
-		COACHMKTESTFILE00000 /* CoachMarkServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoachMarkServiceTests.swift; sourceTree = "<group>"; };
 		CACHESETTINGSFILE00 /* CacheSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheSettingsView.swift; sourceTree = "<group>"; };
 		CALENDLYVIEWFILE0000 /* CalendlyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendlyView.swift; sourceTree = "<group>"; };
 		CATEGORYCARDFILE000 /* CategoryCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCard.swift; sourceTree = "<group>"; };
@@ -252,6 +248,7 @@
 		CEEA8A942DE3AAD1619E9D8A /* ProgressTrackingService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ProgressTrackingService.swift; sourceTree = "<group>"; };
 		CF9FC3CAB7123EFF27445B60 /* DeviceRegistrationService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DeviceRegistrationService.swift; sourceTree = "<group>"; };
 		COACHMARKFILE00000000 /* CoachMarkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoachMarkService.swift; sourceTree = "<group>"; };
+		COACHMKTESTFILE00000 /* CoachMarkServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoachMarkServiceTests.swift; sourceTree = "<group>"; };
 		COLORHEXFILE000000000 /* Color+Hex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Hex.swift"; sourceTree = "<group>"; };
 		CONTACTHUBVIEWFILE0 /* ContactHubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactHubView.swift; sourceTree = "<group>"; };
 		CONTACTVMFILE0000000 /* ContactViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactViewModel.swift; sourceTree = "<group>"; };
@@ -274,7 +271,6 @@
 		ERRORHANDTESTFILE0000 /* ErrorHandlingServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorHandlingServiceTests.swift; sourceTree = "<group>"; };
 		ERRORVIEWFILE0000000000 /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
 		EVENTSSECTIONFILE000 /* EventsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsSection.swift; sourceTree = "<group>"; };
-		F1562AA5CCFCBD302AE3B019 /* HubContextualTips.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HubContextualTips.swift; sourceTree = "<group>"; };
 		FA6925262595C0FEBA1ECE4F /* EventDetailView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = EventDetailView.swift; sourceTree = "<group>"; };
 		FAVSERVTESTFILE00000 /* FavoritesServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesServiceTests.swift; sourceTree = "<group>"; };
 		FORMATIONFILE0000000000 /* Formation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Formation.swift; sourceTree = "<group>"; };
@@ -300,6 +296,7 @@
 		LOADSTATEFILE0000000000 /* LoadingState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingState.swift; sourceTree = "<group>"; };
 		MADICHATVIEWFILE0000 /* MadiChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MadiChatView.swift; sourceTree = "<group>"; };
 		MADICHATVMFILE000000 /* MadiChatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MadiChatViewModel.swift; sourceTree = "<group>"; };
+		MADICONSENTFILE00000 /* MadiConsentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MadiConsentView.swift; sourceTree = "<group>"; };
 		MADIFABFILE000000000 /* MadiFAB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MadiFAB.swift; sourceTree = "<group>"; };
 		MADIMSGFILE000000000 /* MadiMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MadiMessage.swift; sourceTree = "<group>"; };
 		MADISERVICEFILE00000 /* MadiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MadiService.swift; sourceTree = "<group>"; };
@@ -354,6 +351,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				786D1F392FB65B9F00828445 /* SSCoachMarks in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -389,21 +387,17 @@
 		473FED05E0E8E4EDD728929C /* ContextualTips */ = {
 			isa = PBXGroup;
 			children = (
-				F1562AA5CCFCBD302AE3B019 /* HubContextualTips.swift */,
-				A0ABDB2D01C3E17B2C5257A8 /* UserSpaceContextualTips.swift */,
-				29734D962393C70463B316CA /* DetailContextualTips.swift */,
 			);
-			name = ContextualTips;
 			path = ContextualTips;
 			sourceTree = "<group>";
 		};
 		788B82312F37C72900C19170 /* Recovered References */ = {
 			isa = PBXGroup;
 			children = (
-				5B05CA648DDB49F8BA3204D0 /* MyPreRegistrationsView.swift */,
-				A082AA394C634C269594E699 /* MyPreRegistrationsViewModel.swift */,
-				0AF68241339949EBB1EF3EDF /* PreRegistrationsService.swift */,
-				425DA60DAEB04458BF3A5B66 /* PreRegistration.swift */,
+				5B05CA648DDB49F8BA3204D0 /* Views/UserSpace/MyPreRegistrationsView.swift */,
+				A082AA394C634C269594E699 /* ViewModels/MyPreRegistrationsViewModel.swift */,
+				0AF68241339949EBB1EF3EDF /* Services/PreRegistrationsService.swift */,
+				425DA60DAEB04458BF3A5B66 /* Models/PreRegistration.swift */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -429,6 +423,7 @@
 				TESTSGROUP0000000000000 /* MadiniaAppTests */,
 				A88888888888888888888888 /* Products */,
 				788B82312F37C72900C19170 /* Recovered References */,
+				1D36182E73F6F232F12DAF32 /* MyEventsView.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -567,7 +562,6 @@
 				NETWORKMONFILE000000 /* NetworkMonitorService.swift */,
 				SYNCQUEUEFILE0000000 /* SyncQueueService.swift */,
 				OFFLINECONTFILE00000 /* OfflineContentService.swift */,
-				APPTIPSFILE0000000000 /* AppTips.swift */,
 				COACHMARKFILE00000000 /* CoachMarkService.swift */,
 				473FED05E0E8E4EDD728929C /* ContextualTips */,
 			);
@@ -732,6 +726,7 @@
 		VIEWSMADICOMP0000000 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				MADICONSENTFILE00000 /* MadiConsentView.swift */,
 				MADIFABFILE000000000 /* MadiFAB.swift */,
 				E12CE67F767126A6E7742489 /* QuickActionChips.swift */,
 			);
@@ -827,6 +822,9 @@
 			dependencies = (
 			);
 			name = MadiniaApp;
+			packageProductDependencies = (
+				907D6821CCC20A639E94AC6D /* SSCoachMarks */,
+			);
 			productName = MadiniaApp;
 			productReference = A55555555555555555555555 /* MadiniaApp.app */;
 			productType = "com.apple.product-type.application";
@@ -878,6 +876,9 @@
 				fr,
 			);
 			mainGroup = A66666666666666666666666;
+			packageReferences = (
+				764B04CC8D26EB40C3BD8CFD /* XCRemoteSwiftPackageReference "SSCoachMarks" */,
+			);
 			productRefGroup = A88888888888888888888888 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -911,10 +912,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8D3BF7B2358241BEB78E6069 /* MyPreRegistrationsView.swift in Sources */,
-				83ECEFB2D96349D7B60F1E53 /* MyPreRegistrationsViewModel.swift in Sources */,
-				74ADBB69B67E440599A5D0A1 /* PreRegistrationsService.swift in Sources */,
-				B348C4CE47024C2DBAA7444A /* PreRegistration.swift in Sources */,
+				8D3BF7B2358241BEB78E6069 /* Views/UserSpace/MyPreRegistrationsView.swift in Sources */,
+				83ECEFB2D96349D7B60F1E53 /* ViewModels/MyPreRegistrationsViewModel.swift in Sources */,
+				74ADBB69B67E440599A5D0A1 /* Services/PreRegistrationsService.swift in Sources */,
+				B348C4CE47024C2DBAA7444A /* Models/PreRegistration.swift in Sources */,
 				69F0DABE1A1A44B2A391906B /* AllServicesListView.swift in Sources */,
 				B7CDF691054E454FA0AFA335 /* FavoritesService.swift in Sources */,
 				CB31545E9DF24F888D55BA95 /* SavedFormationsViewModel.swift in Sources */,
@@ -966,6 +967,7 @@
 				MADISERVICEBUILD0000 /* MadiService.swift in Sources */,
 				MADICHATVMBUILD00000 /* MadiChatViewModel.swift in Sources */,
 				120D914AC37DA0B3BB2093EA /* MadiniaHubView.swift in Sources */,
+				MADICONSENTBUILD0000 /* MadiConsentView.swift in Sources */,
 				MADIFABBUILD00000000 /* MadiFAB.swift in Sources */,
 				MADICHATVIEWBUILD00 /* MadiChatView.swift in Sources */,
 				PUSHSERVICEBUILD000 /* PushNotificationService.swift in Sources */,
@@ -1011,7 +1013,6 @@
 				D148476D9791FA5CB58144EE /* WhatsNewService.swift in Sources */,
 				87314FFCBC84AAFE8F8CAD68 /* WhatsNewView.swift in Sources */,
 				ONBOARDINGSERVBUILD0 /* OnboardingService.swift in Sources */,
-				APPTIPSBUILD000000000 /* AppTips.swift in Sources */,
 				COACHMARKBUILD0000000 /* CoachMarkService.swift in Sources */,
 				PROGRESSDOTSBUILD000 /* ProgressDots.swift in Sources */,
 				INTERESTCHIPBUILD000 /* InterestChip.swift in Sources */,
@@ -1053,9 +1054,7 @@
 				OFFLINEDLBTNBUILD00 /* OfflineDownloadButton.swift in Sources */,
 				OFFLINESETBUILD0000 /* OfflineContentSettingsView.swift in Sources */,
 				CACHESETTINGSBUILD0 /* CacheSettingsView.swift in Sources */,
-				90D4C159EA1B06853C46D4C6 /* HubContextualTips.swift in Sources */,
-				E8D02D59F88EDA33B899254D /* UserSpaceContextualTips.swift in Sources */,
-				3B2ED5A24A63B863C8817F17 /* DetailContextualTips.swift in Sources */,
+				74503503132DCF9042B8C322 /* MyEventsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1219,7 +1218,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = MadiniaApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = 7Q6MN7W987;
 				ENABLE_PREVIEWS = YES;
@@ -1235,7 +1234,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.1.3;
+				MARKETING_VERSION = 0.1.5;
 				PRODUCT_BUNDLE_IDENTIFIER = fr.madinia.MadiniaApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1255,7 +1254,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = MadiniaApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = 7Q6MN7W987;
 				ENABLE_PREVIEWS = YES;
@@ -1271,7 +1270,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.1.3;
+				MARKETING_VERSION = 0.1.5;
 				PRODUCT_BUNDLE_IDENTIFIER = fr.madinia.MadiniaApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1289,10 +1288,10 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 6;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MARKETING_VERSION = 0.1.3;
+				MARKETING_VERSION = 0.1.4;
 				PRODUCT_BUNDLE_IDENTIFIER = fr.madinia.MadiniaAppTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
@@ -1307,10 +1306,10 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 6;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MARKETING_VERSION = 0.1.3;
+				MARKETING_VERSION = 0.1.4;
 				PRODUCT_BUNDLE_IDENTIFIER = fr.madinia.MadiniaAppTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
@@ -1351,6 +1350,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		764B04CC8D26EB40C3BD8CFD /* XCRemoteSwiftPackageReference "SSCoachMarks" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SimformSolutionsPvtLtd/SSCoachMarks";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		907D6821CCC20A639E94AC6D /* SSCoachMarks */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 764B04CC8D26EB40C3BD8CFD /* XCRemoteSwiftPackageReference "SSCoachMarks" */;
+			productName = SSCoachMarks;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = PROJECTROOT000000000000 /* Project object */;
 }

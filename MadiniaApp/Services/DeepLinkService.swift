@@ -21,6 +21,7 @@ final class DeepLinkService {
     enum DeepLinkDestination: Equatable {
         case formation(slug: String)
         case article(slug: String)
+        case event(slug: String)
         case home
     }
 
@@ -68,6 +69,13 @@ final class DeepLinkService {
             }
             return .home
 
+        case "events", "event", "evenements":
+            // /events/{slug} or /event/{slug} or /evenements/{slug}
+            if pathComponents.count >= 2 {
+                return .event(slug: pathComponents[1])
+            }
+            return .home
+
         default:
             // Unknown route - go to home
             return .home
@@ -87,6 +95,14 @@ final class DeepLinkService {
     /// - Returns: The shareable URL
     func articleURL(slug: String) -> URL {
         URL(string: "https://madinia.fr/blog/\(slug)") ??
+        URL(string: "https://madinia.fr")!
+    }
+
+    /// Generates a shareable URL for an event
+    /// - Parameter slug: The event slug
+    /// - Returns: The shareable URL
+    func eventURL(slug: String) -> URL {
+        URL(string: "https://madinia.fr/events/\(slug)") ??
         URL(string: "https://madinia.fr")!
     }
 }

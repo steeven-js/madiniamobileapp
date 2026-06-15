@@ -17,6 +17,17 @@ struct EventsView: View {
     /// Whether to show within its own NavigationStack (false when embedded)
     var embedded: Bool = false
 
+    /// Deep link event slug for navigating directly to an event
+    @Binding var deepLinkEventSlug: String?
+
+    /// Event loaded from deep link for navigation
+    @State private var deepLinkEvent: Event?
+
+    init(embedded: Bool = false, deepLinkEventSlug: Binding<String?> = .constant(nil)) {
+        self.embedded = embedded
+        self._deepLinkEventSlug = deepLinkEventSlug
+    }
+
     var body: some View {
         if embedded {
             content
@@ -26,6 +37,12 @@ struct EventsView: View {
                 .task {
                     await viewModel.loadEvents()
                 }
+                .task(id: deepLinkEventSlug) {
+                    await navigateToEvent(slug: deepLinkEventSlug)
+                }
+                .navigationDestination(item: $deepLinkEvent) { event in
+                    EventDetailView(event: event)
+                }
         } else {
             NavigationStack {
                 content
@@ -33,9 +50,15 @@ struct EventsView: View {
                     .navigationDestination(for: Event.self) { event in
                         EventDetailView(event: event)
                     }
+                    .navigationDestination(item: $deepLinkEvent) { event in
+                        EventDetailView(event: event)
+                    }
             }
             .task {
                 await viewModel.loadEvents()
+            }
+            .task(id: deepLinkEventSlug) {
+                await navigateToEvent(slug: deepLinkEventSlug)
             }
         }
     }
@@ -159,6 +182,27 @@ struct EventsView: View {
         .refreshable {
             await viewModel.refresh()
         }
+    }
+
+    // MARK: - Deep Link Navigation
+
+    private func navigateToEvent(slug: String?) async {
+        guard let slug else { return }
+
+        // Try to find in already loaded events first
+        if let event = viewModel.events.first(where: { $0.slug == slug }) {
+            deepLinkEvent = event
+            deepLinkEventSlug = nil
+            return
+        }
+
+        // Otherwise fetch from API
+        if let result = await EventsService.shared.fetchEvent(slug: slug) {
+            deepLinkEvent = result.event
+        } else {
+            print("Deep link event not found: \(slug)")
+        }
+        deepLinkEventSlug = nil
     }
 }
 

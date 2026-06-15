@@ -13,17 +13,18 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
     /// Deep link handler callback
     var onDeepLink: ((PushNotificationService.NotificationPayload) -> Void)? {
         didSet {
-            // Process pending payload when handler is set
-            if let payload = pendingNotificationPayload {
-                pendingNotificationPayload = nil
+            // Process all pending payloads when handler is set
+            let payloads = pendingNotificationPayloads
+            pendingNotificationPayloads.removeAll()
+            for payload in payloads {
                 onDeepLink?(payload)
             }
         }
     }
 
-    /// Stores notification payload when app is launched from notification
-    /// (before onDeepLink handler is configured)
-    private var pendingNotificationPayload: PushNotificationService.NotificationPayload?
+    /// Stores notification payloads received before onDeepLink handler is configured.
+    /// Supports multiple notifications arriving while app is launching.
+    private var pendingNotificationPayloads: [PushNotificationService.NotificationPayload] = []
 
     /// Push notification service
     private let pushService = PushNotificationService.shared
@@ -133,8 +134,8 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
             // Handler is ready, process immediately
             handler(payload)
         } else {
-            // Handler not ready yet (app launching), store for later
-            pendingNotificationPayload = payload
+            // Handler not ready yet (app launching), queue for later
+            pendingNotificationPayloads.append(payload)
         }
     }
 
@@ -185,13 +186,16 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
 
     // MARK: - Badge Management
 
-    /// Clears the app icon badge
+    /// Serializes badge operations to prevent race conditions
+    private var badgeClearTask: Task<Void, Never>?
+
+    /// Clears the app icon badge (serialized to avoid concurrent calls)
     private func clearBadge() {
-        Task {
+        badgeClearTask?.cancel()
+        badgeClearTask = Task {
             do {
                 try await UNUserNotificationCenter.current().setBadgeCount(0)
             } catch {
-                // Fallback for older iOS versions or errors
                 await MainActor.run {
                     UIApplication.shared.applicationIconBadgeNumber = 0
                 }

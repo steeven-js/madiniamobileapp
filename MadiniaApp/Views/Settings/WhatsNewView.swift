@@ -406,20 +406,17 @@ struct WhatsNewView: View {
         VStack(alignment: .leading, spacing: MadiniaSpacing.sm) {
             // Cover image
             if let coverUrl = article.coverUrl, let url = URL(string: coverUrl) {
-                AsyncImage(url: url) { phase in
-                    switch phase {
-                    case .success(let image):
-                        image
-                            .resizable()
-                            .aspectRatio(16/9, contentMode: .fill)
-                            .frame(height: 180)
-                            .clipShape(RoundedRectangle(cornerRadius: MadiniaRadius.md))
-                    case .failure, .empty:
-                        placeholderImage
-                    @unknown default:
-                        placeholderImage
-                    }
+                CachedAsyncImage(url: url) { image in
+                    image
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                } placeholder: {
+                    ShimmerPlaceholder()
+                        .aspectRatio(16/9, contentMode: .fit)
                 }
+                .aspectRatio(16/9, contentMode: .fit)
+                .clipped()
+                .clipShape(RoundedRectangle(cornerRadius: MadiniaRadius.md))
             } else {
                 placeholderImage
             }
@@ -486,7 +483,7 @@ struct WhatsNewView: View {
                     endPoint: .bottomTrailing
                 )
             )
-            .frame(height: 180)
+            .aspectRatio(16/9, contentMode: .fit)
             .overlay {
                 Image(systemName: "sparkles")
                     .font(.system(size: 40))

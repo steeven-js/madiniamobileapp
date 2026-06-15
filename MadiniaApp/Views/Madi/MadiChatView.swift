@@ -12,24 +12,29 @@ struct MadiChatView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var viewModel = MadiChatViewModel()
 
+    /// Whether the user has accepted the AI data consent
+    @AppStorage("madiAIConsentAccepted") private var hasAcceptedConsent = false
+
     /// Callback when user taps a formation recommendation
     var onFormationSelected: ((FormationRecommendation) -> Void)?
 
     var body: some View {
         NavigationStack {
-            VStack(spacing: 0) {
-                // Messages list
-                messagesView
-
-                Divider()
-
-                // Quick action chips
-                if !viewModel.quickActions.isEmpty && !viewModel.isTyping {
-                    quickActionsBar
+            Group {
+                if hasAcceptedConsent {
+                    chatContent
+                } else {
+                    MadiConsentView(
+                        onAccept: {
+                            withAnimation {
+                                hasAcceptedConsent = true
+                            }
+                        },
+                        onDecline: {
+                            dismiss()
+                        }
+                    )
                 }
-
-                // Input area
-                inputArea
             }
             .navigationTitle("Madi")
             .navigationBarTitleDisplayMode(.inline)
@@ -43,21 +48,23 @@ struct MadiChatView: View {
                     }
                 }
 
-                ToolbarItem(placement: .topBarTrailing) {
-                    Menu {
-                        Button {
-                            viewModel.resetConversation()
-                        } label: {
-                            Label("Nouvelle conversation", systemImage: "arrow.counterclockwise")
-                        }
+                if hasAcceptedConsent {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Menu {
+                            Button {
+                                viewModel.resetConversation()
+                            } label: {
+                                Label("Nouvelle conversation", systemImage: "arrow.counterclockwise")
+                            }
 
-                        Button(role: .destructive) {
-                            viewModel.clearHistory()
+                            Button(role: .destructive) {
+                                viewModel.clearHistory()
+                            } label: {
+                                Label("Effacer l'historique", systemImage: "trash")
+                            }
                         } label: {
-                            Label("Effacer l'historique", systemImage: "trash")
+                            Image(systemName: "ellipsis.circle")
                         }
-                    } label: {
-                        Image(systemName: "ellipsis.circle")
                     }
                 }
             }
@@ -71,7 +78,35 @@ struct MadiChatView: View {
             )
         }
         .task {
-            await viewModel.loadFormations()
+            if hasAcceptedConsent {
+                await viewModel.loadFormations()
+            }
+        }
+        .onChange(of: hasAcceptedConsent) { _, accepted in
+            if accepted {
+                Task {
+                    await viewModel.loadFormations()
+                }
+            }
+        }
+    }
+
+    // MARK: - Chat Content
+
+    private var chatContent: some View {
+        VStack(spacing: 0) {
+            // Messages list
+            messagesView
+
+            Divider()
+
+            // Quick action chips
+            if !viewModel.quickActions.isEmpty && !viewModel.isTyping {
+                quickActionsBar
+            }
+
+            // Input area
+            inputArea
         }
     }
 
@@ -178,6 +213,14 @@ private struct MessageBubble: View {
             }
 
             VStack(alignment: message.isFromUser ? .trailing : .leading, spacing: 8) {
+                // Local fallback indicator
+                if message.isLocalFallback {
+                    Label("Réponse hors-ligne", systemImage: "antenna.radiowaves.left.and.right.slash")
+                        .font(.caption2)
+                        .foregroundStyle(.secondary)
+                        .padding(.horizontal, 8)
+                }
+
                 // Message content
                 messageContent
 

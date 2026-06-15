@@ -130,6 +130,8 @@ struct MadiMessage: Identifiable, Equatable, Codable {
     let formationRecommendation: FormationRecommendation?
     let messageType: MadiMessageType
     let quickActions: [QuickAction]?
+    /// Whether this message was generated locally (fallback) rather than by the AI backend
+    let isLocalFallback: Bool
 
     init(
         id: UUID = UUID(),
@@ -138,7 +140,8 @@ struct MadiMessage: Identifiable, Equatable, Codable {
         timestamp: Date = Date(),
         formationRecommendation: FormationRecommendation? = nil,
         messageType: MadiMessageType = .text,
-        quickActions: [QuickAction]? = nil
+        quickActions: [QuickAction]? = nil,
+        isLocalFallback: Bool = false
     ) {
         self.id = id
         self.content = content
@@ -147,6 +150,7 @@ struct MadiMessage: Identifiable, Equatable, Codable {
         self.formationRecommendation = formationRecommendation
         self.messageType = messageType
         self.quickActions = quickActions
+        self.isLocalFallback = isLocalFallback
     }
 }
 

@@ -59,12 +59,16 @@ class NotificationService: UNNotificationServiceExtension {
 
     // MARK: - Image Download
 
-    /// Downloads an image from URL and creates a notification attachment
+    /// Downloads an image from URL and creates a notification attachment.
+    /// Uses a 15-second timeout to stay well within the 30-second extension limit.
     private func downloadImage(
         from url: URL,
         completion: @escaping (UNNotificationAttachment?) -> Void
     ) {
-        let task = URLSession.shared.downloadTask(with: url) { localURL, response, error in
+        var request = URLRequest(url: url)
+        request.timeoutInterval = 15
+
+        let task = URLSession.shared.downloadTask(with: request) { localURL, response, error in
             guard error == nil,
                   let localURL = localURL,
                   let response = response as? HTTPURLResponse,

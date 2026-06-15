@@ -97,20 +97,42 @@ final class MadiService: MadiServiceProtocol {
             return localResponse
         }
 
-        // Try ChatGPT backend
+        // Try ChatGPT backend with retry (3 attempts, exponential backoff)
         if useChatGPTBackend {
-            do {
-                return try await sendMessageToBackend(message, formations: formations, favoriteIds: favoriteIds)
-            } catch {
-                #if DEBUG
-                print("ChatGPT backend error, using local fallback: \(error)")
-                #endif
-                // Fall through to local response
+            let maxRetries = 3
+            var lastError: Error?
+
+            for attempt in 1...maxRetries {
+                do {
+                    return try await sendMessageToBackend(message, formations: formations, favoriteIds: favoriteIds)
+                } catch {
+                    lastError = error
+                    #if DEBUG
+                    print("ChatGPT backend attempt \(attempt)/\(maxRetries) failed: \(error)")
+                    #endif
+                    if attempt < maxRetries {
+                        // Exponential backoff: 1s, 2s
+                        try? await Task.sleep(for: .seconds(pow(2.0, Double(attempt - 1))))
+                    }
+                }
             }
+
+            #if DEBUG
+            print("ChatGPT backend failed after \(maxRetries) attempts, using local fallback: \(lastError?.localizedDescription ?? "")")
+            #endif
         }
 
-        // Local fallback
-        return generateLocalResponse(for: lowercaseMessage, formations: formations, favoriteIds: favoriteIds)
+        // Local fallback — marked so the UI can show an indicator
+        var fallback = generateLocalResponse(for: lowercaseMessage, formations: formations, favoriteIds: favoriteIds)
+        fallback = MadiMessage(
+            content: fallback.content,
+            isFromUser: false,
+            formationRecommendation: fallback.formationRecommendation,
+            messageType: fallback.messageType,
+            quickActions: fallback.quickActions,
+            isLocalFallback: true
+        )
+        return fallback
     }
 
     // MARK: - ChatGPT Backend

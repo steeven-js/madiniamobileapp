@@ -7,7 +7,6 @@
 
 import SwiftUI
 import SwiftData
-import TipKit
 
 @main
 struct MadiniaApp: App {
@@ -21,6 +20,7 @@ struct MadiniaApp: App {
     @State private var deepLinkFormationSlug: String?
     @State private var deepLinkArticleSlug: String?
     @State private var deepLinkServiceSlug: String?
+    @State private var deepLinkEventSlug: String?
 
     /// What's New modal presentation
     @State private var showWhatsNew = false
@@ -29,10 +29,7 @@ struct MadiniaApp: App {
     private let deepLinkService = DeepLinkService.shared
 
     init() {
-        // Reset TipKit datastore BEFORE configure if a replay was requested.
-        // This runs before any view renders so .popoverTip() picks up fresh tip instances.
         CoachMarkService.shared.performPendingReplayIfNeeded()
-        try? Tips.configure([.displayFrequency(.immediate)])
     }
 
     var body: some Scene {
@@ -41,6 +38,7 @@ struct MadiniaApp: App {
                 .environment(\.deepLinkFormationSlug, $deepLinkFormationSlug)
                 .environment(\.deepLinkArticleSlug, $deepLinkArticleSlug)
                 .environment(\.deepLinkServiceSlug, $deepLinkServiceSlug)
+                .environment(\.deepLinkEventSlug, $deepLinkEventSlug)
                 .preferredColorScheme(themeManager.colorScheme)
                 .onAppear {
                     setupDeepLinkHandler()
@@ -73,7 +71,7 @@ struct MadiniaApp: App {
         // Slight delay to let the app finish launching
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             // Don't show What's New during the guided tour — it covers the tips
-            if WhatsNewService.shared.shouldShowWhatsNew && CoachMarkService.shared.activeTipStep == nil {
+            if WhatsNewService.shared.shouldShowWhatsNew && CoachMarkService.shared.activeTourGroup == nil {
                 showWhatsNew = true
             }
         }
@@ -89,6 +87,8 @@ struct MadiniaApp: App {
             deepLinkFormationSlug = slug
         case .article(let slug):
             deepLinkArticleSlug = slug
+        case .event(let slug):
+            deepLinkEventSlug = slug
         case .home:
             // Already on home, nothing to do
             break
@@ -111,9 +111,9 @@ struct MadiniaApp: App {
                     deepLinkServiceSlug = slug
                 }
             case .event:
-                // Events are handled through the events list/calendar
-                // Could add deepLinkEventSlug if needed for direct navigation
-                break
+                if let slug = payload.slug {
+                    deepLinkEventSlug = slug
+                }
             case .home:
                 // Already on home, nothing to do
                 break
@@ -136,6 +136,10 @@ private struct DeepLinkServiceSlugKey: EnvironmentKey {
     static let defaultValue: Binding<String?> = .constant(nil)
 }
 
+private struct DeepLinkEventSlugKey: EnvironmentKey {
+    static let defaultValue: Binding<String?> = .constant(nil)
+}
+
 extension EnvironmentValues {
     var deepLinkFormationSlug: Binding<String?> {
         get { self[DeepLinkFormationSlugKey.self] }
@@ -150,5 +154,10 @@ extension EnvironmentValues {
     var deepLinkServiceSlug: Binding<String?> {
         get { self[DeepLinkServiceSlugKey.self] }
         set { self[DeepLinkServiceSlugKey.self] = newValue }
+    }
+
+    var deepLinkEventSlug: Binding<String?> {
+        get { self[DeepLinkEventSlugKey.self] }
+        set { self[DeepLinkEventSlugKey.self] = newValue }
     }
 }

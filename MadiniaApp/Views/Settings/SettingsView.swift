@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import TipKit
 import UIKit
 
 /// Main settings hub view with navigation to sub-settings

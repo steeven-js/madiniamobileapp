@@ -135,6 +135,13 @@ final class DeviceRegistrationService {
                 print("✅ Device registered: uuid=\(deviceUUID), isNew=\(isNewDevice), launchCount=\(launchCount)")
                 #endif
 
+                // Retry any pending push token sync from a previous failed attempt
+                if userDefaults.bool(forKey: "push_token_pending_sync"),
+                   let pendingToken = userDefaults.string(forKey: pushTokenKey) {
+                    userDefaults.set(false, forKey: "push_token_pending_sync")
+                    await updatePushToken(pendingToken, enabled: true)
+                }
+
                 return // Success, exit the retry loop
             } catch {
                 retryCount += 1
@@ -201,20 +208,34 @@ final class DeviceRegistrationService {
         return false
     }
 
-    /// Update push notification token
+    /// Update push notification token with retry logic
     @MainActor
     func updatePushToken(_ token: String, enabled: Bool) async {
         userDefaults.set(token, forKey: pushTokenKey)
 
-        do {
-            try await sendPushTokenUpdate(token: token, enabled: enabled)
-            #if DEBUG
-            print("Push token updated successfully")
-            #endif
-        } catch {
-            #if DEBUG
-            print("Push token update failed: \(error)")
-            #endif
+        let maxRetries = 3
+        for attempt in 1...maxRetries {
+            do {
+                try await sendPushTokenUpdate(token: token, enabled: enabled)
+                #if DEBUG
+                print("✅ Push token updated successfully")
+                #endif
+                return
+            } catch {
+                #if DEBUG
+                print("⚠️ Push token update attempt \(attempt)/\(maxRetries) failed: \(error)")
+                #endif
+                if attempt < maxRetries {
+                    try? await Task.sleep(nanoseconds: UInt64(pow(2.0, Double(attempt - 1)) * 1_000_000_000))
+                } else {
+                    lastError = error.localizedDescription
+                    // Mark token as pending sync for next launch
+                    userDefaults.set(true, forKey: "push_token_pending_sync")
+                    #if DEBUG
+                    print("❌ Push token update failed after \(maxRetries) attempts — will retry on next launch")
+                    #endif
+                }
+            }
         }
     }
 
